@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Signup Page</title>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
+    <script defer src="{{ url_for('static', filename='js/signup.js') }}"></script>
+    {% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="header">
+            <img src="">
+        </div>
+        <span class="title">create your account</span>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="input-field">
+                {{ form.email() }}
+                <i class='bx bx-envelope'></i><span>Email Address</span>
+            </div>
+            {% for error in form.email.errors %} 
+                <div class="validate">
+                    <i class='bx bx-error' ></i>{{ error }}
+                </div>
+            {% endfor %}
+            <div class="input-field">
+                {{ form.username() }}
+                <i class='bx bx-user'></i><span>Username</span>
+            </div>
+            {% for error in form.username.errors %} 
+                <div class="validate">
+                    <i class='bx bx-error' ></i>{{ error }}
+                </div>
+            {% endfor %}
+            <div class="input-field">
+                {{ form.password() }}
+                <i class='bx bx-lock-alt'></i><span>Password</span>
+                <i class='bx bx-hide show-hide'></i>
+            </div>
+            {% for error in form.password.errors %} 
+                <div class="validate">
+                    <i class='bx bx-error' ></i>{{ error }}
+                </div>
+            {% endfor %}
+            <div class="checkbox-field">
+                <div>
+                    {{ form.privacypolicy(id="privacy-policy") }}
+                    <label for="privacy-policy">Agree with <a href="" style="pointer-events: none;">Privacy Policy</a>.</label>
+                </div>
+            </div>
+            {% for error in form.privacypolicy.errors %} 
+                <div class="validate">
+                    <i class='bx bx-error' ></i>{{ error }}
+                </div>
+            {% endfor %}
+            <div class="button-field">
+                {{ form.submit(id="signup") }}
+            </div>
+        </form>
+        <div class="footer">
+            <span>Already have your account?</span>
+            <a href="{{ url_for('login') }}">Login Now</a>
+        </div>
+    </div>
+{% endblock %}

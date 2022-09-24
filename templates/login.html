@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Login Page</title>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <script defer src="{{ url_for('static', filename='js/login.js') }}"></script>
+    {% endblock %}
+
+{% block body %}
+    {% for flash in get_flashed_messages(category_filter=['unauthorized']) %}
+        <div class="unauthorized">
+            <i class='bx bx-error' ></i>{{ flash }}
+        </div>
+    {% endfor %}
+    <div class="container">
+        <div class="header"><img src=""></div>
+        <span class="title">welcome back</span>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="input-field">
+                {{ form.username() }}
+                <i class='bx bx-user'></i><span>Username</span>
+            </div>
+            {% for flash in get_flashed_messages(category_filter=['username']) %}
+                <div class="flash">
+                    <i class='bx bx-error-alt' ></i>{{ flash }}
+                </div>
+            {% endfor %}
+            <div class="input-field">
+                {{ form.password() }}
+                <i class='bx bx-lock-alt'></i><span>Password</span>
+                <i class='bx bx-hide show-hide'></i>
+            </div>
+            {% for flash in get_flashed_messages(category_filter=['password']) %}
+                <div class="flash">
+                    <i class='bx bx-error-alt' ></i>{{ flash }}
+                </div>
+            {% endfor %}
+            <div class="checkbox-field">
+                <div>
+                    {{ form.remember(id="remember-me") }}
+                    <label for="remember-me">Remember me</label>
+                </div>
+                <a href="" style="pointer-events: none;">Forgot password?</a>
+            </div>
+            <div class="button-field">
+                {{ form.submit() }}
+            </div>
+        </form>
+        <div class="footer">
+            <span>Don't have an account?</span>
+            <a href="{{ url_for('signup') }}">Signup Now</a>
+        </div>
+    </div>
+{% endblock %}

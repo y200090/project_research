@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>My Page</title>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/library.css') }}">
+    <script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/library.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <header class="root-header">
+        <a href="{{ url_for('home') }}" class="browser-back">
+            <span class="material-symbols-outlined">keyboard_double_arrow_left</span>
+        </a>
+        <span class="header-title">Library</span>
+    </header>
+    <!-- ============================================================= -->
+    <div class="library">
+        <div class="search-bar">
+            <span class="material-symbols-outlined search-icon">search</span>
+            <input type="text" placeholder="search for words">
+            <span class="material-symbols-outlined clear-icon">close</span>
+        </div>
+        <div class="flashcards">
+
+        </div>
+    </div>
+{% endblock %}

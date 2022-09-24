@@ -1,0 +1,240 @@
+/* Google Fonts for Poppins */
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap'); */
+
+/* Google Fonts for Roboto */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+:root {
+    --background: #e1eaf7;
+    --text: #171717;
+    --contents: #fff;
+    --primary: #4070f4;
+    --secondary: #979dac;
+    --danger: #ef233c;
+    --accent: #2196f3;
+    --correct: #00c851;
+    --incorrect: #ff4444;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* font-family: 'Poppins', sans-serif; */
+    font-family: 'Roboto', sans-serif;
+    text-decoration: none;
+    list-style: none;
+}
+body {
+    position: relative;
+    /* VIEWPORT: 376px~414px, VALUES: 110px~130px */
+    height: calc(100vh - clamp(6.875rem, -5.493rem + 52.63vw, 8.125rem));
+    width: 100vw;
+    /* VIEWPORT: 376px~414px, VALUES: 110px~130px */
+    margin-top: clamp(6.875rem, -5.493rem + 52.63vw, 8.125rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background);
+    overflow: hidden;
+}
+.dark-mode {
+    --background: #181a1e;
+    --text: #fff;
+    --contents: #202528;
+}
+/* ========================================================= */
+.quiz-header {
+    position: fixed;
+    top: 10px;
+    /* VIEWPORT: 376px~414px, VALUES: 100px~120px */
+    height: clamp(6.25rem, -6.118rem + 52.63vw, 7.5rem);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.quiz-title {
+    height: calc(100% - 3px);
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.quiz-title span {
+    width: 100%;
+    text-align: start;
+}
+.quiz-name {
+    /* VIEWPORT: 376px~414px, VALUES: 14px~16px */
+    font-size: clamp(0.875rem, -0.362rem + 5.26vw, 1rem);
+    color: var(--secondary);
+    transform: translateY(5px);
+}
+.quiz-number {
+    /* VIEWPORT: 376px~414px, VALUES: 20px~22px */
+    font-size: clamp(1.25rem, 0.013rem + 5.26vw, 1.375rem);
+    font-weight: 600;
+    color: var(--text);
+}
+#current-number {
+    /* VIEWPORT: 376px~414px, VALUES: 30px~32px */
+    font-size: clamp(1.875rem, 0.638rem + 5.26vw, 2rem);
+}
+#max-number {
+    font-weight: 400;
+    color: var(--secondary);
+}
+.quiz-progress {
+    height: 3px;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 10px;
+}
+.line {
+    height: 100%;
+    width: 10%;
+    background-color: var(--secondary);
+}
+.line.current {
+    background-color: #fff;
+}
+.line.correct {
+    background-color: var(--correct);
+}
+.line.incorrect {
+    background-color: var(--incorrect);
+}
+/* ========================================================= */
+.quiz {
+    /* VIEWPORT: 376px~414px, VALUES: 30px~50px */
+    height: calc(100% - clamp(1.875rem, -10.493rem + 52.63vw, 3.125rem));
+    width: 100%;
+    /* VIEWPORT: 376px~414px, VALUES: 30px~50px */
+    margin-top: clamp(1.875rem, -10.493rem + 52.63vw, 3.125rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.quiz-container {
+    height: 100%;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    /* VIEWPORT: 376px~414px, VALUES: 40px~60px */
+    row-gap: clamp(2.5rem, -9.868rem + 52.63vw, 3.75rem);
+}
+.quiz-content {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    /* VIEWPORT: 376px~414px, VALUES: 40px~60px */
+    row-gap: clamp(2.5rem, -9.868rem + 52.63vw, 3.75rem);
+    color: var(--text);
+}
+.statement {
+    width: 100%;
+    text-align: start;
+    /* VIEWPORT: 281px~414px, VALUES: 14px~16px */
+    font-size: clamp(0.875rem, 0.347rem + 3.01vw, 1.125rem);
+}
+.statement span {
+    /* VIEWPORT: 376px~414px, VALUES: 14px~16px */
+    font-size: clamp(0.875rem, -0.362rem + 5.26vw, 1rem);
+    color: var(--secondary);
+}
+#quiz-word {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    /* VIEWPORT: 281px~414px, VALUES: 30px~36px */
+    font-size: clamp(1.875rem, 1.083rem + 4.51vw, 2.25rem);
+    font-weight: 700;
+}
+.speak-icon {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    /* VIEWPORT: 281px~414px, VALUES: 26px~30px */
+    font-size: clamp(1.625rem, 1.097rem + 3.01vw, 1.875rem);
+    color: var(--text);
+    z-index: 99;
+    cursor: pointer;
+}
+#options {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
+    row-gap: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
+}
+.option-content {
+    position: relative;
+    width: 100%;
+}
+.option-content input {
+    width: 100%;
+    /* VIEWPORT: 376px~414px, VALUES: 10px~15px */
+    padding: clamp(0.625rem, -2.467rem + 13.16vw, 0.938rem) 0;
+    border: none;
+    outline: none;
+    background-color: var(--contents);
+    border-radius: 8px;
+    /* VIEWPORT: 281px~414px, VALUES: 14px~18px */
+    font-size: clamp(0.875rem, 0.347rem + 3.01vw, 1.125rem);
+    color: var(--text);
+    cursor: pointer;
+}
+.option-content input.correct {
+    border: 2px solid var(--correct);
+}
+.option-content input.incorrect {
+    border: 2px solid var(--incorrect);
+}
+#options.none-events input {
+    pointer-events: none;
+}
+.answer-image {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    /* VIEWPORT: 281px~414px, VALUES* 32px~40px */
+    font-size: clamp(2rem, 0.944rem + 6.02vw, 2.5rem);
+}
+.answer-image.correct {
+    color: var(--correct);
+}
+.answer-image.incorrect {
+    color: var(--incorrect);
+}
+.next-form {
+    display: none;
+    position: relative;
+    width: 100%;
+}
+.next-form.active {
+    display: block;
+}
+#next-button {
+    width: 100%;
+    /* VIEWPORT: 376px~414px, VALUES: 10px~15px */
+    padding: clamp(0.625rem, -2.467rem + 13.16vw, 0.938rem) 0;
+    border: none;
+    outline: none;
+    background-color: var(--accent);
+    border-radius: 8px;
+    /* VIEWPORT: 281px~414px, VALUES: 14px~18px */
+    font-size: clamp(0.875rem, 0.347rem + 3.01vw, 1.125rem);
+    color: #fff;
+    cursor: pointer;
+}

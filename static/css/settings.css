@@ -1,0 +1,183 @@
+/* Google Fonts for Roboto */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+:root {
+    --background: #e1eaf7;
+    --text: #171717;
+    --contents: #fff;
+    --primary: #4070f4;
+    --secondary: #979dac;
+    --danger: #ef233c;
+    --accent: #2196f3;
+    --correct: #00c851;
+    --incorrect: #ff4444;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    text-decoration: none;
+    list-style: none;
+}
+body {
+    position: relative;
+    /* VIEWPORT: 376px~414px, VALUES: 60px~80px */
+    height: calc(100vh - clamp(3.75rem, -8.618rem + 52.63vw, 5rem));
+    width: 100vw;
+    /* VIEWPORT: 376px~414px, VALUES: 60px~80px */
+    margin-top: clamp(3.75rem, -8.618rem + 52.63vw, 5rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background);
+}
+.dark-mode {
+    --background: #181a1e;
+    --text: #fff;
+    --contents: #202528;
+}
+/* ==================================================================== */
+.root-header {
+    position: fixed;
+    top: 0;
+    /* VIEWPORT: 376px~414px, VALUES: 60px~80px */
+    height: clamp(3.75rem, -8.618rem + 52.63vw, 5rem);
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.browser-back span{
+    /* VIEWPORT: 281px~414px, VALUES: 32px~40px */
+    font-size: clamp(2rem, 0.944rem + 6.02vw, 2.5rem);
+    font-weight: 600;
+    color: var(--text);
+}
+.header-title {
+    /* VIEWPORT: 281px~414px, VALUES: 22px~26px */
+    font-size: clamp(1.375rem, 0.847rem + 3.01vw, 1.625rem);
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--text);
+}
+/* ========================================================= */
+.settings {
+    position: relative;
+    height: 100%;
+    width: 90%;
+    display: grid;
+    grid-template-rows: 18% 82%;
+    flex-direction: column;
+}
+.user-content {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    /* VIEWPORT: 281px~414px, VALUES: 80px~100px */
+    grid-template-columns: clamp(5rem, 2.359rem + 15.04vw, 6.25rem) auto;
+    background-color: var(--contents);
+    border-radius: 20px;
+}
+.user-icon {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.user-icon img {
+    height: 50%;
+    width: 50%;
+}
+.user-title {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+}
+.user-id {
+    /* VIEWPORT: 281px~520px, VALUES: 12px~16px */
+    font-size: clamp(0.75rem, 0.456rem + 1.67vw, 1rem);
+    color: var(--secondary);
+}
+.username {
+    /* VIEWPORT: 281px~520px, VALUES: 16px~20px */
+    font-size: clamp(1rem, 0.706rem + 1.67vw, 1.25rem);
+    font-weight: 500;
+    color: var(--text);
+}
+.settings-content {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: column;
+    row-gap: 10px;
+}
+.setting {
+    position: relative;
+    height: 14%;
+    width: 100%;
+    padding: 0 10px;
+    display: grid;
+    /* VIEWPORT: 376px~414px, VALUES: 50px~60px */
+    grid-template-columns: 50px auto clamp(3.125rem, -3.059rem + 26.32vw, 3.75rem);
+    background-color: var(--contents);
+    border-radius: 8px;
+}
+.setting-box {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+}
+.setting-title {
+    width: 90%;
+    text-align: start;
+    /* VIEWPORT: 376px~414px, VALUES: 16px~20px */
+    font-size: clamp(1rem, -1.474rem + 10.53vw, 1.25rem);
+    font-weight: 500;
+}
+.setting-icon {
+    /* VIEWPORT: 376px~414px, VALUES: 26px~32px */
+    font-size: clamp(1.625rem, -2.086rem + 15.79vw, 2rem);
+}
+.open-modal {
+    width: 100%;
+    text-align: end;
+    font-size: 34px;
+    color: var(--secondary);
+}
+.switch-bar {
+    position: relative;
+    /* VIEWPORT: 376px~414px, VALUES: 30px~34px */
+    height: clamp(1.875rem, -0.599rem + 10.53vw, 2.125rem);
+    width: 100%;
+    background-color: var(--background);
+    border-radius: 20px;
+    cursor: pointer;
+}
+.switch {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 4px;
+    /* VIEWPORT: 376px~414px, VALUES: 24px~28px */
+    height: clamp(1.5rem, -0.974rem + 10.53vw, 1.75rem);
+    width: clamp(1.5rem, -0.974rem + 10.53vw, 1.75rem);
+    background-color: var(--contents);
+    border-radius: 50%;
+    transition: left 0.5s ease;
+}
+.dark-mode .switch {
+    /* VIEWPORT: 376px~414px, VALUES: 22px~28px */
+    left: clamp(1.375rem, -2.336rem + 15.79vw, 1.75rem);
+}

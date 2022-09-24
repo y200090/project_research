@@ -1,0 +1,8 @@
+sqlite3 データベースのパス
+.tables
+select * from テーブル名;
+select * from テーブル名 where 条件式;
+select * from テーブル名 set 更新処理 where 条件式;
+delete from テーブル名 where 条件式;
+drop table テーブル名;
+.exit

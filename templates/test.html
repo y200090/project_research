@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>{{ rank }} Test Page</title>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/test.css') }}">
+    <script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/test.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <header class="test-header">
+        <div class="test-title">
+            <span class="test-name">{{ rank }} Test</span>
+            <span class="test-number">
+                Question <span id="current-number"></span><span id="max-number"></span>
+            </span>
+        </div>
+        <div class="test-progress">
+        </div>
+    </header>
+    <!-- ============================================================= -->
+    <div class="test">
+        <div class="test-container">
+            <div class="test-content">
+                <p class="statement">
+                    適切な日本語訳を選択してください。<br>
+                    <span>ユーザー正解率 : 50%</span>
+                </p>
+                <h1 id="test-word"></h1>
+            </div>
+            <div id="options">
+            </div>
+            <form action="" method="" class="next-form" name="resultForm">
+                <input type="submit" value="終了する" id="next-button">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const rank = '{{ rank }}';
+    </script>
+{% endblock %}

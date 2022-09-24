@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Test Result Page</title>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/test_result.css') }}">
+    <script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script defer src="{{ url_for('static', filename='js/test_result.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="result">
+        <h1 id="result-comment"></h1>
+        <div class="progress">
+            <div class="circular">
+                <span id="user-score">{{ score }}</span><span id="max-score">/20</span>
+            </div>
+        </div>
+        <div class="result-form">
+            <a href="" id="review">Review</a>
+            <a href="{{ url_for('learnings') }}" id="backpage">Back Page</a>
+        </div>
+    </div>
+    <!-- ============================================================= -->
+    <script>
+        const userId = '{{ userId|tojson }}',
+              wordId = JSON.parse('{{ wordId|tojson|safe }}'),
+              answerState = JSON.parse('{{ answerState|tojson|safe }}'),
+              score = '{{ score }}';
+    </script>
+{% endblock %}

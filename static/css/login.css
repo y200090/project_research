@@ -1,0 +1,264 @@
+/* Google Fonts for Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+}
+body {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #010718;
+    overflow: hidden;
+}
+.container {
+    height: 100%;
+    max-width: 520px;
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.container .header {
+    height: 180px;
+    width: 100%;
+    text-align: center;
+}
+.header img {
+    height: 150px;
+    width: 150px;
+}
+.container .title {
+    display: block;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 40px;
+    font-weight: 700;
+}
+.container form {
+    width: 100%;
+}
+form .input-field {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    margin-top: 30px;
+}
+.input-field input {
+    height: 100%;
+    width: 100%;
+    padding: 0 35px;
+    font-size: 20px;
+    border: none;
+    outline: none;
+    background-color: #010718;
+    border-bottom: 2px solid #fff;
+    transition: all 0.3s ease;
+}
+.input-field input:valid,
+.input-field input:focus {
+    border-bottom: 2px solid #1E90FF;
+}
+.input-field input:-webkit-autofill {
+    box-shadow: 0 0 0 1000px #010718 inset;
+    transition: background-color 5000s ease-in-out;
+    -webkit-text-fill-color: #fff;
+}
+.input-field i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    color: #fff;
+    font-size: 24px;
+    transition: all 0.3s ease;
+}
+.input-field i.show-hide {
+    left: auto;
+    right: 0;
+    cursor: pointer;
+}
+.input-field input:valid ~ i,
+.input-field input:focus ~ i {
+    color: #1E90FF;
+}
+.input-field span {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 35px;
+    font-size: 20px;
+    color: #757575;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+.input-field input:valid ~ span,
+.input-field input:focus ~ span {
+    color: #1E90FF;
+    font-size: 16px;
+    transform: translateY(-40px);
+}
+form .checkbox-field {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.checkbox-field div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
+}
+.checkbox-field input {
+    accent-color: #1E90FF;
+    cursor: pointer;
+}
+.checkbox-field label {
+    color: #fff;
+    cursor: pointer;
+}
+.checkbox-field a {
+    position: relative;
+    color: #1E90FF;
+    text-decoration: none;
+}
+.checkbox-field a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    background-color: #1E90FF;
+    transform: scale(0, 1);
+    transform-origin: right top;
+    transition: transform 0.3s ease;
+}
+.checkbox-field a:hover::after {
+    transform: scale(1, 1);
+    transform-origin: left top;
+}
+form .button-field {
+    margin-top: 30px;
+    width: 100%;
+}
+.button-field input {
+    display: block;
+    width: 100%;
+    background-color: #1E90FF;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 0;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.button-field input:hover {
+    transform: scale(1.01);
+}
+.container .footer {
+    display: block;
+    width: 100%;
+    margin-top: 40px;
+    text-align: center;
+}
+.footer a {
+    position: relative;
+    text-decoration: none;
+    color: #1E90FF;
+    margin-left: 5px;
+}
+.footer a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    background-color: #1E90FF;
+    transform: scale(0, 1);
+    transform-origin: right top;
+    transition: transform 0.3s ease;
+}
+.footer a:hover::after {
+    transform: scale(1, 1);
+    transform-origin: left top;
+}
+.flash, .flash i {
+    color: #ffdb9b;
+}
+.validate, .validate i {
+    color: #e40a2d;
+}
+.bx-error, .bx-error-alt{
+    font-size: 18px;
+    margin: 5px 5px 0 0;
+    top: 50%;
+    transform: translateY(15%);
+}
+.unauthorized {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 0 15px 15px;
+    color: #e40a2d;
+    font-weight: 600;
+}
+.unauthorized i {
+    color: #e40a2d;
+}
+@media screen and (max-width:414px) {
+    .container .header {
+        height: 160px;
+    }
+    .header img {
+        height: 130px;
+        width: 130px;
+    }
+    .container .title {
+        font-size: 35px;
+    }
+    form .input-field {
+        margin-top: 25px;
+    }
+    .input-field input {
+        font-size: 18px;
+    }
+    .input-field i {
+        font-size: 22px;
+    }
+    .input-field span {
+        font-size: 18px;
+    }
+    .input-field input:valid ~ span,
+    .input-field input:focus ~ span {
+        font-size: 14px;
+        transform: translateY(-35px);
+    }
+    /* .checkbox-field label,
+    .checkbox-field a {
+        font-size: 14px;
+    } */
+    .button-field input {
+        padding: 4px 0;
+        font-size: 24px;
+    }
+    /* .footer span,
+    .footer a {
+        font-size: 14px;
+    } */
+}

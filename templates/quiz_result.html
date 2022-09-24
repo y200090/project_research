@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Quiz Result Page</title>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/quiz_result.css') }}">
+    <script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script defer src="{{ url_for('static', filename='js/quiz_result.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <a href="{{ url_for('learnings') }}">
+        <span class="material-symbols-outlined quit-icon">close</span>
+    </a>
+    <div class="result">
+        <div class="result-image">
+            <img src="">
+        </div>
+        <h1 id="result-comment"></h1>
+        <span class="scoreboard">
+            <span id="user-score">{{ score }}</span><span id="max-score">/10</span>
+        </span>
+        <div class="result-form">
+            <span href="" id="review">Review</span>
+            <a href="{{ url_for('quiz', rank=rank) }}" id="return">Next Quiz</a>
+        </div>
+    </div>
+    <!-- ============================================================= -->
+    <script>
+        const userId = '{{ userId|tojson }}',
+              wordId = JSON.parse('{{ wordId|tojson|safe }}'),
+              answerState = JSON.parse('{{ answerState|tojson|safe }}'),
+              rank = '{{ rank }}',
+              score = '{{ score }}';
+    </script>
+{% endblock %}

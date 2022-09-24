@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>{{ rank }} Quiz Page</title>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/quiz.css') }}">
+    <script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <header class="quiz-header">
+        <div class="quiz-title">
+            <span class="quiz-name">{{ rank }} Quiz</span>
+            <span class="quiz-number">Question
+                <span id="current-number"></span><span id="max-number"></span>
+            </span>
+        </div>
+        <div class="quiz-progress">
+        </div>
+    </header>
+    <!-- ============================================================= -->
+    <div class="quiz">
+        <div class="quiz-container">
+            <div class="quiz-content">
+                <p class="statement">
+                    適切な日本語訳を選択してください。<br>
+                    <span></span>
+                </p>
+                <h1 id="quiz-word"></h1>
+            </div>
+            <div id="options">
+            </div>
+            <form action="" method="" class="next-form" name="resultForm">
+                <input type="button" value="次の問題へ" id="next-button">
+            </form>
+        </div>
+    </div>
+    <!-- ============================================================= -->
+    <script>
+        const rank = '{{ rank }}';
+    </script>
+{% endblock %}
