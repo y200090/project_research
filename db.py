@@ -32,7 +32,8 @@ insert_words()
 
 # usersテーブルにテスターを登録する関数
 def insert_testers():
-    testers = ['y200004', 'y200042', 'y200051', 'y200062', 'y200065', 'y200078', 'y200080', 'y200089', 'y200090']
+    # testers = ['y200004', 'y200042', 'y200051', 'y200062', 'y200065', 'y200078', 'y200080', 'y200089', 'y200090']
+    testers = ['Admin']
     for tester in testers:
         # 重複しないユーザー固有のIDを作成
         while True:
@@ -41,11 +42,11 @@ def insert_testers():
                 break
 
         print('\033[32m' + f'{tester}のIDは{user_id}' + '\033[0m')
-        email = f'{tester}@tester.com'
+        email = f'{tester}@admin.com'
         username = f'{tester}'
         password = 'abcdefg'
         hashed_password = bcrypt.generate_password_hash(password)
-        tester = User(id=user_id, email=email, username=username, password=hashed_password, role='Tester', login_state='inactive', signup_date=datetime.now(pytz.timezone('Asia/Tokyo')), total_remembered=0)
+        tester = User(id=user_id, email=email, username=username, password=hashed_password, role='Admin', login_state='inactive', signup_date=datetime.now(pytz.timezone('Asia/Tokyo')), total_remembered=0)
 
         # データベースに追加
         db.session.add(tester)
@@ -59,4 +60,4 @@ def upgrade_user():
 
     # データベースを更新する
     db.session.commit()
-upgrade_user()
+# upgrade_user()
