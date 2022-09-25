@@ -1,13 +1,12 @@
 from __init__ import app, db, bcrypt, login_manager, Word, User, Record, roles_required
-import json, re, regex, pytz, random
+import re, regex, pytz, random
 from datetime import datetime
 from flask import render_template, request, url_for, redirect, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
 from wtforms import EmailField, StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Email, Length, ValidationError
-from makeQuiz import feature
-# from feature import feature
+from feature import feature
 from api import api
 
 # Blueprint（他のPythonファイルのモジュール化）を登録
@@ -35,17 +34,17 @@ def unauthorized():
 
 # サインアップ用コントローラーの登録
 class SignupForm(FlaskForm):
-    email = EmailField('email', validators=[DataRequired(), Email()])
+    # email = EmailField('email', validators=[DataRequired(), Email()])
     username = StringField('username', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired(), Length(min=4, max=50)])
     privacypolicy = BooleanField()
     submit = SubmitField('SIGNUP')
 
-    # 既存のメールアドレスと同じものが入力されたらエラー判定を出す関数
-    def validate_email(self, email):
-        used_email = User.query.filter_by(email=email.data).first()
-        if used_email:
-            raise ValidationError('このメールアドレスは既に使用されています。')
+    # # 既存のメールアドレスと同じものが入力されたらエラー判定を出す関数
+    # def validate_email(self, email):
+    #     used_email = User.query.filter_by(email=email.data).first()
+    #     if used_email:
+    #         raise ValidationError('このメールアドレスは既に使用されています。')
 
     # 既存のユーザー名と同じものが入力されたらエラー判定を出す関数
     # 正規表現以外の文字もエラー対象
@@ -100,7 +99,7 @@ def signup():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
 
         # フォームに入力された情報をusersテーブルに登録
-        new_user = User(id=user_id, email=form.email.data, username=form.username.data, password=hashed_password, role="Student", login_state='inactive', signup_date=datetime.now(pytz.timezone('Asia/Tokyo')))
+        new_user = User(id=user_id, username=form.username.data, password=hashed_password, role="Student", login_state='inactive', signup_date=datetime.now(pytz.timezone('Asia/Tokyo')))
 
         # データベースに追加
         db.session.add(new_user)
@@ -136,6 +135,10 @@ def login():
                 # ログイン日時を更新
                 now_user.login_date = datetime.now(pytz.timezone('Asia/Tokyo'))
                 db.session.commit()
+
+                if now_user.role == 'Admin':
+                    # return render_template('admin.html')
+                    return "Hello Administrator."
 
                 return redirect(url_for('home'))
             else :

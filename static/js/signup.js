@@ -1,11 +1,11 @@
-const imageArea = document.querySelector('.header > img');
-const images = ['../static/images/undraw_programmer_re_owql.svg', 
-                '../static/images/undraw_my_documents_re_13dc.svg', 
-                '../static/images/undraw_relaunch_day_902d.svg',
-                '../static/images/undraw_taken_re_yn20.svg'];
+const signupIcon = document.querySelector('.signup-icon');
+const icons = ['../static/images/undraw_female_avatar_w3jk.svg', 
+                '../static/images/undraw_male_avatar_323b.svg', 
+                '../static/images/undraw_profile_pic_ic-5-t.svg',
+                '../static/images/undraw_profile_pic_re_754n.svg'];
 window.addEventListener('load', () => {
-    const imageNumber = Math.floor(Math.random() * images.length);
-    imageArea.src = images[imageNumber];
+    const iconNumber = Math.floor(Math.random() * icons.length);
+    signupIcon.src = icons[iconNumber];
 });
 
 const ShowHide = [...document.querySelectorAll('.show-hide')];

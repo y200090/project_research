@@ -1,63 +1,70 @@
-/* Google Fonts for Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+/* Google Fonts for Roboto */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    text-decoration: none;
+    list-style: none;
+    min-height: 0vw;
 }
 body {
     position: relative;
-    height: 100vh;
+    /* VIEWPORT: 376px~414px, VALUES: 60px~100px */
+    height: calc(100vh - clamp(3.75rem, -20.987rem + 105.26vw, 6.25rem));
     width: 100vw;
+    /* VIEWPORT: 376px~414px, VALUES: 60px~100px */
+    margin-top: clamp(3.75rem, -20.987rem + 105.26vw, 6.25rem);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     background-color: #010718;
-    overflow: hidden;
 }
-.container {
-    height: 100%;
-    max-width: 520px;
-    width: 100%;
-    padding: 0 20px;
+/* ==================================================================== */
+.login-container {
+    max-width: 480px;
+    width: 90%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    row-gap: 30px;
 }
-.container .header {
-    height: 180px;
-    width: 100%;
-    text-align: center;
+.login-icon {
+    /* VIEWPORT: 281px~414px, VALUES: 120px~160px */
+    height: clamp(7.5rem, 2.218rem + 30.08vw, 10rem);
+    /* VIEWPORT: 376px~414px, VALUES: 120px~160px */
+    width: clamp(7.5rem, 2.218rem + 30.08vw, 10rem);
 }
-.header img {
-    height: 150px;
-    width: 150px;
-}
-.container .title {
-    display: block;
-    width: 100%;
+.login-title {
     text-align: center;
     text-transform: uppercase;
-    font-size: 40px;
-    font-weight: 700;
+    /* VIEWPORT: 281px~414px, VALUES: 28px~38px */
+    font-size: clamp(1.75rem, 0.43rem + 7.52vw, 2.375rem);
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: #fff;
 }
-.container form {
-    width: 100%;
-}
-form .input-field {
+.login-form {
     position: relative;
-    height: 50px;
     width: 100%;
-    margin-top: 30px;
+}
+.input-field {
+    position: relative;
+    /* VIEWPORT: 281px~375px, VALUES: 40px~50px */
+    height: clamp(2.5rem, 0.632rem + 10.64vw, 3.125rem);
+    width: 100%;
+    /* VIEWPORT: 376px~414px, VALUES: 20px~40px */
+    margin-bottom: clamp(1.25rem, -11.118rem + 52.63vw, 2.5rem);
 }
 .input-field input {
     height: 100%;
     width: 100%;
     padding: 0 35px;
-    font-size: 20px;
+    /* VIEWPORT: 281px~414px, VALUES: 16px~20px */
+    font-size: clamp(1rem, 0.472rem + 3.01vw, 1.25rem);
+    color: #fff;
     border: none;
     outline: none;
     background-color: #010718;
@@ -66,7 +73,7 @@ form .input-field {
 }
 .input-field input:valid,
 .input-field input:focus {
-    border-bottom: 2px solid #1E90FF;
+    border-bottom: 2px solid #1e90ff;
 }
 .input-field input:-webkit-autofill {
     box-shadow: 0 0 0 1000px #010718 inset;
@@ -79,7 +86,8 @@ form .input-field {
     transform: translateY(-50%);
     left: 0;
     color: #fff;
-    font-size: 24px;
+    /* VIEWPORT: 281px~414px, VALUES: 22px~26px */
+    font-size: clamp(1.375rem, 0.847rem + 3.01vw, 1.625rem);
     transition: all 0.3s ease;
 }
 .input-field i.show-hide {
@@ -89,114 +97,97 @@ form .input-field {
 }
 .input-field input:valid ~ i,
 .input-field input:focus ~ i {
-    color: #1E90FF;
+    color: #1e90ff;
 }
 .input-field span {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     left: 35px;
-    font-size: 20px;
+    /* VIEWPORT: 281px~414px, VALUES: 16px~20px */
+    font-size: clamp(1rem, 0.472rem + 3.01vw, 1.25rem);
     color: #757575;
     pointer-events: none;
     transition: all 0.3s ease;
 }
 .input-field input:valid ~ span,
 .input-field input:focus ~ span {
-    color: #1E90FF;
-    font-size: 16px;
-    transform: translateY(-40px);
+    color: #1e90ff;
+    /* VIEWPORT: 281px~414px, VALUES: 12px~16px */
+    font-size: clamp(0.75rem, 0.222rem + 3.01vw, 1rem);
+    /* VIEWPORT: 281px~375px, VALUES: -30px~-40px */
+    transform: translateY(clamp(-1.875rem, -0.007rem + -10.64vw, -2.5rem));
 }
-form .checkbox-field {
-    margin-top: 20px;
+.checkbox-field {
     width: 100%;
+    /* VIEWPORT: 376px~414px, VALUES: 20px~40px */
+    margin-bottom: clamp(1.25rem, -11.118rem + 52.63vw, 2.5rem);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-}
-.checkbox-field div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     column-gap: 10px;
+    /* VIEWPORT: 281px~414px, VALUES: 14px~18px */
+    font-size: clamp(0.875rem, 0.347rem + 3.01vw, 1.125rem);
 }
 .checkbox-field input {
-    accent-color: #1E90FF;
+    accent-color: #1e90ff;
     cursor: pointer;
 }
 .checkbox-field label {
     color: #fff;
     cursor: pointer;
 }
-.checkbox-field a {
-    position: relative;
-    color: #1E90FF;
-    text-decoration: none;
-}
-.checkbox-field a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 1px;
-    width: 100%;
-    background-color: #1E90FF;
-    transform: scale(0, 1);
-    transform-origin: right top;
-    transition: transform 0.3s ease;
-}
-.checkbox-field a:hover::after {
-    transform: scale(1, 1);
-    transform-origin: left top;
-}
-form .button-field {
-    margin-top: 30px;
+.button-field {
     width: 100%;
 }
 .button-field input {
     display: block;
     width: 100%;
-    background-color: #1E90FF;
+    background-color: #1e90ff;
     border: none;
     border-radius: 6px;
-    padding: 6px 0;
-    font-size: 26px;
+    padding: 12px 0;
+    /* VIEWPORT: 281px~414px, VALUES: 24px~28px */
+    font-size: clamp(1.5rem, 0.972rem + 3.01vw, 1.75rem);
     font-weight: 600;
     letter-spacing: 3px;
+    color: #fff;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s;
 }
 .button-field input:hover {
-    transform: scale(1.01);
+    transform: scale(1.02);
 }
-.container .footer {
+.login-footer {
     display: block;
     width: 100%;
-    margin-top: 40px;
-    text-align: center;
+    text-align: start;
+    /* VIEWPORT: 281px~414px, VALUES: 14px~18px */
+    font-size: clamp(0.875rem, 0.347rem + 3.01vw, 1.125rem);
+    color: #fff;
 }
-.footer a {
+#signup {
     position: relative;
-    text-decoration: none;
-    color: #1E90FF;
+    color: #1e90ff;
     margin-left: 5px;
 }
-.footer a::after {
+#signup::after {
     content: "";
     position: absolute;
     left: 0;
     bottom: 0;
     height: 1px;
     width: 100%;
-    background-color: #1E90FF;
+    background-color: #1e90ff;
     transform: scale(0, 1);
     transform-origin: right top;
     transition: transform 0.3s ease;
 }
-.footer a:hover::after {
+#signup:hover::after {
     transform: scale(1, 1);
     transform-origin: left top;
 }
+/* ==================================================================== */
 .flash, .flash i {
     color: #ffdb9b;
 }
@@ -220,45 +211,4 @@ form .button-field {
 }
 .unauthorized i {
     color: #e40a2d;
-}
-@media screen and (max-width:414px) {
-    .container .header {
-        height: 160px;
-    }
-    .header img {
-        height: 130px;
-        width: 130px;
-    }
-    .container .title {
-        font-size: 35px;
-    }
-    form .input-field {
-        margin-top: 25px;
-    }
-    .input-field input {
-        font-size: 18px;
-    }
-    .input-field i {
-        font-size: 22px;
-    }
-    .input-field span {
-        font-size: 18px;
-    }
-    .input-field input:valid ~ span,
-    .input-field input:focus ~ span {
-        font-size: 14px;
-        transform: translateY(-35px);
-    }
-    /* .checkbox-field label,
-    .checkbox-field a {
-        font-size: 14px;
-    } */
-    .button-field input {
-        padding: 4px 0;
-        font-size: 24px;
-    }
-    /* .footer span,
-    .footer a {
-        font-size: 14px;
-    } */
 }

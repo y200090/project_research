@@ -7,28 +7,30 @@
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
     <script defer src="{{ url_for('static', filename='js/login.js') }}"></script>
-    {% endblock %}
+{% endblock %}
 
 {% block body %}
     {% for flash in get_flashed_messages(category_filter=['unauthorized']) %}
         <div class="unauthorized">
-            <i class='bx bx-error' ></i>{{ flash }}
+            <i class='bx bx-error'></i>{{ flash }}
         </div>
     {% endfor %}
-    <div class="container">
-        <div class="header"><img src=""></div>
-        <span class="title">welcome back</span>
-        <form method="POST">
+    <section class="login-container">
+        <img src="" class="login-icon">
+        <h1 class="login-title">welcome back</h1>
+        <form method="POST" class="login-form">
             {{ form.hidden_tag() }}
+
             <div class="input-field">
                 {{ form.username() }}
                 <i class='bx bx-user'></i><span>Username</span>
             </div>
             {% for flash in get_flashed_messages(category_filter=['username']) %}
                 <div class="flash">
-                    <i class='bx bx-error-alt' ></i>{{ flash }}
+                    <i class='bx bx-error-alt'></i>{{ flash }}
                 </div>
             {% endfor %}
+
             <div class="input-field">
                 {{ form.password() }}
                 <i class='bx bx-lock-alt'></i><span>Password</span>
@@ -36,23 +38,22 @@
             </div>
             {% for flash in get_flashed_messages(category_filter=['password']) %}
                 <div class="flash">
-                    <i class='bx bx-error-alt' ></i>{{ flash }}
+                    <i class='bx bx-error-alt'></i>{{ flash }}
                 </div>
             {% endfor %}
+
             <div class="checkbox-field">
-                <div>
-                    {{ form.remember(id="remember-me") }}
-                    <label for="remember-me">Remember me</label>
-                </div>
-                <a href="" style="pointer-events: none;">Forgot password?</a>
+                {{ form.remember(id="remember-me") }}
+                <label for="remember-me">Remember me</label>
             </div>
+
             <div class="button-field">
                 {{ form.submit() }}
             </div>
         </form>
-        <div class="footer">
+        <footer class="login-footer">
             <span>Don't have an account?</span>
-            <a href="{{ url_for('signup') }}">Signup Now</a>
-        </div>
-    </div>
+            <a href="{{ url_for('signup') }}" id="signup">Signup Now</a>
+        </footer>
+    </section>
 {% endblock %}

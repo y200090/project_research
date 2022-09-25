@@ -64,7 +64,7 @@ class Word(db.Model):
 class User(db.Model, UserMixin):
     __tablename__ = "users"                                             # テーブル名をusersに再設定
     id = db.Column(db.Integer, primary_key=True)                        # ユーザーの固有ID
-    email = db.Column(db.String(100), unique=True, nullable=False)      # メールアドレス
+    # email = db.Column(db.String(100), unique=True, nullable=False)      # メールアドレス
     username = db.Column(db.String(50), unique=True, nullable=False)    # ユーザー名
     password = db.Column(db.String(100), nullable=False)                # パスワード
     role = db.Column(db.String(20), nullable=False)                     # ユーザー権限（Admin, Tester, Student）
@@ -76,7 +76,7 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         params = {
             'ID': self.id,
-            'email': self.email,
+            # 'email': self.email,
             'username': self.username,
             'role': self.role,
             'login_state': self.login_state,

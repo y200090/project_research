@@ -30,34 +30,21 @@ def insert_words():
     print('\033[32m' + f'{len(data)}単語をデータベースに登録しました。' + '\033[0m')
 insert_words()
 
-# usersテーブルにテスターを登録する関数
+# usersテーブルに管理者を登録する関数
 def insert_testers():
-    # testers = ['y200004', 'y200042', 'y200051', 'y200062', 'y200065', 'y200078', 'y200080', 'y200089', 'y200090']
-    testers = ['Admin']
-    for tester in testers:
-        # 重複しないユーザー固有のIDを作成
-        while True:
-            user_id = random.randint(100000, 999999)
-            if not user_id == User.query.filter_by(id=user_id).first():
-                break
+    # 重複しないユーザー固有のIDを作成
+    while True:
+        user_id = random.randint(100000, 999999)
+        if not user_id == User.query.filter_by(id=user_id).first():
+            break
 
-        print('\033[32m' + f'{tester}のIDは{user_id}' + '\033[0m')
-        email = f'{tester}@admin.com'
-        username = f'{tester}'
-        password = 'abcdefg'
-        hashed_password = bcrypt.generate_password_hash(password)
-        tester = User(id=user_id, email=email, username=username, password=hashed_password, role='Admin', login_state='inactive', signup_date=datetime.now(pytz.timezone('Asia/Tokyo')), total_remembered=0)
+    print('\033[32m' + f'IDは{user_id}' + '\033[0m')
+    username = 'administrator'
+    password = 'administrator'
+    hashed_password = bcrypt.generate_password_hash(password)
+    tester = User(id=user_id, username=username, password=hashed_password, role='Admin', login_state='inactive', signup_date=datetime.now(pytz.timezone('Asia/Tokyo')), total_remembered=0)
 
-        # データベースに追加
-        db.session.add(tester)
-        db.session.commit()
-insert_testers()
-
-# usersテーブルに登録されているユーザーのユーザー権限をアップグレードする関数
-def upgrade_user():
-    admin = User.query.filter_by(username='y200090').first()
-    admin.role = 'Admin'
-
-    # データベースを更新する
+    # データベースに追加
+    db.session.add(tester)
     db.session.commit()
-# upgrade_user()
+insert_testers()

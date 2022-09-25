@@ -18,6 +18,7 @@
     font-family: 'Roboto', sans-serif;
     text-decoration: none;
     list-style: none;
+    min-height: 0vw;
 }
 body {
     position: relative;
@@ -28,9 +29,10 @@ body {
     margin-top: clamp(3.75rem, -8.618rem + 52.63vw, 5rem);
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: column;
     background-color: var(--background);
+    overflow: hidden;
 }
 .dark-mode {
     --background: #181a1e;
@@ -62,26 +64,18 @@ body {
     color: var(--text);
 }
 /* ==================================================================== */
-.library {
-    position: relative;
-    height: calc(100% - 30px);
-    width: 90%;
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    row-gap: 20px;
-    /* overflow: hidden; */
-}
-/* ==================================================================== */
 .search-bar {
     position: fixed;
     /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
     height: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
     width: 90%;
+    margin-top: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: var(--contents);
+    border-radius: 6px;
+    z-index: 99;
 }
 .search-icon {
     height: 100%;
@@ -92,6 +86,7 @@ body {
     font-size: 26px;
     color: var(--text);
     background-color: var(--primary);
+    border-radius: 6px 0 0 6px;
 }
 .search-bar input {
     height: 100%;
@@ -107,9 +102,11 @@ body {
 }
 .search-bar input:focus {
     border-color: var(--primary);
+    border-radius: 0 6px 6px 0;
 }
 .search-bar input.contain {
     border-right: none;
+    border-radius: 0 0 0 0;
 }
 .clear-icon {
     height: 100%;
@@ -120,6 +117,7 @@ body {
     color: var(--text);
     background-color: var(--contents);
     border: 2px solid var(--contents);
+    border-radius: 0 6px 6px 0;
     outline: none;
     cursor: pointer;
 }
@@ -128,6 +126,13 @@ body {
     border-left: none;
 }
 /* ==================================================================== */
+.library {
+    position: relative;
+    /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
+    margin-top: calc(30px + clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem) + 20px);
+    width: 90%;
+    overflow-y: scroll;
+}
 .flashcards {
     position: relative;
     width: 100%;
@@ -136,7 +141,6 @@ body {
     justify-content: center;
     flex-direction: column;
     row-gap: 5px;
-    overflow-y: scroll;
 }
 .flashcard {
     width: 100%;
@@ -147,36 +151,44 @@ body {
     /* VIEWPORT: 281px~414px, VALUES: 45px~60px */
     height: clamp(2.813rem, 0.832rem + 11.28vw, 3.75rem);
     width: 100%;
-    padding: 0 20px 0 40px;
+    /* VIEWPORT: 281px~414px, VALUES: 10px~20px */
+    /* VIEWPORT: 281px~414px, VALUES: 20px~40px */
+    padding: 0 clamp(0.625rem, -0.695rem + 7.52vw, 1.25rem) 0 clamp(1.25rem, -1.391rem + 15.04vw, 2.5rem);
     display: grid;
-    grid-template-columns: auto 40px;
+    grid-template-columns: repeat(2, 1fr);
     align-items: center;
     background-color: var(--contents);
+    border-radius: 6px;
     z-index: 99;
+    transition: height 0.3s ease;
+}
+.card-top.active {
+    /* VIEWPORT: 281px~414px, VALUES: 45px~60px */
+    height: calc(clamp(2.813rem, 0.832rem + 11.28vw, 3.75rem) + clamp(2.813rem, 0.832rem + 11.28vw, 3.75rem));
+    /* VIEWPORT: 281px~414px, VALUES: 10px~20px */
+    /* VIEWPORT: 281px~414px, VALUES: 20px~40px */
+    padding: clamp(0.625rem, -0.695rem + 7.52vw, 1.25rem) clamp(0.625rem, -0.695rem + 7.52vw, 1.25rem) clamp(0.625rem, -0.695rem + 7.52vw, 1.25rem) clamp(1.25rem, -1.391rem + 15.04vw, 2.5rem);
 }
 .english-word {
-    width: 100%;
     /* VIEWPORT: 281px~414px, VALUES: 16px~20px */
     font-size: clamp(1rem, 0.472rem + 3.01vw, 1.25rem);
+    font-weight: 600;
 }
 .open-icon {
-    font-size: 30px;
+    display: block;
+    text-align: end;
+    /* VIEWPORT: 281px~414px, VALUES: 26px~30px */
+    font-size: clamp(1.625rem, 1.097rem + 3.01vw, 1.875rem);
     cursor: pointer;
 }
-.card-bottom {
-    position: relative;
-    height: 0;
-    width: 100%;
-    padding: 0 0 0 40px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    flex-direction: column;
-    background-color: var(--contents);
-    overflow: hidden;
-    transition: all 0.3s;
+.translation-word,
+.part-word {
+    display: none;
+    white-space: nowrap;
+    /* VIEWPORT: 281px~414px, VALUES: 12px~16px */
+    font-size: clamp(0.75rem, 0.222rem + 3.01vw, 1rem);
 }
-.card-bottom.active {
-    /* VIEWPORT: 281px~414px, VALUES: 45px~60px */
-    height: clamp(2.813rem, 0.832rem + 11.28vw, 3.75rem);
+.active .translation-word,
+.active .part-word {
+    display: block;
 }

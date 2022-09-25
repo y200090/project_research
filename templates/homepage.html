@@ -10,49 +10,24 @@
 {% endblock %}
 
 {% block body %}
-    <!-- ==============Start Of Coming Soon============== -->
-    <section>
-        <header>
-            <i class="fa-brands fa-dev"></i>
-            <span class="bland">英単語学習アプリ</span>
-        </header>
-        <div class="container">
-            <span class="title">coming soon</span>
-            <span class="message">正式リリースまであと</span>
-            <div class="countdown">
-                <div class="time days">
-                    <span class="number"></span>
-                    <span class="type">Days</span>
-                </div>
-                <div class="time hours">
-                    <span class="number"></span>
-                    <span class="type">Hours</span>
-                </div>
-                <div class="time minutes">
-                    <span class="number"></span>
-                    <span class="type">Minutes</span>
-                </div>
-                <div class="time seconds">
-                    <span class="number"></span>
-                    <span class="type">Seconds</span>
-                </div>
-            </div>
-            <button id="open-button">α版をテストプレイ</button>
-        </div>
-        <img src="../static/images/undraw_launching_re_tomg.svg">
-    </section>
-    <!-- ==============End Of Coming Soon============== -->
-
-    <!-- ==============Start Of Modal Window============== -->
+    <header class="app-title">
+        <i class="fa-brands fa-dev app-logo"></i>
+        <span class="bland">英単語学習アプリ</span>
+    </header>
+    <main class="hero-content">
+        <h1 class="launching">Launching...
+            <div class="caret"></div>
+        </h1>
+        <img src="{{ url_for('static', filename='images/undraw_outer_space_re_u9vd.svg') }}" class="main-img">
+        <button class="play-button">α版をテストプレイ</button>
+    </main>
+    <!-- ============================================================================ -->
     <div class="modal">
-        <i id="close-icon" class='bx bx-x'></i>
-        <div class="image">
-            <img src="../static/images/undraw_welcome_cats_thqn.svg">
-        </div>
+        <i class='bx bx-x close-icon'></i>
+        <img src="../static/images/undraw_welcome_cats_thqn.svg" class="welcome">
         <div class="anchor">
             <a href="{{ url_for('login') }}">login</a>
             <a href="{{ url_for('signup') }}">signup</a>
         </div>
     </div>
-    <!-- ==============End Of Modal Window============== -->
 {% endblock %}

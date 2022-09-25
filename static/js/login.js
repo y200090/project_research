@@ -1,14 +1,24 @@
-const imageArea = document.querySelector('.header > img');
-const images = ['../static/images/undraw_male_avatar_323b.svg', 
-                '../static/images/undraw_female_avatar_w3jk.svg', 
-                '../static/images/undraw_profile_pic_ic-5-t.svg'];
+const loginIcon = document.querySelector('.login-icon'),
+      icons = ['../static/images/undraw_conversation_re_c26v.svg',
+               '../static/images/undraw_designer_re_5v95.svg',
+               '../static/images/undraw_programmer_re_owql.svg',
+               '../static/images/undraw_my_documents_re_13dc.svg',
+               '../static/images/undraw_relaunch_day_902d.svg',
+               '../static/images/undraw_taken_re_yn20.svg',
+               '../static/images/undraw_developer_activity_re_39tg.svg',
+               '../static/images/undraw_urban_design_kpu8.svg',
+               '../static/images/undraw_working_late_re_0c3y.svg',
+               '../static/images/undraw_my_universe_803e.svg',
+               '../static/images/undraw_to_the_moon_re_q21i.svg',
+               '../static/images/undraw_refreshing_beverage_td3r.svg'];
+
 window.addEventListener('load', () => {
-    const imageNumber = Math.floor(Math.random() * images.length);
-    imageArea.src = images[imageNumber];
+    const iconNumber = Math.floor(Math.random() * icons.length);
+    loginIcon.src = icons[iconNumber];
 });
 
-const showHide = [...document.querySelectorAll('.show-hide')];
-const passwords = [...document.querySelectorAll('#password')];
+const showHide = [...document.querySelectorAll('.show-hide')],
+      passwords = [...document.querySelectorAll('#password')];
 showHide.forEach(eyeIcon => {
     eyeIcon.addEventListener('click', () => {
         passwords.forEach(password => {

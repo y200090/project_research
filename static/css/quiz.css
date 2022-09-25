@@ -1,6 +1,3 @@
-/* Google Fonts for Poppins */
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap'); */
-
 /* Google Fonts for Roboto */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 :root {
@@ -18,10 +15,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* font-family: 'Poppins', sans-serif; */
     font-family: 'Roboto', sans-serif;
     text-decoration: none;
     list-style: none;
+    min-height: 0vw;
 }
 body {
     position: relative;
@@ -34,7 +31,6 @@ body {
     align-items: center;
     justify-content: center;
     background-color: var(--background);
-    overflow: hidden;
 }
 .dark-mode {
     --background: #181a1e;
@@ -151,8 +147,6 @@ body {
 }
 #quiz-word {
     position: relative;
-    width: 100%;
-    text-align: center;
     /* VIEWPORT: 281px~414px, VALUES: 30px~36px */
     font-size: clamp(1.875rem, 1.083rem + 4.51vw, 2.25rem);
     font-weight: 700;
@@ -160,7 +154,7 @@ body {
 .speak-icon {
     position: absolute;
     top: 50%;
-    right: 0;
+    left: 140%;
     transform: translateY(-50%);
     /* VIEWPORT: 281px~414px, VALUES: 26px~30px */
     font-size: clamp(1.625rem, 1.097rem + 3.01vw, 1.875rem);

@@ -20,83 +20,35 @@
     <!-- ============================================================= -->
     <nav class="settings">
         <div class="user-content">
-            <div class="user-icon">
-            <img src="{{ url_for('static', filename='images/undraw_male_avatar_323b.svg') }}">
-            </div>
-            <div class="user-title">
-                <span class="user-id">ID : {{ user_id }}&emsp;Role : {{ user_role }}</span>
-                <span class="username">{{ username }}</span>
+            <img src="{{ url_for('static', filename='images/undraw_male_avatar_323b.svg') }}" class="user-icon">
+            <div class="user-info">
+                <span id="user-id">ID : {{ user_id }}</span><span id="user_role">Role : {{user_role }}</span>
+                <p id="username">{{ username }}</p>
             </div>
         </div>
-        <div class="settings-content">
-            <a href="" class="setting">
-                <div class="setting-box">
-                    <i class='bx bx-user setting-icon'></i>
-                </div>
-                <div class="setting-box">
-                    <span class="setting-title">Profile</span>
-                </div>
-                <div class="setting-box">
-                    <i class='bx bx-chevron-right open-modal'></i>
-                </div>
-            </a>
-            <a href="" class="setting">
-                <div class="setting-box">
-                    <i class='bx bx-heart setting-icon'></i>
-                </div>
-                <div class="setting-box">
-                    <span class="setting-title">Favorites</span>
-                </div>
-                <div class="setting-box">
-                    <i class='bx bx-chevron-right open-modal'></i>
-                </div>
-            </a>
-            <a href="" class="setting">
-                <div class="setting-box">
-                    <span class="material-symbols-outlined setting-icon">security</span>
-                </div>
-                <div class="setting-box">
-                    <span class="setting-title">Privacy Policy</span>
-                </div>
-                <div class="setting-box">
-                    <i class='bx bx-chevron-right open-modal'></i>
-                </div>
-            </a>
-            <a href="" class="setting">
-                <div class="setting-box">
-                    <i class='bx bx-support setting-icon'></i>
-                </div>
-                <div class="setting-box">
-                    <span class="setting-title">Help&Support</span>
-                </div>
-                <div class="setting-box">
-                    <i class='bx bx-chevron-right open-modal'></i>
-                </div>
-            </a>
-            <div class="setting">
-                <div class="setting-box">
-                    <i class='bx bx-sun setting-icon color-theme'></i>
-                </div>
-                <div class="setting-box">
-                    <span class="setting-title current-theme">Light Mode</span>
-                </div>
-                <div class="setting-box">
-                    <div class="switch-bar">
-                        <div class="switch"></div>
-                    </div>
-                </div>
+        <a href="" class="setting profile">
+            <i class='bx bx-user setting-icon'></i>
+            <span class="setting-title">プロフィール</span>
+            <i class='bx bx-chevron-right access-icon'></i>
+        </a>
+        <div class="setting language">
+            <span class="material-symbols-outlined setting-icon">language</span>
+            <span class="setting-title">言語</span>
+            <div class="switch-bar">
+                <div class="switch"></div>
             </div>
-            <a href="{{ url_for('logout') }}" class="setting">
-                <div class="setting-box">
-                    <span class="material-symbols-outlined setting-icon">logout</span>
-                </div>
-                <div class="setting-box">
-                    <span class="setting-title">Logout</span>
-                </div>
-                <div class="setting-box">
-                    <i class='bx bx-chevron-right open-modal'></i>
-                </div>
-            </a>
         </div>
+        <div class="setting color-theme">
+            <i class='bx bx-sun setting-icon color-theme-icon'></i>
+            <span class="setting-title current-theme">ライトモード</span>
+            <div class="switch-bar">
+                <div class="switch"></div>
+            </div>
+        </div>
+        <a href="{{ url_for('logout') }}" class="setting logout">
+            <span class="material-symbols-outlined setting-icon">logout</span>
+            <span class="setting-title">ログアウト</span>
+            <i class='bx bx-chevron-right access-icon'></i>
+        </a>
     </nav>
 {% endblock %}
