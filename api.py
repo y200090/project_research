@@ -226,7 +226,6 @@ def admin():
     for i in range(len(datas)):
         params.append({
             'user_id': datas[i].id,
-            'email': datas[i].email,
             'username': datas[i].username,
             'role': datas[i].role,
             'login_state': datas[i].login_state,
