@@ -133,7 +133,7 @@ body {
     /* VIEWPORT: 281px~414px, VALUES: 12px~16px */
     font-size: clamp(0.75rem, 0.222rem + 3.01vw, 1rem);
     /* VIEWPORT: 281px~414px, VALUES: -36px~-32px */
-    transform: translate(-26px, clamp(2rem, 1.472rem + 3.01vw, 2.25rem));
+    transform: translate(-26px, clamp(-2rem, -1.472rem + -3.01vw, -2.25rem));
 }
 .checkbox-field {
     width: 100%;
