@@ -34,17 +34,10 @@ def unauthorized():
 
 # サインアップ用コントローラーの登録
 class SignupForm(FlaskForm):
-    # email = EmailField('email', validators=[DataRequired(), Email()])
     username = StringField('username', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired(), Length(min=4, max=50)])
     privacypolicy = BooleanField()
     submit = SubmitField('SIGNUP')
-
-    # # 既存のメールアドレスと同じものが入力されたらエラー判定を出す関数
-    # def validate_email(self, email):
-    #     used_email = User.query.filter_by(email=email.data).first()
-    #     if used_email:
-    #         raise ValidationError('このメールアドレスは既に使用されています。')
 
     # 既存のユーザー名と同じものが入力されたらエラー判定を出す関数
     # 正規表現以外の文字もエラー対象
