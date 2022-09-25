@@ -1,5 +1,5 @@
 // View All Words APIを叩く
-fetch('http://127.0.0.1:8000/api/view-all-words')
+fetch('https://project-research.azurewebsites.net/api/view-all-words')
     .then(response => {
         return response.json();
     })

@@ -1,3 +1,4 @@
+// Quiz Achievement Calculation APIを叩く
 fetch('https://project-research.azurewebsites.net/api/quiz-achivement-calculation')
     .then(response => response.json())
     .then(datas => {
