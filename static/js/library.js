@@ -1,5 +1,5 @@
 // 英単語全検索APIを叩く
-fetch('http://127.0.0.1:8000/api/word-all-search')
+fetch('https://project-research.azurewebsites.net/api/word-all-search')
     .then(response => {
         return response.json();
     })

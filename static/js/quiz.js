@@ -44,7 +44,7 @@ const currentNumber = document.querySelector('#current-number'),
 // メイン関数
 async function main() {
     // Create Quiz APIを叩く
-    const questions = await getAPI(`http://127.0.0.1:8000/feature/create-questions/quiz/${rank}`);
+    const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create-questions/quiz/${rank}`);
     
     // 問題・選択肢を表示する関数===========================================================
     function setQuiz() {
@@ -150,7 +150,7 @@ async function main() {
             'answer_state': answerState[index]
         };
         // Update by Quiz APIを叩く
-        await postAPI(`http://127.0.0.1:8000/api/quiz-update/${rank}`, updateData);
+        await postAPI(`https://project-research.azurewebsites.net/api/quiz-update/${rank}`, updateData);
 
         // クイズの最後の問題を解答した時の処理
         if (index == questions.length - 1) {
