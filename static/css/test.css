@@ -44,6 +44,7 @@ body {
     /* VIEWPORT: 376px~414px, VALUES: 100px~120px */
     height: clamp(6.25rem, -6.118rem + 52.63vw, 7.5rem);
     width: 100%;
+    max-width: 600px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -108,6 +109,7 @@ body {
     /* VIEWPORT: 376px~414px, VALUES: 30px~50px */
     height: calc(100% - clamp(1.875rem, -10.493rem + 52.63vw, 3.125rem));
     width: 100%;
+    max-width: 600px;
     /* VIEWPORT: 376px~414px, VALUES: 30px~50px */
     margin-top: clamp(1.875rem, -10.493rem + 52.63vw, 3.125rem);
     display: flex;

@@ -44,6 +44,7 @@ body {
     /* VIEWPORT: 281px~414px, VALUES: 60px~80px */
     height: clamp(3.75rem, 1.109rem + 15.04vw, 5rem);
     width: 90%;
+    max-width: 600px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -66,6 +67,7 @@ body {
     position: relative;
     height: 90%;
     width: 90%;
+    max-width: 600px;
 }
 #empty {
     position: absolute;

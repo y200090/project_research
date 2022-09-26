@@ -132,8 +132,7 @@ body {
     color: #1e90ff;
     /* VIEWPORT: 281px~414px, VALUES: 12px~16px */
     font-size: clamp(0.75rem, 0.222rem + 3.01vw, 1rem);
-    /* VIEWPORT: 281px~414px, VALUES: -36px~-32px */
-    transform: translate(-26px, clamp(-2rem, -1.472rem + -3.01vw, -2.25rem));
+    transform: translate(-26px, -36px);
 }
 .checkbox-field {
     width: 100%;
@@ -224,20 +223,18 @@ body {
     transform-origin: left top;
 }
 /* ==================================================================== */
-.flash, .validate {
+.validate {
     position: absolute;
     font-size: 14px;
-    transform: translateY(-30px);
+    transform: translateY(-32px);
     z-index: 99;
-}
-.flash, .flash i {
-    color: #ffdb9b;
 }
 .validate, .validate i {
     color: #e40a2d;
 }
-.bx-error, .bx-error-alt{
+.bx-error {
     margin: 5px 5px 0 0;
     top: 50%;
     transform: translateY(15%);
+    font-size: 18px;
 }

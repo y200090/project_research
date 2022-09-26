@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Admin Page</title>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <script defer src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <a href="{{ url_for('logout') }}" id="logout">ログアウト</a>
+    <div class="users">
+        <table>
+            <caption>
+                <h1>登録ユーザー情報</h1>
+            </caption>
+            <thead>
+                <tr class="title">
+                    <th>ID</th>
+                    <th>ユーザー名</th>
+                    <th>ユーザー権限</th>
+                    <th>ログイン状態</th>
+                    <th>サインアップ日時</th>
+                    <th>最終ログイン日時</th>
+                    <th>個人成績</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr class="user-info">
+                        <td class="user-id">{{ user.user_id }}</td>
+                        <td class="username">{{ user.username }}</td>
+                        <td class="user-role">{{ user.role }}</td>
+                        <td class="user-login-state">{{ user.login_state }}</td>
+                        <td class="user-signup-date">{{ user.signup_date }}</td>
+                        <td class="user-login-date">{{ user.login_date }}</td>
+                        <td class="user-grade"><span>確認する</span></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="records">
+        <i class='bx bx-x close-icon'></i>
+        <table>
+            <thead>
+                <tr class="title">
+                    <th>英単語ID</th>
+                    <th>ランク</th>
+                    <th>テスト正解数</th>
+                    <th>状態</th>
+                    <th>覚えた判定の累計</th>
+                </tr>
+            </thead>
+            <tbody>
+    
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const users = JSON.parse('{{ users|tojson|safe }}');
+    </script>
+{% endblock %}

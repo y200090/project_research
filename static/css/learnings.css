@@ -44,6 +44,7 @@ body {
     /* VIEWPORT: 376px~414px, VALUES: 60px~80px */
     height: clamp(3.75rem, -8.618rem + 52.63vw, 5rem);
     width: 90%;
+    max-width: 480px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -65,6 +66,7 @@ body {
 .learnings {
     height: 95%;
     width: 90%;
+    max-width: 480px;
     display: grid;
     grid-template-rows: 25% 25% 25% 25%;
     align-items: center;

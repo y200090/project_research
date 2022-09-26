@@ -27,3 +27,13 @@ ShowHide.forEach(eyeIcon => {
         });
     });
 });
+
+const inputFields = [...document.querySelectorAll('.input-field')],
+      validate = document.querySelector('.validate');
+if (validate) {
+    inputFields.forEach(inputField => {
+        inputField.addEventListener('input', () => {
+            validate.style.display = 'none';
+        });
+    });
+}

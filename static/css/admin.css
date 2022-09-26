@@ -1,0 +1,95 @@
+/* Google Fonts for Roboto */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    text-decoration: none;
+    min-height: 0vw;
+}
+body {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* ==================================================================== */
+#logout {
+    position: fixed;
+    top: 0;
+    left: 0;
+    font-size: 22px;
+}
+/* ==================================================================== */
+.users {
+    position: relative;
+    height: 70%;
+    width: 95%;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+}
+.users.inactive {
+    display: none;
+}
+.users table {
+    position: relative;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.users table caption {
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    color: #000;
+}
+th, td {
+    border: 1px solid #000;
+    padding: 5px 15px;
+    background-color: #fff;
+}
+th {
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: gainsboro;
+    border: 1px solid #000;
+}
+.title {
+    border: 1px solid #000;
+    z-index: 99;
+}
+.user-grade span {
+    color: #1e90ff;
+    cursor: pointer;
+}
+/* ==================================================================== */
+.records {
+    position: relative;
+    height: 80%;
+    width: 100%;
+    display: none;
+    overflow: auto;
+}
+.records.active {
+    display: flex;
+    justify-content: center;
+}
+.records table {
+    position: relative;
+    width: 80%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.close-icon {
+    position: fixed;
+    top: 0;
+    right: 0;
+    font-size: 68px;
+    color: #000;
+    cursor: pointer;
+}

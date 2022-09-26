@@ -40,7 +40,7 @@ def insert_testers():
 
     print('\033[32m' + f'IDは{user_id}' + '\033[0m')
     username = 'administrator'
-    password = 'administrator'
+    password = 'project_research24_admin'
     hashed_password = bcrypt.generate_password_hash(password)
     tester = User(id=user_id, username=username, password=hashed_password, role='Admin', login_state='inactive', signup_date=datetime.now(pytz.timezone('Asia/Tokyo')), total_remembered=0)
 

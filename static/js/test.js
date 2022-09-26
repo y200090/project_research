@@ -23,7 +23,7 @@ function browserBack() {
 // メイン関数
 async function main() {
     // Create Questions APIを叩く
-    const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create_questions/test/${rank}`);
+    const questions = await getAPI(`http://127.0.0.1:8000/feature/create-questions/test/${rank}`);
 
     const word = [],              // 問題
           wordId = [],            // 問題の英単語ID
@@ -101,7 +101,7 @@ async function main() {
             'answer_state': answerState[index]
         };
         // Update by Test APIを叩く
-        await postAPI(`https://project-research.azurewebsites.net/api/update-by-test`, updateData);
+        await postAPI(`http://127.0.0.1:8000/api/test-update`, updateData);
 
         // テストの最後の問題を解答した時の処理
         if (index == questions.length -1) {

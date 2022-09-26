@@ -1,5 +1,5 @@
-// Quiz Achievement Calculation APIを叩く
-fetch('https://project-research.azurewebsites.net/api/quiz-achivement-calculation')
+// クイズ達成度計算API
+fetch('http://127.0.0.1:8000/api/quiz-achive-calc')
     .then(response => response.json())
     .then(datas => {
         datas.forEach((data, index) => {

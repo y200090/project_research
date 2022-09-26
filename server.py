@@ -72,11 +72,12 @@ class LoginForm(FlaskForm):
     remember = BooleanField()
     submit = SubmitField('LOGIN')
 
+# ホームページ
 @app.route('/')
 def homepage():
     return render_template('homepage.html')
 
-# サインアップ処理
+# サインアップページ
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
@@ -102,7 +103,7 @@ def signup():
         
     return render_template('signup.html', form=form)
 
-# ログイン処理
+# ログインページ
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     # ログイン状態を確認し、ログイン済みであればバリデーションチェックを飛ばす
@@ -130,8 +131,7 @@ def login():
                 db.session.commit()
 
                 if now_user.role == 'Admin':
-                    # return render_template('admin.html')
-                    return "Hello Administrator."
+                    return redirect(url_for('admin'))
 
                 return redirect(url_for('home'))
             else :
@@ -141,6 +141,7 @@ def login():
 
     return render_template('login.html', form=form)
 
+# マイページ
 @app.route('/mypage/home')
 @login_required
 def home():
@@ -162,6 +163,7 @@ def quiz():
     rank = request.args.get('rank')
     return render_template('quiz.html', rank=rank)
 
+# クイズリザルトページ
 @app.route('/mypage/learnings/quiz/result', methods=['POST'])
 @login_required
 def quiz_result():
@@ -188,8 +190,8 @@ def tasks():
     for rank in ranks:
         # テスト待ちの英単語群を取得
         datas = Record.query.filter_by(user_id=current_user.id, rank=rank, test_correct=0, test_state='active').all()
-        qty = len(datas) // 20
-        params.append(qty)
+        task = len(datas) // 20
+        params.append(task)
     return render_template('tasks.html', tasks=params)
 
 @app.route('/mypage/tasks/test')
@@ -198,6 +200,7 @@ def test():
     rank = request.args.get('rank')
     return render_template('test.html', rank=rank)
 
+# テストリザルトページ
 @app.route('/mypage/tasks/test/result', methods=['POST'])
 @login_required
 def test_result():
@@ -222,7 +225,7 @@ def settings():
     user_id=current_user.id, user_role=current_user.role, username=current_user.username)
 
 # ログアウト処理
-@app.route('/mypage/logout')
+@app.route('/logout')
 @login_required
 def logout():
     # ユーザー状態を非アクティブに更新
@@ -232,6 +235,25 @@ def logout():
     # 実際にログアウトを行う関数
     logout_user()
     return redirect(url_for('homepage'))
+
+# 管理者ページ
+@app.route('/admin')
+@login_required
+@roles_required
+def admin():
+    params = []
+    datas = User.query.all()
+    for i in range(len(datas)):
+        params.append({
+            'user_id': datas[i].id,
+            'username': datas[i].username,
+            'role': datas[i].role,
+            'login_state': datas[i].login_state,
+            'signup_date': str(datas[i].signup_date),
+            'login_date': str(datas[i].login_date),
+            'total_remembered': datas[i].total_remembered
+        })
+    return render_template('admin.html', users=params)
 
 if __name__ == '__main__':
     app.run()

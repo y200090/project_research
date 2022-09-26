@@ -6,9 +6,9 @@ from flask_login import login_required, current_user
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
-# View All Words API
-@api.route('/view-all-words')
-def view_all_words():
+# 英単語全検索API
+@api.route('/word-all-search')
+def words_search():
     params = []
     datas = Word.query.all()
     for i in range(len(datas)):
@@ -25,14 +25,14 @@ def view_all_words():
         })
     return jsonify(params)
 
-# Word ID Search API
+# 英単語ID検索API
 @api.route('/word-id-search/<word_id>')
 @login_required
 def word_id_search(word_id):
     words_data = Word.query.filter_by(id=word_id).first()
     if words_data:
         return jsonify({
-            'ID': words_data.id,
+            'word_id': words_data.id,
             'word': words_data.word,
             'translation': words_data.translation,
             'part_en': words_data.part_en,
@@ -45,16 +45,16 @@ def word_id_search(word_id):
     else:
         return "このIDの英単語データは存在しません。"
 
-# Words Rank Belt Search API
-@api.route('/words-rank-belt-search/<rank>')
+# 英単語ランク検索API
+@api.route('/word-rank-search/<rank>')
 @login_required
-def words_rank_belt_search(rank):
+def word_rank_search(rank):
     params = []
     words_datas = Word.query.filter_by(rank=rank).all()
     if words_datas:
         for i in range(len(words_datas)):
             params.append({
-                'ID': words_datas[i].id,
+                'word_id': words_datas[i].id,
                 'word': words_datas[i].word,
                 'translation': words_datas[i].translation,
                 'part_en': words_datas[i].part_en,
@@ -66,12 +66,12 @@ def words_rank_belt_search(rank):
             })
         return jsonify(params)
     else:
-        return "このランク帯の英単語データは存在しません。"
+        return "このランクの英単語データは存在しません。"
 
-# Quiz Achievement Calculation API
-@api.route('/quiz-achivement-calculation')
+# クイズ達成度計算API
+@api.route('/quiz-achive-calc')
 @login_required
-def quiz_achievement_Calculation():
+def quiz_achive_clac():
     ranks = ['A1', 'A2', 'B1', 'B2']
     params = []
     for rank in ranks:
@@ -81,10 +81,10 @@ def quiz_achievement_Calculation():
         params.append(diff)
     return jsonify(params)
 
-# Update by Quiz API
-@api.route('/update-by-quiz/<rank>', methods=['POST'])
+# クイズ成績更新API
+@api.route('/quiz-update/<rank>', methods=['POST'])
 @login_required
-def update_by_quiz(rank):
+def quiz_update(rank):
     # POSTリクエストを受け取る
     get_request = request.get_json()
 
@@ -127,10 +127,10 @@ def update_by_quiz(rank):
 
     return jsonify('finish')
 
-# Update by Test API
-@api.route('/update-by-test', methods=['POST'])
+# テスト成績更新API
+@api.route('/test-update', methods=['POST'])
 @login_required
-def update_by_test():
+def test_update():
     # POSTリクエストを受け取る
     get_request = request.get_json()
 
@@ -160,8 +160,8 @@ def update_by_test():
     
     return jsonify('finish')
 
-# Record API
-@api.route('/user/<user_id>')
+# ユーザー成績検索API
+@api.route('/user-id-search/<user_id>')
 def user_id_search(user_id):
     temp = []
     datas = Record.query.filter_by(user_id=user_id).all()
@@ -170,67 +170,9 @@ def user_id_search(user_id):
             temp.append({
                 'user_id': datas[i].user_id,
                 'word_id': datas[i].word_id,
-                'response': datas[i].response,
-                'correct': datas[i].correct,
-                'responseDate': str(datas[i].response_date)
+                'rank': datas[i].rank,
+                'test_correct': datas[i].test_correct,
+                'test_state': datas[i].test_state
             })
         return jsonify(temp)
     return "このIDのユーザーは存在しません。"
-
-# Record WordID API
-@api.route('/user/<user_id>/word/<word_id>', methods=['GET', 'POST'])
-def two_ids_search(user_id, word_id):
-    # ユーザーの成績データから英単語IDと合致する英単語データを検索する
-    if request.method == 'GET':
-
-        data = Record.query.filter_by(user_id=user_id, word_id=word_id).first()
-        if data:
-            return jsonify({
-                'user_id': data.user_id,
-                'word_id': data.word_id,
-                'response': data.response,
-                'correct': data.correct,
-                'responseDate': str(data.response_date)
-            })
-        return "このIDのユーザー、または英単語データは存在しません。"
-        
-    # # ユーザーの成績データの出題数・正解数・解答日時を更新する
-    # elif request.method == 'POST':
-    #     # POSTリクエストを受け取る
-    #     get_request = request.get_json()
-    #     new_response = get_request["newUserResponse"]
-    #     new_correct = get_request["newUserCorrect"]
-
-    #     data = Record.query.filter_by(user_id=user_id, word_id=word_id).first()
-    #     data.response = new_response
-    #     data.correct = new_correct
-    #     data.response_date = datetime.now(pytz.timezone('Asia/Tokyo'))
-
-    #     # データベースを更新する
-    #     db.session.commit()
-    #     return jsonify({
-    #         'user_id': data.user_id,
-    #         'word_id': data.word_id,
-    #         'response': data.response,
-    #         'correct': data.correct,
-    #         'responseDate': str(data.response_date)
-    #     })
-
-# User API
-@api.route('/admin')
-@login_required
-@roles_required
-def admin():
-    params = []
-    datas = User.query.all()
-    for i in range(len(datas)):
-        params.append({
-            'user_id': datas[i].id,
-            'username': datas[i].username,
-            'role': datas[i].role,
-            'login_state': datas[i].login_state,
-            'signup_date': str(datas[i].signup_date),
-            'login_date': str(datas[i].login_date),
-            'total_remembered': datas[i].total_remembered
-        })
-    return jsonify(params)

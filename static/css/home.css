@@ -68,6 +68,12 @@ body {
     align-items: center;
     justify-items: center;
 }
+@media screen and (min-width: 1200px) {
+    .root-navigator {
+        grid-template-rows: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
 .nav-link {
     position: relative;
     height: 90%;

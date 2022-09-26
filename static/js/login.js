@@ -36,3 +36,13 @@ showHide.forEach(eyeIcon => {
         });
     });
 });
+
+const inputFields = [...document.querySelectorAll('.input-field')],
+      flash = document.querySelector('.flash');
+if (flash) {
+    inputFields.forEach(inputField => {
+        inputField.addEventListener('input', () => {
+            flash.style.display = 'none';
+        });
+    });
+}

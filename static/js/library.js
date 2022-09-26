@@ -1,5 +1,5 @@
-// View All Words APIを叩く
-fetch('https://project-research.azurewebsites.net/api/view-all-words')
+// 英単語全検索APIを叩く
+fetch('http://127.0.0.1:8000/api/word-all-search')
     .then(response => {
         return response.json();
     })
@@ -11,7 +11,7 @@ const search = document.querySelector('.search-bar > input'),
       flashcards = document.querySelector('.flashcards');
 
 function main(datas) {
-    wordsForEach(datas);
+    library(datas);
     // 検索
     search.addEventListener('input', () => {
         clearIcon.style.display = 'flex';
@@ -21,7 +21,7 @@ function main(datas) {
             flashcards.removeChild(flashcards.firstChild);
         }
         const results = datas.filter(data => data.word.includes(search.value));
-        wordsForEach(results);
+        library(results);
     });
     // 検索ワードリセット
     clearIcon.addEventListener('click', () => {
@@ -32,11 +32,11 @@ function main(datas) {
         while (flashcards.firstChild) {
             flashcards.removeChild(flashcards.firstChild);
         }
-        wordsForEach(datas);
+        library(datas);
     });
 };
 
-function wordsForEach(words) {
+function library(words) {
     words.forEach(word => {
         const flashcard = document.createElement('div');
         flashcard.classList.add('flashcard');
