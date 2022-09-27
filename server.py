@@ -37,7 +37,7 @@ class SignupForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired(), Length(min=4, max=50)])
     privacypolicy = BooleanField()
-    submit = SubmitField('Create Account')
+    submit = SubmitField('SIGNUP')
 
     # 既存のユーザー名と同じものが入力されたらエラー判定を出す関数
     # 正規表現以外の文字もエラー対象
@@ -70,7 +70,7 @@ class LoginForm(FlaskForm):
     username = StringField(validators=[DataRequired()])
     password = PasswordField(validators=[DataRequired(), Length(min=4, max=50)])
     remember = BooleanField()
-    submit = SubmitField("Let's Learn")
+    submit = SubmitField('LOGIN')
 
 # ホームページ
 @app.route('/')
