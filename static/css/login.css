@@ -85,6 +85,7 @@ body {
     border: none;
     outline: none;
     background-color: #010718;
+    border-radius: 0 0 0 0;
     border-bottom: 2px solid #fff;
     transition: all 0.3s ease;
 }
