@@ -17,6 +17,7 @@ body {
     align-items: center;
     justify-content: center;
     background-color: #010718;
+    overflow: hidden;
 }
 /* ==================================================================== */
 .login-container {
@@ -143,6 +144,8 @@ body {
     padding: 12px 0;
     /* VIEWPORT: 281px~414px, VALUES: 20px~26px */
     font-size: clamp(1.25rem, 0.458rem + 4.51vw, 1.625rem);
+    padding-left: 0;
+    padding-right: 0;
     font-weight: 600;
     letter-spacing: 3px;
     color: #fff;
