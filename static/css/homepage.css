@@ -20,7 +20,6 @@ body {
     align-items: center;
     justify-content: center;
     background-color: #010718;
-    overflow-x: hidden;
 }
 /* ==================================================================== */
 .app-title {
@@ -46,6 +45,8 @@ body {
 /* ==================================================================== */
 .hero-container {
     position: relative;
+    height: 100%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
