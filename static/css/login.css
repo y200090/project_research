@@ -17,11 +17,9 @@ body {
     align-items: center;
     justify-content: center;
     background-color: #010718;
-    overflow: hidden;
 }
 /* ==================================================================== */
 .login-container {
-    height: 100%;
     max-width: 415px;
     width: 90%;
     display: flex;
