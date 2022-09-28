@@ -10,15 +10,15 @@
 {% endblock %}
 
 {% block body %}
-    <header class="app-title">
-        <i class="fa-brands fa-dev app-logo"></i>
-        <span class="bland">英単語学習アプリ</span>
+    <header class="bland-header">
+        <i class="fa-brands fa-dev bland-logo"></i>
+        <span class="bland-name">英単語学習アプリ</span>
     </header>
     
-    <div class="hero-container">
+    <main class="hero-container">
         <img src="{{ url_for('static', filename='images/undraw_stars_re_6je7.svg') }}" class="hero-image">
         <button class="start-button">α版をテストプレイ</button>
-    </div>
+    </main>
     <!-- ============================================================================ -->
     <div class="modal-window">
         <i class='bx bx-x close-icon'></i>

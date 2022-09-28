@@ -14,30 +14,31 @@ html {
 }
 body {
     position: relative;
-    height: calc(100vh - 20px);
+    height: calc(100vh - 80px);
     width: 100vw;
-    margin-top: 20px;
+    margin-top: 80px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     background-color: #010718;
 }
 /* ==================================================================== */
-.app-title {
-    position: absolute;
+.bland-header {
+    position: fixed;
     top: 20px;
-    left: 20px;
+    height: 60px;
+    width: 90%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     column-gap: 10px;
 }
-.app-logo {
+.bland-logo {
     /* VIEWPORT: 281px~414px, VALUES* 26px~30px */
     font-size: clamp(1.625rem, 1.097rem + 3.01vw, 1.875rem);
     color: #1e90ff;
 }
-.bland {
+.bland-name {
     /* VIEWPORT: 281px~414px, VALUES* 14px~18px */
     font-size: clamp(0.875rem, 0.347rem + 3.01vw, 1.125rem);
     font-weight: 600;
@@ -46,14 +47,14 @@ body {
 /* ==================================================================== */
 .hero-container {
     position: relative;
-    height: 100%;
-    width: 100%;
+    width: 90%;
+    margin-top: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    row-gap: 10px;
-    padding: 0 10px;
+    /* VIEWPORT: 376px~414px, VALUES: 10px~20px */
+    row-gap: clamp(0.625rem, -5.559rem + 26.32vw, 1.25rem);
 }
 .hero-container.inactive {
     display: none;
