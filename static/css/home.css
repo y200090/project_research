@@ -28,7 +28,7 @@ body {
     /* VIEWPORT: 376px~414px, VALUES: 60px~80px */
     margin-top: clamp(3.75rem, -8.618rem + 52.63vw, 5rem);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     background-color: var(--background);
 }
@@ -67,7 +67,6 @@ body {
     grid-template-columns: repeat(2, 1fr);
     align-items: center;
     justify-items: center;
-    background-color: var(--background);
 }
 @media screen and (min-width: 1200px) {
     .root-navigator {
