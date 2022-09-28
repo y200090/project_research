@@ -28,7 +28,7 @@ body {
     /* VIEWPORT: 376px~414px, VALUES: 60px~80px */
     margin-top: clamp(3.75rem, -8.618rem + 52.63vw, 5rem);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     background-color: var(--background);
 }
@@ -66,7 +66,7 @@ body {
 .learnings {
     height: 95%;
     width: 90%;
-    max-width: 480px;
+    max-width: 415px;
     display: grid;
     grid-template-rows: 25% 25% 25% 25%;
     align-items: center;

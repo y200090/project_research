@@ -70,8 +70,8 @@ body {
     /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
     height: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
     width: 90%;
-    max-width: 600px;
-    margin-top: 30px;
+    max-width: 415px;
+    margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -131,7 +131,7 @@ body {
 .library {
     position: relative;
     /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
-    margin-top: calc(30px + clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem) + 20px);
+    margin-top: calc(20px + clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem) + 20px);
     width: 90%;
     max-width: 600px;
     overflow-y: scroll;

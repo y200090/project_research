@@ -71,9 +71,9 @@ body {
 }
 #empty {
     position: absolute;
-    top: 50%;
+    top: 20%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -20%);
     /* VIEWPORT: 281px~414px, VALUES: 20px~34px */
     font-size: clamp(1.25rem, -0.599rem + 10.53vw, 2.125rem);
     color: var(--text);
