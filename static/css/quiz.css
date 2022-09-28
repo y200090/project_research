@@ -106,11 +106,12 @@ body {
 }
 /* ========================================================= */
 .quiz {
-    height: calc(100% - 30px);
+    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
+    height: calc(100% - clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem));
     width: 100%;
-    max-width: 600px;
-    margin-top: 30px;
-    display: flex;
+    max-width: 415px;
+    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
+    margin-top: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);    display: flex;
     align-items: center;
     justify-content: center;
 }
@@ -121,11 +122,11 @@ body {
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
-    /* VIEWPORT: 376px~414px, VALUES: 40px~60px */
-    row-gap: clamp(2.5rem, -9.868rem + 52.63vw, 3.75rem);
 }
 .quiz-content {
     width: 100%;
+    /* VIEWPORT: 376px~414px, VALUES: 40px~60px */
+    margin-bottom: clamp(2.5rem, -9.868rem + 52.63vw, 3.75rem);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -173,12 +174,13 @@ body {
 }
 .option-content {
     position: relative;
+    /* VIEWPORT: 281px~375px, VALUES: 40px~50px */
+    height: clamp(2.5rem, 0.632rem + 10.64vw, 3.125rem);
     width: 100%;
 }
 .option-content input {
+    height: 100%;
     width: 100%;
-    /* VIEWPORT: 376px~414px, VALUES: 10px~15px */
-    padding: clamp(0.625rem, -2.467rem + 13.16vw, 0.938rem) 0;
     border: none;
     outline: none;
     background-color: var(--contents);
@@ -214,15 +216,18 @@ body {
 .next-form {
     display: none;
     position: relative;
+    /* VIEWPORT: 281px~375px, VALUES: 40px~50px */
+    height: clamp(2.5rem, 0.632rem + 10.64vw, 3.125rem);
     width: 100%;
+    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
+    margin-top: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
 }
 .next-form.active {
     display: block;
 }
 #next-button {
+    height: 100%;
     width: 100%;
-    /* VIEWPORT: 376px~414px, VALUES: 10px~15px */
-    padding: clamp(0.625rem, -2.467rem + 13.16vw, 0.938rem) 0;
     border: none;
     outline: none;
     background-color: var(--accent);
