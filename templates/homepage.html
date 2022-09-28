@@ -14,14 +14,15 @@
         <i class="fa-brands fa-dev app-logo"></i>
         <span class="bland">英単語学習アプリ</span>
     </header>
-    <main class="hero-content">
-        <img src="{{ url_for('static', filename='images/undraw_outer_space_re_u9vd.svg') }}" class="main-img">
-        <button class="play-button">α版をテストプレイ</button>
+    
+    <main class="hero-container">
+        <img src="{{ url_for('static', filename='images/undraw_stars_re_6je7.svg') }}" class="hero-image">
+        <button class="start-button">α版をテストプレイ</button>
     </main>
     <!-- ============================================================================ -->
-    <div class="modal">
+    <div class="modal-window">
         <i class='bx bx-x close-icon'></i>
-        <img src="../static/images/undraw_welcome_cats_thqn.svg" class="welcome">
+        <img src="../static/images/undraw_welcome_cats_thqn.svg" class="welcome-image">
         <div class="anchor">
             <a href="{{ url_for('login') }}">login</a>
             <a href="{{ url_for('signup') }}">signup</a>

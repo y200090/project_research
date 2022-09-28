@@ -1,16 +1,14 @@
-const heroContent = document.querySelector('.hero-content'),
-      launching = document.querySelector('.launching'),
-      caret = document.querySelector('.caret'),
-      playButton = document.querySelector('.play-button'),
-      modal = document.querySelector('.modal'),
+const heroContainer = document.querySelector('.hero-container'),
+      startButton = document.querySelector('.start-button'),
+      modalWindow = document.querySelector('.modal-window'),
       closeIcon = document.querySelector('.close-icon');
 
-playButton.addEventListener('click', () => {
-    heroContent.classList.toggle('inactive');
-    modal.classList.toggle('active');
+startButton.addEventListener('click', () => {
+    heroContainer.classList.toggle('inactive');
+    modalWindow.classList.toggle('active');
 });
 
 closeIcon.addEventListener('click', () => {
-    heroContent.classList.toggle('inactive');
-    modal.classList.toggle('active');
+    heroContainer.classList.toggle('inactive');
+    modalWindow.classList.toggle('active');
 });
