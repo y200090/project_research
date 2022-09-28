@@ -22,9 +22,11 @@
 }
 body {
     position: relative;
-    height: calc(100vh - 80px);
+    /* VIEWPORT: 376px~414px, VALUES: 80px~90px */
+    height: calc(100vh - clamp(5rem, -1.184rem + 26.32vw, 5.625rem));
     width: 100vw;
-    margin-top: 80px;
+    /* VIEWPORT: 376px~414px, VALUES: 80px~90px */
+    margin-top: clamp(5rem, -1.184rem + 26.32vw, 5.625rem);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -39,7 +41,8 @@ body {
 .quiz-header {
     position: fixed;
     top: 0;
-    height: 80px;
+    /* VIEWPORT: 376px~414px, VALUES: 80px~90px */
+    height: clamp(5rem, -1.184rem + 26.32vw, 5.625rem);
     width: 100%;
     max-width: 415px;
     display: flex;
@@ -122,12 +125,14 @@ body {
 }
 .quiz-content {
     width: 100%;
-    margin-bottom: 40px;
+    /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
+    margin-bottom: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    row-gap: 40px;
+    /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
+    row-gap: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
     color: var(--text);
 }
 .statement {
@@ -164,8 +169,8 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
-    row-gap: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
+    /* VIEWPORT: 376px~414px, VALUES: 20px~40px */
+    row-gap: clamp(1.25rem, -11.118rem + 52.63vw, 2.5rem);
 }
 .option-content {
     position: relative;
@@ -214,8 +219,8 @@ body {
     /* VIEWPORT: 281px~375px, VALUES: 40px~50px */
     height: clamp(2.5rem, 0.632rem + 10.64vw, 3.125rem);
     width: 100%;
-    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
-    margin-top: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
+    /* VIEWPORT: 376px~414px, VALUES: 20px~40px */
+    row-gap: clamp(1.25rem, -11.118rem + 52.63vw, 2.5rem);
 }
 .next-form.active {
     display: block;

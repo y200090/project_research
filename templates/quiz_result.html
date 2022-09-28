@@ -12,13 +12,13 @@
 {% endblock %}
 
 {% block body %}
-    <a href="{{ url_for('learnings') }}">
-        <span class="material-symbols-outlined quit-icon">close</span>
-    </a>
+    <header class="result-header">
+        <a href="{{ url_for('learnings') }}">
+            <span class="material-symbols-outlined quit-icon">close</span>
+        </a>
+    </header>
     <div class="result">
-        <div class="result-image">
-            <img src="">
-        </div>
+        <img src="" class="result-image">
         <h1 id="result-comment"></h1>
         <span class="scoreboard">
             <span id="user-score">{{ score }}</span><span id="max-score">/10</span>

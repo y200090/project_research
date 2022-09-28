@@ -1,5 +1,5 @@
 const resultComment = document.querySelector('#result-comment'),
-      resultImage = document.querySelector('.result-image > img'),
+      resultImage = document.querySelector('.result-image'),
       review = document.querySelector('#review');
 
 if (score == wordId.length) {
