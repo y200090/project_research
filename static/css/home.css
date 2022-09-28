@@ -57,11 +57,12 @@ body {
 } */
 /* ========================================================= */
 .root-navigator {
-    height: 85%;
+    height: 80%;
     width: 95%;
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
     align-items: center;
     justify-items: center;
 }
@@ -73,8 +74,8 @@ body {
 }
 .nav-link {
     position: relative;
-    height: 90%;
-    width: 90%;
+    height: 100%;
+    width: 100%;
     padding: 10px;
     display: grid;
     grid-template-rows: 80% 20%;
