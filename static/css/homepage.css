@@ -52,6 +52,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    row-gap: 10px;
     padding: 0 10px;
 }
 .hero-container.inactive {
