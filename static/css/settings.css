@@ -65,10 +65,10 @@ body {
 /* ========================================================= */
 .settings {
     position: relative;
-    height: calc(100% - 30px);
+    height: calc(100% - 20px);
     width: 90%;
     max-width: 415px;
-    margin-top: 30px;
+    margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: flex-start;

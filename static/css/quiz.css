@@ -170,8 +170,8 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    /* VIEWPORT: 376px~414px, VALUES: 20px~40px */
-    row-gap: clamp(1.25rem, -11.118rem + 52.63vw, 2.5rem);
+    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
+    row-gap: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
 }
 .option-content {
     position: relative;
@@ -220,8 +220,8 @@ body {
     /* VIEWPORT: 281px~375px, VALUES: 40px~50px */
     height: clamp(2.5rem, 0.632rem + 10.64vw, 3.125rem);
     width: 100%;
-    /* VIEWPORT: 376px~414px, VALUES: 20px~40px */
-    margin-top: clamp(1.25rem, -11.118rem + 52.63vw, 2.5rem);
+    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
+    row-gap: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
 }
 .next-form.active {
     display: block;
