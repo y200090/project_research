@@ -43,7 +43,7 @@ const currentNumber = document.querySelector('#current-number'),
 
 // メイン関数
 async function main() {
-    // Create Quiz APIを叩く
+    // Create Questions APIを叩く
     const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create-questions/quiz/${rank}`);
     
     // 問題・選択肢を表示する関数===========================================================
@@ -129,12 +129,12 @@ async function main() {
             score++;                                      // 得点+1
 
         } else {
-
             answerImage = '<i class="bx bx-x-circle answer-image incorrect"></i>';
             lines[index].classList.add('incorrect');
             input.classList.add('incorrect');
             answerState[index] = 'incorrect';
         }
+
         // コンソール出力、確認用
         console.log(`ユーザーの回答: ${userAnswer[index]}`);
         console.log(`正解: ${answer[index]}`);
@@ -144,12 +144,12 @@ async function main() {
         options.classList.add('none-events');
         nextForm.classList.add('active');
 
-        // Update by Quiz APIに送信するPOSTデータを設定
+        // クイズ成績更新APIに送信するPOSTデータを設定
         const updateData = {
             'word_id': wordId[index],
             'answer_state': answerState[index]
         };
-        // Update by Quiz APIを叩く
+        // クイズ成績更新APIを叩く
         await postAPI(`https://project-research.azurewebsites.net/api/quiz-update/${rank}`, updateData);
 
         // クイズの最後の問題を解答した時の処理

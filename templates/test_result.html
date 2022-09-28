@@ -13,15 +13,14 @@
 
 {% block body %}
     <div class="result">
+        <img src="" class="result-image">
         <h1 id="result-comment"></h1>
-        <div class="progress">
-            <div class="circular">
-                <span id="user-score">{{ score }}</span><span id="max-score">/20</span>
-            </div>
-        </div>
+        <span class="scoreboard">
+            <span id="user-score">{{ score }}</span><span id="max-score">/10</span>
+        </span>
         <div class="result-form">
             <a href="" id="review">Review</a>
-            <a href="{{ url_for('learnings') }}" id="backpage">Back Page</a>
+            <a href="{{ url_for('tasks') }}" id="backpage">Back Page</a>
         </div>
     </div>
     <!-- ============================================================= -->

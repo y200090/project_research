@@ -20,16 +20,11 @@ function browserBack() {
     history.go(1);
 };
 
-// メイン関数
-async function main() {
-    // Create Questions APIを叩く
-    const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create-questions/test/${rank}`);
-
-    const word = [],              // 問題
-          wordId = [],            // 問題の英単語ID
-          answer = [],            // 正解
-          userAnswer = [],        // ユーザーの解答
-          answerState = [];       // 正誤状態
+const word = [],              // 問題
+      wordId = [],            // 問題の英単語ID
+      answer = [],            // 正解
+      userAnswer = [],        // ユーザーの解答
+      answerState = [];       // 正誤状態
     
     let index = 0,                // 問題番号
         score = 0,                // 得点
@@ -43,6 +38,11 @@ async function main() {
           testWord = document.querySelector('#test-word'),
           options = document.querySelector('#options'),
           nextForm = document.querySelector('.next-form');
+
+// メイン関数
+async function main() {
+    // Create Questions APIを叩く
+    const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create-questions/test/${rank}`);
           
     // 問題・選択肢を表示する関数===========================================================
     function setTest() {
@@ -52,12 +52,40 @@ async function main() {
         allResponse[index] = questions[index].response;
         allCorrect[index] = questions[index].correct;
 
-        if ((index + 1) >= 10) currentNumber.innerText = index + 1;
-        else currentNumber.innerText = '0' + (index + 1);
+        if ((index + 1) >= 10) {
+            currentNumber.innerText = index + 1;
+        
+        } else {
+            currentNumber.innerText = '0' + (index + 1);
+        }
         maxNumber.innerText = '/' + questions.length;
         lines[index].classList.add('current');
         statementSpan.innerText = `ユーザー正解率 : ${Math.floor(allCorrect[index] / allResponse[index] * 100)}%`;
         testWord.innerText = word[index];
+
+        const speakIcon = document.createElement('span');
+        speakIcon.classList.add('material-symbols-outlined', 'speak-icon');
+        testWord.appendChild(speakIcon);
+        speakIcon.innerText = 'volume_up';
+        // ブラウザにWeb Speech API Speech Synthesis機能があるか判定
+        speakIcon.addEventListener('click', () => {
+            if ('speechSynthesis' in window) {
+                const uttr = new SpeechSynthesisUtterance();
+                uttr.text = word[index];
+                uttr.lang = 'en-US';
+                uttr.rate = 0.8;
+                const voices = speechSynthesis.getVoices();
+                voices.forEach(voice => {
+                    if (voice.lang === 'en-US') {
+                        uttr.voice = voice;
+                    }
+                });
+                window.speechSynthesis.speak(uttr);
+
+            } else {
+                alert('このブラウザは音声合成に対応していません。');
+            }
+        });
 
         console.log(`第${index + 1}問: ${word[index]}  ID: ${wordId[index]}`);
 
@@ -83,24 +111,24 @@ async function main() {
     async function checkAnswer(input) {
         userAnswer[index] = input.value;
 
-        // 正解時の処理
+        // 正解・不正解時の処理
         if (userAnswer[index] == answer[index]) {
             answerState[index] = 'correct';
             score++;
-        }
-        // 不正解時の処理
-        else {
+            
+        } else {
             answerState[index] = 'incorrect';
         }
+        
         // コンソール出力、確認用
         console.log(`ユーザーの回答: ${userAnswer[index]}`);
 
-        // Update by Test APIに送信するPOSTデータを設定
+        // テスト成績更新APIに送信するPOSTデータを設定
         const updateData = {
             'word_id': wordId[index],
             'answer_state': answerState[index]
         };
-        // Update by Test APIを叩く
+        // テスト成績更新APIを叩く
         await postAPI(`https://project-research.azurewebsites.net/api/test-update`, updateData);
 
         // テストの最後の問題を解答した時の処理

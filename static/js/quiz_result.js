@@ -46,5 +46,5 @@ function happy() {
 console.log(review)
 
 review.addEventListener('click', () => {
-    console.log('jfa;fjs;flj;dlfas;djf');
+    alert('この機能は現在使用できません。')
 });
