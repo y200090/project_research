@@ -8,10 +8,6 @@
     text-decoration: none;
     min-height: 0vw;
 }
-html {
-    position: relative;
-    overflow: hidden;
-}
 body {
     position: relative;
     height: 100vh;
@@ -86,7 +82,6 @@ body {
     position: absolute;
     width: 90%;
     max-width: 415px;
-    margin-top: 120px;
     text-align: center;
     background-color: #010718;
     box-shadow: 0 0 0 100vh #010718;
