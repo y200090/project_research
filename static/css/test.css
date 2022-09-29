@@ -168,8 +168,8 @@ body {
     row-gap: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
 }
 #options input {
-    /* VIEWPORT: 281px~375px, VALUES: 40px~50px */
-    height: clamp(2.5rem, 0.632rem + 10.64vw, 3.125rem);
+    /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
+    height: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
     width: 100%;
     border: none;
     outline: none;
@@ -186,11 +186,11 @@ body {
 .next-form {
     display: none;
     position: relative;
-    /* VIEWPORT: 281px~375px, VALUES: 40px~50px */
-    height: clamp(2.5rem, 0.632rem + 10.64vw, 3.125rem);
+    /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
+    height: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
     width: 100%;
     /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
-    row-gap: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
+    margin-top: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
 }
 .next-form.active {
     display: block;

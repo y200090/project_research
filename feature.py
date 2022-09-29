@@ -37,7 +37,7 @@ def for_quiz(rank):
     words_datas = Word.query.filter_by(rank=rank).all()
     # テスト待ち・復習待ち英単語を検索
     records_datas = Record.query.filter(Record.user_id==current_user.id, Record.rank==rank).filter(or_(Record.test_state=='active', Record.test_state=='review')).all()
-    print('\033[32m' + f'{records_datas}' + '\033[0m')    # 確認用
+    # print('\033[32m' + f'{records_datas}' + '\033[0m')    # 確認用
     for i in range(len(words_datas)):
         check = 0
         # テスト待ち・復習待ち英単語を避けて出力する
@@ -65,10 +65,10 @@ def for_test(rank):
     params = []
     # テスト待ち英単語を検索
     records_datas = Record.query.filter_by(user_id=current_user.id, rank=rank, test_state='active').all()
-    print('\033[32m' + f'{records_datas}' + '\033[0m')     # 確認用
+    # print('\033[32m' + f'{records_datas}' + '\033[0m')     # 確認用
     for i in range(len(records_datas)):
         words_data = Word.query.filter_by(id=records_datas[i].word_id).first()
-        print('\033[34m' + f'{words_data}' + '\033[0m')    # 確認用
+        # print('\033[34m' + f'{words_data}' + '\033[0m')    # 確認用
         params.append({
             'ID': words_data.id,
             'word': words_data.word,
@@ -110,7 +110,7 @@ def create_questions(category, rank):       #問題を作成し、辞書型変�
 
     if category == 'quiz':
         fp = for_quiz(rank)
-        print('\033[31m' + f'{fp}' + '\033[0m')      # 確認用
+        # print('\033[31m' + f'{fp}' + '\033[0m')      # 確認用
         Qcount = 10 #問題数
 
         random.shuffle(fp)        
@@ -137,7 +137,7 @@ def create_questions(category, rank):       #問題を作成し、辞書型変�
     
     if category == 'test':
         fp = for_test(rank)
-        print('\033[31m' + f'{fp}' + '\033[0m')      # 確認用
+        # print('\033[31m' + f'{fp}' + '\033[0m')      # 確認用
         Qcount = 20
         for q in range(Qcount):
             learningList.append(q)

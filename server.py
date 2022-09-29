@@ -1,7 +1,7 @@
 from __init__ import app, db, bcrypt, login_manager, Word, User, Record, roles_required
 import re, regex, pytz, random
 from datetime import datetime
-from flask import render_template, request, url_for, redirect, flash
+from flask import render_template, render_template_string, request, url_for, redirect, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
 from wtforms import EmailField, StringField, PasswordField, SubmitField, BooleanField
@@ -222,7 +222,12 @@ def test_result():
 @login_required
 def settings():
     return render_template('settings.html', 
-    user_id=current_user.id, user_role=current_user.role, username=current_user.username)
+    user_id=current_user.id, username=current_user.username, user_role=current_user.role)
+
+@app.route('/mypage/settings/profile')
+@login_required
+def profile():
+    return render_template('profile.html', user_id=current_user.id, username=current_user.username, user_role=current_user.role, signup_date=current_user.signup_date)
 
 # ログアウト処理
 @app.route('/logout')
@@ -256,4 +261,4 @@ def admin():
     return render_template('admin.html', users=params)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, port=8000)

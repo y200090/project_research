@@ -49,8 +49,8 @@ body {
 }
 .input-field {
     position: relative;
-    /* VIEWPORT: 281px~375px, VALUES: 40px~50px */
-    height: clamp(2.5rem, 0.632rem + 10.64vw, 3.125rem);
+    /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
+    height: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
     width: 100%;
     margin-bottom: 30px;
 }
@@ -98,9 +98,9 @@ body {
 }
 .input-field span {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     left: 35px;
+    bottom: 50%;
+    transform: translateY(50%);
     /* VIEWPORT: 281px~414px, VALUES: 14px~18px */
     font-size: clamp(0.875rem, 0.347rem + 3.01vw, 1.125rem);
     color: #757575;
@@ -109,10 +109,13 @@ body {
 }
 .input-field input:valid ~ span,
 .input-field input:focus ~ span {
+    left: 10px;
+    /* VIEWPORT: 375px~414px, VALUES: 34px~44px */
+    bottom: clamp(2.125rem, -4.059rem + 26.32vw, 2.75rem);
+    transform: unset;
     color: #1e90ff;
     /* VIEWPORT: 281px~414px, VALUES: 10px~14px */
     font-size: clamp(0.625rem, 0.097rem + 3.01vw, 0.875rem);
-    transform: translate(-26px, -36px);
 }
 .checkbox-field {
     width: 100%;
@@ -153,8 +156,8 @@ body {
     transform-origin: left top;
 }
 .button-field {
-    /* VIEWPORT: 281px~375px, VALUES: 40px~50px */
-    height: clamp(2.5rem, 0.632rem + 10.64vw, 3.125rem);
+    /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
+    height: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
     width: 100%;
 }
 .button-field input {
