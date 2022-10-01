@@ -157,7 +157,6 @@ def test_update():
     users_data = User.query.filter_by(id=current_user.id).first()
 
     words_data.response += 1                     # 全体の解答数を更新
-    print('\033[31m' + f'{users_data.total_remembered}' + '\033[0m')      # 確認用
     
     # テスト正解時の場合
     if answer_state == 'correct':

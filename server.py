@@ -93,7 +93,7 @@ def signup():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
 
         # フォームに入力された情報をusersテーブルに登録
-        new_user = User(id=user_id, username=form.username.data, password=hashed_password, role="Student", login_state='inactive', signup_date=datetime.now(pytz.timezone('Asia/Tokyo')))
+        new_user = User(id=user_id, username=form.username.data, password=hashed_password, role="Student", login_state='inactive', signup_date=datetime.now(pytz.timezone('Asia/Tokyo')), total_remembered=0)
 
         # データベースに追加
         db.session.add(new_user)
