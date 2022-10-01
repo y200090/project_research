@@ -152,15 +152,12 @@ def test_update():
     word_id = get_request['word_id']
     answer_state = get_request['answer_state']
 
-    print('\033[31m' + f'{word_id}' + '\033[0m')      # 確認用
-    print('\033[31m' + f'{answer_state}' + '\033[0m')      # 確認用
-
-
     words_data = Word.query.filter_by(id=word_id).first()
     records_data = Record.query.filter_by(user_id=current_user.id, word_id=word_id).first()
     users_data = User.query.filter_by(id=current_user.id).first()
 
     words_data.response += 1                     # 全体の解答数を更新
+    print('\033[31m' + f'{users_data.total_remembered}' + '\033[0m')      # 確認用
     
     # テスト正解時の場合
     if answer_state == 'correct':
