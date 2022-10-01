@@ -39,7 +39,7 @@ reviewButton.addEventListener('click', () => {
 
     wordId.forEach((id, index) => {
         // 英単語ID検索APIを叩く
-        fetch(`http://127.0.0.1:8000/api/word-id-search/${id}`)
+        fetch(`https://project-research.azurewebsites.net/api/word-id-search/${id}`)
             .then(response => {
                 return response.json();
             })
@@ -113,7 +113,7 @@ editButton.addEventListener('click', async () => {
         'new_translation': editInput.value
     };
     // 英単語ID検索APIを叩く（POSTメソッド）
-    await postAPI(`http://127.0.0.1:8000/api/word-id-search/${editButton.id}`, updateDate);
+    await postAPI(`https://project-research.azurewebsites.net/api/word-id-search/${editButton.id}`, updateDate);
 
     alert('更新が完了しました。');
     editForm.classList.remove('active');

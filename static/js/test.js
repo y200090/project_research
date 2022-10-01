@@ -125,8 +125,8 @@ async function main() {
 
         // テスト成績更新APIに送信するPOSTデータを設定
         const updateData = {
-            'word_id': wordId[index],
-            'answer_state': answerState[index]
+            word_id: wordId[index],
+            answer_state: answerState[index]
         };
         // テスト成績更新APIを叩く
         await postAPI(`https://project-research.azurewebsites.net/api/test-update`, updateData);
