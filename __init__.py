@@ -33,18 +33,18 @@ bcrypt = Bcrypt(app)
 # LoginManagerインスタンスを作成
 login_manager = LoginManager()
 
-# 英単語データの定義
+# 英単語データモデルの定義
 class Word(db.Model):
-    __tablename__ ="words"                                          # テーブル名をwordsに再設定
-    id = db.Column(db.Integer, primary_key=True)                    # 英単語の固有ID
-    word = db.Column(db.String(50), nullable=False)                 # 英単語
-    translation = db.Column(db.String(50), nullable=False)          # 日本語訳
-    part_en = db.Column(db.String(20), nullable=False)              # 品詞（英語）
-    part_jp = db.Column(db.String(20), nullable=False)              # 品詞（日本語）
-    rank = db.Column(db.String(10), nullable=False)                 # A1, A2, B1, B2
-    freq_rank = db.Column(db.String(100))                           # 頻出ランク
-    response = db.Column(db.Integer)                                # 全体の出題数
-    correct = db.Column(db.Integer)                                 # 全体の正解数
+    __tablename__ ="words"                          # テーブル名をwordsに再設定
+    id = db.Column(db.Integer, primary_key=True)    # 英単語の固有ID
+    word = db.Column(db.String(50))                 # 英単語
+    translation = db.Column(db.String(50))          # 日本語訳
+    part_en = db.Column(db.String(20))              # 品詞（英語）
+    part_jp = db.Column(db.String(20))              # 品詞（日本語）
+    rank = db.Column(db.String(10))                 # A1, A2, B1, B2
+    freq_rank = db.Column(db.String(100))           # 頻出度
+    response = db.Column(db.Integer)                # 全ユーザーの解答数
+    correct = db.Column(db.Integer)                 # 全ユーザーの正解数
 
     def __repr__(self):
         params = {
@@ -62,45 +62,243 @@ class Word(db.Model):
 
 # ユーザーモデルの定義
 class User(db.Model, UserMixin):
-    __tablename__ = "users"                                             # テーブル名をusersに再設定
-    id = db.Column(db.Integer, primary_key=True)                        # ユーザーの固有ID
-    username = db.Column(db.String(50), unique=True, nullable=False)    # ユーザー名
-    password = db.Column(db.String(100), nullable=False)                # パスワード
-    role = db.Column(db.String(20), nullable=False)                     # ユーザー権限（Admin, Tester, Student）
-    login_state = db.Column(db.String(20), nullable=False)              # ユーザー状態（active, inactive）
-    signup_date = db.Column(db.DateTime, nullable=False)                # サインアップ日時
-    login_date = db.Column(db.DateTime)                                 # ログイン日時
-    total_remembered = db.Column(db.Integer)                            # ”覚えた”判定を出した累計
+    __tablename__ = "users"                               # テーブル名をusersに再設定
+    id = db.Column(db.String(20), primary_key=True)       # ユーザーの固有ID
+    username = db.Column(db.String(50), unique=True)      # ユーザー名
+    password = db.Column(db.String(100))                  # パスワード
+    role = db.Column(db.String(20))                       # ユーザー権限（Admin=管理者, Student=生徒）
+    login_state = db.Column(db.String(20))                # ユーザー状態（active=ログイン中, inactive=ログアウト中）
+    signup_date = db.Column(db.DateTime)                  # サインアップ日時
+    login_date = db.Column(db.DateTime)                   # 最終ログイン日時
+    total_answered = db.Column(db.Integer)                # クイズを解いた累計
+    total_remembered = db.Column(db.Integer)              # ”覚えた”判定を出した累計
 
     def __repr__(self):
         params = {
             'ID': self.id,
             'username': self.username,
-            'role': self.role,
+            'rolel': self.role,
             'login_state': self.login_state,
             'signup_date': self.signup_date,
             'login_date': self.login_date,
+            'total_answered': self.total_answered,
             'total_remembered': self.total_remembered
         }
         return f"{params}\n"
 
-# ユーザー個人の成績データの定義
-class Record(db.Model):
-    __tablename__ = "records"                                 # テーブル名をrecordsに再設定
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, nullable=False)           # ユーザーの固有ID
-    word_id = db.Column(db.Integer, nullable=False)           # 英単語固有のID
-    rank = db.Column(db.String(10), nullable=False)           # A1, A2, B1, B2
-    test_correct = db.Column(db.Integer)                      # ユーザー個人のテストの正解数（test_correct > 0 : 復習待ち）
-    test_state = db.Column(db.String(20), nullable=False)     # テスト待ち状態（active, inactive）
+# ユーザーの成績データモデルの定義
+class y200004(db.Model):
+    id = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
+    word_id = db.Column(db.Integer)                 # 英単語固有のID
+    rank = db.Column(db.String(10))                 # A1, A2, B1, B2
+    quiz_response = db.Column(db.Integer)           # クイズにおける解答数の累計
+    quiz_correct = db.Column(db.Integer)            # クイズにおける正解数の累計
+    test_correct = db.Column(db.Integer)            # テストにおける連続正解数（一度でも間違えれば0に）
+    word_state = db.Column(db.String(20))           # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
+    response_date = db.Column(db.DateTime)          # 解答した日時
 
     def __repr__(self):
         params = {
-            'user_id': self.user_id,
+            'order': self.id,
             'word_id': self.word_id,
             'rank': self.rank,
+            'quiz_response': self.quiz_response,
+            'quiz_correct': self.quiz_correct,
             'test_correct': self.test_correct,
-            'test_state': self.test_state
+            'word_state': self.word_state,
+            'response_date': self.response_date
+        }
+        return f"{params}\n"
+
+# ユーザーの成績データモデルの定義
+class y200042(db.Model):
+    id = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
+    word_id = db.Column(db.Integer)                 # 英単語固有のID
+    rank = db.Column(db.String(10))                 # A1, A2, B1, B2
+    quiz_response = db.Column(db.Integer)           # クイズにおける解答数の累計
+    quiz_correct = db.Column(db.Integer)            # クイズにおける正解数の累計
+    test_correct = db.Column(db.Integer)            # テストにおける連続正解数（一度でも間違えれば0に）
+    word_state = db.Column(db.String(20))           # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
+    response_date = db.Column(db.DateTime)          # 解答した日時
+
+    def __repr__(self):
+        params = {
+            'order': self.id,
+            'word_id': self.word_id,
+            'rank': self.rank,
+            'quiz_response': self.quiz_response,
+            'quiz_correct': self.quiz_correct,
+            'test_correct': self.test_correct,
+            'word_state': self.word_state,
+            'response_date': self.response_date
+        }
+        return f"{params}\n"
+
+# ユーザーの成績データモデルの定義
+class y200051(db.Model):
+    id = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
+    word_id = db.Column(db.Integer)                 # 英単語固有のID
+    rank = db.Column(db.String(10))                 # A1, A2, B1, B2
+    quiz_response = db.Column(db.Integer)           # クイズにおける解答数の累計
+    quiz_correct = db.Column(db.Integer)            # クイズにおける正解数の累計
+    test_correct = db.Column(db.Integer)            # テストにおける連続正解数（一度でも間違えれば0に）
+    word_state = db.Column(db.String(20))           # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
+    response_date = db.Column(db.DateTime)          # 解答した日時
+
+    def __repr__(self):
+        params = {
+            'order': self.id,
+            'word_id': self.word_id,
+            'rank': self.rank,
+            'quiz_response': self.quiz_response,
+            'quiz_correct': self.quiz_correct,
+            'test_correct': self.test_correct,
+            'word_state': self.word_state,
+            'response_date': self.response_date
+        }
+        return f"{params}\n"
+
+# ユーザーの成績データモデルの定義
+class y200062(db.Model):
+    id = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
+    word_id = db.Column(db.Integer)                 # 英単語固有のID
+    rank = db.Column(db.String(10))                 # A1, A2, B1, B2
+    quiz_response = db.Column(db.Integer)           # クイズにおける解答数の累計
+    quiz_correct = db.Column(db.Integer)            # クイズにおける正解数の累計
+    test_correct = db.Column(db.Integer)            # テストにおける連続正解数（一度でも間違えれば0に）
+    word_state = db.Column(db.String(20))           # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
+    response_date = db.Column(db.DateTime)          # 解答した日時
+
+    def __repr__(self):
+        params = {
+            'order': self.id,
+            'word_id': self.word_id,
+            'rank': self.rank,
+            'quiz_response': self.quiz_response,
+            'quiz_correct': self.quiz_correct,
+            'test_correct': self.test_correct,
+            'word_state': self.word_state,
+            'response_date': self.response_date
+        }
+        return f"{params}\n"
+
+# ユーザーの成績データモデルの定義
+class y200065(db.Model):
+    id = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
+    word_id = db.Column(db.Integer)                 # 英単語固有のID
+    rank = db.Column(db.String(10))                 # A1, A2, B1, B2
+    quiz_response = db.Column(db.Integer)           # クイズにおける解答数の累計
+    quiz_correct = db.Column(db.Integer)            # クイズにおける正解数の累計
+    test_correct = db.Column(db.Integer)            # テストにおける連続正解数（一度でも間違えれば0に）
+    word_state = db.Column(db.String(20))           # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
+    response_date = db.Column(db.DateTime)          # 解答した日時
+
+    def __repr__(self):
+        params = {
+            'order': self.id,
+            'word_id': self.word_id,
+            'rank': self.rank,
+            'quiz_response': self.quiz_response,
+            'quiz_correct': self.quiz_correct,
+            'test_correct': self.test_correct,
+            'word_state': self.word_state,
+            'response_date': self.response_date
+        }
+        return f"{params}\n"
+
+# ユーザーの成績データモデルの定義
+class y200078(db.Model):
+    id = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
+    word_id = db.Column(db.Integer)                 # 英単語固有のID
+    rank = db.Column(db.String(10))                 # A1, A2, B1, B2
+    quiz_response = db.Column(db.Integer)           # クイズにおける解答数の累計
+    quiz_correct = db.Column(db.Integer)            # クイズにおける正解数の累計
+    test_correct = db.Column(db.Integer)            # テストにおける連続正解数（一度でも間違えれば0に）
+    word_state = db.Column(db.String(20))           # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
+    response_date = db.Column(db.DateTime)          # 解答した日時
+
+    def __repr__(self):
+        params = {
+            'order': self.id,
+            'word_id': self.word_id,
+            'rank': self.rank,
+            'quiz_response': self.quiz_response,
+            'quiz_correct': self.quiz_correct,
+            'test_correct': self.test_correct,
+            'word_state': self.word_state,
+            'response_date': self.response_date
+        }
+        return f"{params}\n"
+
+# ユーザーの成績データモデルの定義
+class y200080(db.Model):
+    id = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
+    word_id = db.Column(db.Integer)                 # 英単語固有のID
+    rank = db.Column(db.String(10))                 # A1, A2, B1, B2
+    quiz_response = db.Column(db.Integer)           # クイズにおける解答数の累計
+    quiz_correct = db.Column(db.Integer)            # クイズにおける正解数の累計
+    test_correct = db.Column(db.Integer)            # テストにおける連続正解数（一度でも間違えれば0に）
+    word_state = db.Column(db.String(20))           # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
+    response_date = db.Column(db.DateTime)          # 解答した日時
+
+    def __repr__(self):
+        params = {
+            'order': self.id,
+            'word_id': self.word_id,
+            'rank': self.rank,
+            'quiz_response': self.quiz_response,
+            'quiz_correct': self.quiz_correct,
+            'test_correct': self.test_correct,
+            'word_state': self.word_state,
+            'response_date': self.response_date
+        }
+        return f"{params}\n"
+
+# ユーザーの成績データモデルの定義
+class y200089(db.Model):
+    id = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
+    word_id = db.Column(db.Integer)                 # 英単語固有のID
+    rank = db.Column(db.String(10))                 # A1, A2, B1, B2
+    quiz_response = db.Column(db.Integer)           # クイズにおける解答数の累計
+    quiz_correct = db.Column(db.Integer)            # クイズにおける正解数の累計
+    test_correct = db.Column(db.Integer)            # テストにおける連続正解数（一度でも間違えれば0に）
+    word_state = db.Column(db.String(20))           # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
+    response_date = db.Column(db.DateTime)          # 解答した日時
+
+    def __repr__(self):
+        params = {
+            'order': self.id,
+            'word_id': self.word_id,
+            'rank': self.rank,
+            'quiz_response': self.quiz_response,
+            'quiz_correct': self.quiz_correct,
+            'test_correct': self.test_correct,
+            'word_state': self.word_state,
+            'response_date': self.response_date
+        }
+        return f"{params}\n"
+        
+# ユーザーの成績データモデルの定義
+class y200090(db.Model):
+    id = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
+    word_id = db.Column(db.Integer)                 # 英単語固有のID
+    rank = db.Column(db.String(10))                 # A1, A2, B1, B2
+    quiz_response = db.Column(db.Integer)           # クイズにおける解答数の累計
+    quiz_correct = db.Column(db.Integer)            # クイズにおける正解数の累計
+    test_correct = db.Column(db.Integer)            # テストにおける連続正解数（一度でも間違えれば0に）
+    word_state = db.Column(db.String(20))           # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
+    response_date = db.Column(db.DateTime)          # 解答した日時
+
+    def __repr__(self):
+        params = {
+            'order': self.id,
+            'word_id': self.word_id,
+            'rank': self.rank,
+            'quiz_response': self.quiz_response,
+            'quiz_correct': self.quiz_correct,
+            'test_correct': self.test_correct,
+            'word_state': self.word_state,
+            'response_date': self.response_date
         }
         return f"{params}\n"
 
@@ -108,8 +306,8 @@ class Record(db.Model):
 def roles_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if current_user.role == 'Student' or current_user.role == 'Tester':
-            return 'null'
+        if current_user.role == 'Student':
+            return 'アクセス権限がありません。'
         elif current_user.role == 'Admin':
             return view(**kwargs)
     return wrapped_view

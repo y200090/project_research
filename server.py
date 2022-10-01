@@ -1,27 +1,25 @@
-from __init__ import app, db, bcrypt, login_manager, Word, User, Record, roles_required
+from __init__ import app, db, bcrypt, login_manager, Word, User, y200004, y200042, y200051, y200062, y200065, y200078, y200080, y200089, y200090, roles_required
 import re, regex, pytz, random
 from datetime import datetime
-from flask import render_template, render_template_string, request, url_for, redirect, flash
+from flask import render_template, request, url_for, redirect, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
-from wtforms import EmailField, StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Email, Length, ValidationError
-from feature import feature
-from api import api
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Length, ValidationError
 
 # Blueprint（他のPythonファイルのモジュール化）を登録
+from feature import feature
+from api import api
 app.register_blueprint(feature)
 app.register_blueprint(api)
 
 # Flaskアプリと紐づけ
 login_manager.init_app(app)
 
-# ログインする際に実行される処理関数を登録
-# login_requiredでリダイレクトされた場合に実行したい関数を登録する
+# login_requiredでリダイレクトされた場合に実行したい関数を登録
 login_manager.login_view = "login"
 
-# 取得したユーザーIDからユーザー情報を返し、ログイン済みユーザーであることを確認
-# Cookieのセッション情報を利用
+# Cookieのセッション情報を利用して、current_userに情報を渡す
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
@@ -29,41 +27,41 @@ def load_user(user_id):
 # login_requiredでリダイレクトされた場合のメッセージを設定
 @login_manager.unauthorized_handler
 def unauthorized():
-    flash('これより先のページへのアクセスにはログインが必要です。', 'unauthorized')
+    flash("You don't have access permission.", "unauthorized")
     return redirect(url_for('login'))
 
-# サインアップ用コントローラーの登録
-class SignupForm(FlaskForm):
-    username = StringField('username', validators=[DataRequired()])
-    password = PasswordField('password', validators=[DataRequired(), Length(min=4, max=50)])
-    privacypolicy = BooleanField()
-    submit = SubmitField('SIGNUP')
+# # サインアップ用コントローラーの登録
+# class SignupForm(FlaskForm):
+#     username = StringField('username', validators=[DataRequired()])
+#     password = PasswordField('password', validators=[DataRequired(), Length(min=4, max=50)])
+#     privacypolicy = BooleanField()
+#     submit = SubmitField('SIGNUP')
 
-    # 既存のユーザー名と同じものが入力されたらエラー判定を出す関数
-    # 正規表現以外の文字もエラー対象
-    def validate_username(self, username):
-        used_username = User.query.filter_by(username=username.data).first()
-        if used_username:
-            raise ValidationError('このユーザー名は既に使用されています。')
+#     # 既存のユーザー名と同じものが入力されたらエラー判定を出す関数
+#     # 正規表現以外の文字もエラー対象
+#     def validate_username(self, username):
+#         used_username = User.query.filter_by(username=username.data).first()
+#         if used_username:
+#             raise ValidationError('このユーザー名は既に使用されています。')
             
-        regular_word = regex.compile(r'^[0-9a-zA-Z０-９Ａ-Ｚａ-ｚ\p{Hiragana}\p{Katakana}\p{Han}]+$')
-        if not regular_word.match(username.data):
-            raise ValidationError('使用できない文字が含まれています。')
+#         regular_word = regex.compile(r'^[0-9a-zA-Z０-９Ａ-Ｚａ-ｚ\p{Hiragana}\p{Katakana}\p{Han}]+$')
+#         if not regular_word.match(username.data):
+#             raise ValidationError('使用できない文字が含まれています。')
 
-    # パスワードの長さが４よりも少ない場合にエラー判定を出す関数
-    # 正規表現以外の文字もエラー対象
-    def validate_password(self, password):
-        if len(password.data) < 4:
-            raise ValidationError('パスワードは4文字以上で入力してください。')
+#     # パスワードの長さが４よりも少ない場合にエラー判定を出す関数
+#     # 正規表現以外の文字もエラー対象
+#     def validate_password(self, password):
+#         if len(password.data) < 4:
+#             raise ValidationError('パスワードは4文字以上で入力してください。')
 
-        regular_word = re.compile('^[0-9a-zA-Z]+$')
-        if not regular_word.match(password.data):
-            raise ValidationError('使用できない文字が含まれています。')
+#         regular_word = re.compile('^[0-9a-zA-Z]+$')
+#         if not regular_word.match(password.data):
+#             raise ValidationError('使用できない文字が含まれています。')
 
-    # 利用規約に同意しない場合にエラー判定を出す関数
-    def validate_privacypolicy(self, privacypolicy):
-        if privacypolicy.data == False:
-            raise ValidationError('利用規約に同意してください。')
+#     # 利用規約に同意しない場合にエラー判定を出す関数
+#     def validate_privacypolicy(self, privacypolicy):
+#         if privacypolicy.data == False:
+#             raise ValidationError('利用規約に同意してください。')
 
 # ログイン用コントローラーの登録
 class LoginForm(FlaskForm):
@@ -77,67 +75,40 @@ class LoginForm(FlaskForm):
 def homepage():
     return render_template('homepage.html')
 
-# サインアップページ
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
-    form = SignupForm()
-    # バリデーションチェック
-    if form.validate_on_submit():
-        # 重複しないユーザー固有のIDを作成
-        while True:
-            user_id = random.randint(100000, 999999)
-            if not user_id == User.query.filter_by(id=user_id).first():
-                break
-        
-        # フォームに入力されたパスワードをハッシュ化
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
-
-        # フォームに入力された情報をusersテーブルに登録
-        new_user = User(id=user_id, username=form.username.data, password=hashed_password, role="Student", login_state='inactive', signup_date=datetime.now(pytz.timezone('Asia/Tokyo')), total_remembered=0)
-
-        # データベースに追加
-        db.session.add(new_user)
-        db.session.commit()
-
-        return redirect(url_for('login'))
-        
-    return render_template('signup.html', form=form)
-
 # ログインページ
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # ログイン状態を確認し、ログイン済みであればバリデーションチェックを飛ばす
+    # ログイン済みであればバリデーションチェックを飛ばす
     if current_user.is_authenticated:
         return redirect(url_for('home'))
 
     form = LoginForm()
+
     # バリデーションチェック
     if form.validate_on_submit():
-
-        # フォームに入力されたユーザー名と合致するユーザー名をusersテーブルから検索し、あれば取得
+        # フォームに入力されたユーザー名と合致するユーザー名をusersテーブルから検索
         now_user = User.query.filter_by(username=form.username.data).first()
         if now_user:
-            
             # ハッシュ化されたパスワードのチェック
             if bcrypt.check_password_hash(now_user.password, form.password.data):
-                # 実際にログインを行う関数
                 # 第二引数にremember=Trueを渡すことで、Cookieにセッション情報を残している
                 login_user(now_user, remember=form.remember.data)
 
-                # ユーザー状態をアクティブに更新
+                # ユーザーのログイン状態をアクティブに更新
                 now_user.login_state = 'active'
                 # ログイン日時を更新
                 now_user.login_date = datetime.now(pytz.timezone('Asia/Tokyo'))
+                # データベースを更新
                 db.session.commit()
-
-                if now_user.role == 'Admin':
-                    return redirect(url_for('admin'))
-
                 return redirect(url_for('home'))
+
+            # パスワードが合致しなかった場合
             else :
-                flash('パスワードが間違っています。', 'password')
+                flash('This password is incorrect', 'password')
+
+        # ユーザー名が合致しなかった場合
         else :
-            flash('ユーザー名が間違っています。', 'username')
+            flash('This username is incorrect', 'username')
 
     return render_template('login.html', form=form)
 
@@ -147,16 +118,19 @@ def login():
 def home():
     return render_template('home.html')
 
+# ライブラリページ
 @app.route('/mypage/home/library')
 @login_required
 def library():
     return render_template('library.html')
 
+# 学習コースページ
 @app.route('/mypage/learnings')
 @login_required
 def learnings():
     return render_template('learnings.html')
 
+# クイズページ
 @app.route('/mypage/learnings/quiz')
 @login_required
 def quiz():
@@ -182,18 +156,21 @@ def quiz_result():
     
     return render_template('quiz_result.html', userId=current_user.id, wordId=word_id, answerState=answer_state, rank=rank, score=score)
 
+# テストコースページ
 @app.route('/mypage/tasks')
 @login_required
 def tasks():
     ranks = ['A1', 'A2', 'B1', 'B2']
     params = []
+    tester = current_user.id
     for rank in ranks:
         # テスト待ちの英単語群を取得
-        datas = Record.query.filter_by(user_id=current_user.id, rank=rank, test_correct=0, test_state='active').all()
+        datas = tester.query.filter_by(rank=rank, test_state='active').all()
         task = len(datas) // 20
         params.append(task)
     return render_template('tasks.html', tasks=params)
 
+# テストページ
 @app.route('/mypage/tasks/test')
 @login_required
 def test():
@@ -218,18 +195,20 @@ def test_result():
 
     return render_template('test_result.html', userId=current_user.id, wordId=word_id, answerState=answer_state, score=score)
 
+# 設定ページ
 @app.route('/mypage/settings')
 @login_required
 def settings():
     return render_template('settings.html', 
     user_id=current_user.id, username=current_user.username, user_role=current_user.role)
 
+# プロフィールページ
 @app.route('/mypage/settings/profile')
 @login_required
 def profile():
     return render_template('profile.html', user_id=current_user.id, username=current_user.username, user_role=current_user.role, signup_date=current_user.signup_date)
 
-# ログアウト処理
+# ログアウト
 @app.route('/logout')
 @login_required
 def logout():
