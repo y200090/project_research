@@ -128,6 +128,7 @@ async function main() {
             word_id: wordId[index],
             answer_state: answerState[index]
         };
+        console.log(wordId[index], answerState[index]);
         // テスト成績更新APIを叩く
         await postAPI(`https://project-research.azurewebsites.net/api/test-update`, updateData);
 

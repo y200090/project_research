@@ -152,6 +152,10 @@ def test_update():
     word_id = get_request['word_id']
     answer_state = get_request['answer_state']
 
+    print('\033[31m' + f'{word_id}' + '\033[0m')      # 確認用
+    print('\033[31m' + f'{answer_state}' + '\033[0m')      # 確認用
+
+
     words_data = Word.query.filter_by(id=word_id).first()
     records_data = Record.query.filter_by(user_id=current_user.id, word_id=word_id).first()
     users_data = User.query.filter_by(id=current_user.id).first()

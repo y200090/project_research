@@ -261,4 +261,4 @@ def admin():
     return render_template('admin.html', users=params)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)
+    app.run()
