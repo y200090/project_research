@@ -116,6 +116,7 @@ def login():
 @app.route('/mypage/home')
 @login_required
 def home():
+    print('\033[34m' + f'{current_user.id, type(current_user.id)}' + '\033[0m')    # 確認用
     return render_template('home.html')
 
 # ライブラリページ
