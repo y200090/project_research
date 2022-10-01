@@ -1,4 +1,4 @@
-from __init__ import db, Word, User, Record, roles_required
+from __init__ import db, Word, User, roles_required
 import pytz, json
 from datetime import datetime
 from flask import Blueprint, jsonify, request
