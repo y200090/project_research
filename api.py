@@ -26,24 +26,41 @@ def words_search():
     return jsonify(params)
 
 # 英単語ID検索API
-@api.route('/word-id-search/<word_id>')
+@api.route('/word-id-search/<word_id>', methods=['GET', 'POST'])
 @login_required
 def word_id_search(word_id):
-    words_data = Word.query.filter_by(id=word_id).first()
-    if words_data:
-        return jsonify({
-            'word_id': words_data.id,
-            'word': words_data.word,
-            'translation': words_data.translation,
-            'part_en': words_data.part_en,
-            'part_jp': words_data.part_jp,
-            'rank': words_data.rank,
-            'freq_rank': words_data.freq_rank,
-            'response': words_data.response,
-            'correct': words_data.correct
-        })
-    else:
-        return "このIDの英単語データは存在しません。"
+    if request.method == 'GET':
+        words_data = Word.query.filter_by(id=word_id).first()
+        if words_data:
+            return jsonify({
+                'word_id': words_data.id,
+                'word': words_data.word,
+                'translation': words_data.translation,
+                'part_en': words_data.part_en,
+                'part_jp': words_data.part_jp,
+                'rank': words_data.rank,
+                'freq_rank': words_data.freq_rank,
+                'response': words_data.response,
+                'correct': words_data.correct
+            })
+        else:
+            return "このIDの英単語データは存在しません。"
+    
+    if request.method == 'POST':
+        words_data = Word.query.filter_by(id=word_id).first()
+
+        # POSTリクエストを受け取る
+        get_request = request.get_json()
+        new_translation = get_request['new_translation']
+
+        # 英単語データの日本語訳を更新
+        words_data.translation = new_translation
+
+        # データベースを更新する
+        db.session.commit()
+
+        return jsonify('finish')
+
 
 # 英単語ランク検索API
 @api.route('/word-rank-search/<rank>')
@@ -87,7 +104,6 @@ def quiz_achive_clac():
 def quiz_update(rank):
     # POSTリクエストを受け取る
     get_request = request.get_json()
-
     word_id = get_request['word_id']
     answer_state = get_request['answer_state']
 
@@ -133,7 +149,6 @@ def quiz_update(rank):
 def test_update():
     # POSTリクエストを受け取る
     get_request = request.get_json()
-
     word_id = get_request['word_id']
     answer_state = get_request['answer_state']
 

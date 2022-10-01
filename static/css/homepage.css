@@ -23,7 +23,6 @@ body {
     top: 20px;
     height: 60px;
     width: 90%;
-    max-width: 415px;
     display: flex;
     align-items: center;
     justify-content: flex-start;

@@ -12,11 +12,13 @@
 {% endblock %}
 
 {% block body %}
-    <header class="result-header">
+    <div class="result-header">
         <a href="{{ url_for('learnings') }}">
             <span class="material-symbols-outlined quit-icon">close</span>
         </a>
-    </header>
+        <span class="material-symbols-outlined close-icon">close</span>
+    </div>
+    <!-- ============================================================================ -->
     <div class="result">
         <img src="" class="result-image">
         <h1 id="result-comment"></h1>
@@ -24,11 +26,32 @@
             <span id="user-score">{{ score }}</span><span id="max-score">/10</span>
         </span>
         <div class="result-form">
-            <span href="" id="review">Review</span>
+            <button id="review-button">Review</button>
             <a href="{{ url_for('quiz', rank=rank) }}" id="return">Again</a>
         </div>
     </div>
-    <!-- ============================================================= -->
+    <!-- ============================================================================ -->
+    <div class="reviewee">
+        <div class="reviewee-container">
+            {% for i in range(10) %}
+                <div class="reviewee-card">
+                    <p class="quiz-word"></p>
+                    <p class="quiz-answer"></p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- ============================================================================ -->
+    <div class="edit-form">
+        <div class="edit-field">
+            <p>不適切な日本語訳を編集します。<br>
+            編集した日本語訳はwebアプリ全体に反映されます。編集する際は慎重に検討してください。</p>
+            <span class="material-symbols-outlined">close</span>
+            <input type="text">
+            <button>request</button>
+        </div>
+    </div>
+    <!-- ============================================================================ -->
     <script>
         const userId = '{{ userId|tojson }}',
               wordId = JSON.parse('{{ wordId|tojson|safe }}'),

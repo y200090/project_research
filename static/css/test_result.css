@@ -86,7 +86,8 @@ body {
     justify-content: space-around;
     text-align: center;
 }
-.result-form a {
+.result-form a,
+.result-form span {
     width: 100%;
     padding: 15px 0;
     border-radius: 8px;
@@ -95,7 +96,8 @@ body {
     font-weight: 600;
     transition: all 0.3s;
 }
-.result-form a:hover {
+.result-form a:hover,
+.result-form span:hover {
     transform: scale(1.02);
 }
 #review {
