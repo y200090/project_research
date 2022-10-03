@@ -20,7 +20,7 @@
     </div>
     <!-- ============================================================================ -->
     <div class="result">
-        <img src="" class="result-image">
+        <img src="{{ url_for('static', filename='images/undraw_happy_news_re_tsbd.svg') }}" class="result-image">
         <h1 id="result-comment"></h1>
         <span class="scoreboard">
             <span id="user-score">{{ score }}</span><span id="max-score">/10</span>
@@ -58,5 +58,7 @@
               answerState = JSON.parse('{{ answerState|tojson|safe }}'),
               rank = '{{ rank }}',
               score = '{{ score }}';
+        
+        console.log(score);
     </script>
 {% endblock %}

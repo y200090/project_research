@@ -44,7 +44,8 @@ const currentNumber = document.querySelector('#current-number'),
 // メイン関数
 async function main() {
     // Create Questions APIを叩く
-    const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create-questions/quiz/${rank}`);
+    // const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create-questions/quiz/${rank}`);
+    const questions = await getAPI(`http://127.0.0.1:5000/feature/create-questions/quiz/${rank}`);
     
     // 問題・選択肢を表示する関数===========================================================
     function setQuiz() {
@@ -144,13 +145,14 @@ async function main() {
         options.classList.add('none-events');
         nextForm.classList.add('active');
 
-        // クイズ成績更新APIに送信するPOSTデータを設定
+        // クイズ更新APIに送信するPOSTデータを設定
         const updateData = {
             'word_id': wordId[index],
             'answer_state': answerState[index]
         };
-        // クイズ成績更新APIを叩く
-        await postAPI(`https://project-research.azurewebsites.net/api/quiz-update/${rank}`, updateData);
+        // クイズ更新APIを叩く
+        // await postAPI(`https://project-research.azurewebsites.net/api/quiz-update/${rank}`, updateData);
+        await postAPI(`http://127.0.0.1:5000/api/quiz-update/${rank}`, updateData);
 
         // クイズの最後の問題を解答した時の処理
         if (index == questions.length - 1) {
@@ -163,7 +165,7 @@ async function main() {
     // 次の問題を表示する関数============================================================
     function nextQuiz() {
         options.classList.remove('none-events');
-        nextForm.classList.remove('active');        
+        nextForm.classList.remove('active');
         index++;
         if (index < questions.length) setQuiz();
     };
@@ -171,7 +173,7 @@ async function main() {
 
     // リザルトページへ遷移する関数=========================================================
     function toResult() {
-        document.resultForm.action = 'quiz/result';       // ページ遷移先をリザルトページへ変更
+        document.resultForm.action = `${rank}/result?score=${score}`;       // ページ遷移先をリザルトページへ変更
         document.resultForm.method = 'POST';
         nextButton.type = 'submit';
         nextButton.value = '終了する';
@@ -191,18 +193,6 @@ async function main() {
             post2.value = anss;
             nextForm.appendChild(post2);
         });
-
-        const post3 = document.createElement('input');
-        post3.type = 'hidden';
-        post3.name = 'rank';
-        post3.value = rank;
-        nextForm.appendChild(post3);
-
-        const post4 = document.createElement('input');
-        post4.type = 'hidden';
-        post4.name = 'score';
-        post4.value = score;
-        nextForm.appendChild(post4);
     };
 };
 main();

@@ -1,16 +1,21 @@
-from __init__ import db, Word, User, roles_required
-import pytz, json
+import re
+from __init__ import db, Word, User, Y200004, Y200042, Y200051, Y200062, Y200065, Y200078, Y200080, Y200089, Y200090, roles_required, record
+import pytz, json, collections
 from datetime import datetime
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
+from sqlalchemy import or_, func
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
 # 英単語全検索API
 @api.route('/word-all-search')
-def words_search():
-    params = []
+@login_required
+def word_all_search():
+    # wordsテーブルのデータを全取得
     datas = Word.query.all()
+
+    params = []
     for i in range(len(datas)):
         params.append({
             'word_id': datas[i].id,
@@ -23,6 +28,7 @@ def words_search():
             'correct': datas[i].correct,
             'freq_rank': datas[i].freq_rank
         })
+
     return jsonify(params)
 
 # 英単語ID検索API
@@ -30,164 +36,225 @@ def words_search():
 @login_required
 def word_id_search(word_id):
     if request.method == 'GET':
-        words_data = Word.query.filter_by(id=word_id).first()
-        if words_data:
-            return jsonify({
-                'word_id': words_data.id,
-                'word': words_data.word,
-                'translation': words_data.translation,
-                'part_en': words_data.part_en,
-                'part_jp': words_data.part_jp,
-                'rank': words_data.rank,
-                'freq_rank': words_data.freq_rank,
-                'response': words_data.response,
-                'correct': words_data.correct
-            })
-        else:
-            return "このIDの英単語データは存在しません。"
+        # word_idに合致するwordsテーブルのデータを単一取得
+        data = Word.query.filter_by(id=word_id).first()
+
+        return jsonify({
+            'word_id': data.id,
+            'word': data.word,
+            'translation': data.translation,
+            'part_en': data.part_en,
+            'part_jp': data.part_jp,
+            'rank': data.rank,
+            'freq_rank': data.freq_rank,
+            'response': data.response,
+            'correct': data.correct
+        })
     
     if request.method == 'POST':
-        words_data = Word.query.filter_by(id=word_id).first()
-
-        # POSTリクエストを受け取る
+        # POSTリクエストでJSONを取得
         get_request = request.get_json()
         new_translation = get_request['new_translation']
 
+        # word_idに合致するwordsテーブルのデータを単一取得
+        data = Word.query.filter_by(id=word_id).first()
+
         # 英単語データの日本語訳を更新
-        words_data.translation = new_translation
+        data.translation = new_translation
 
         # データベースを更新する
         db.session.commit()
 
         return jsonify('finish')
 
-
 # 英単語ランク検索API
 @api.route('/word-rank-search/<rank>')
 @login_required
-def word_rank_search(rank):
+def word_rank_search(rank):    
+    # rankと合致するwordsテーブルのデータを全取得
+    datas = Word.query.filter_by(rank=rank).all()
+
     params = []
-    words_datas = Word.query.filter_by(rank=rank).all()
-    if words_datas:
-        for i in range(len(words_datas)):
-            params.append({
-                'word_id': words_datas[i].id,
-                'word': words_datas[i].word,
-                'translation': words_datas[i].translation,
-                'part_en': words_datas[i].part_en,
-                'part_jp': words_datas[i].part_jp,
-                'rank': words_datas[i].rank,
-                'freq_rank': words_datas[i].freq_rank,
-                'response': words_datas[i].response,
-                'correct': words_datas[i].correct
-            })
-        return jsonify(params)
+    for i in range(len(datas)):
+        params.append({
+            'word_id': datas[i].id,
+            'word': datas[i].word,
+            'translation': datas[i].translation,
+            'part_en': datas[i].part_en,
+            'part_jp': datas[i].part_jp,
+            'rank': datas[i].rank,
+            'freq_rank': datas[i].freq_rank,
+            'response': datas[i].response,
+            'correct': datas[i].correct
+        })
+    
+    return jsonify(params)
+
+# クイズ解答時更新API
+@api.route('/quiz-update/<rank>', methods=['POST'])
+@login_required
+def quiz_update(rank):
+    # POSTリクエストでJSONを取得
+    get_request = request.get_json()
+    word_id = get_request['word_id']
+    answer_state = get_request['answer_state']
+
+    # word_idに合致するwordsテーブルのデータを単一取得
+    words_data = Word.query.filter_by(id=word_id).first()
+
+    # 現在ログイン中のユーザーのIDと合致するusersテーブルのデータを単一取得
+    users_data = User.query.filter_by(id=current_user.id).first()
+    
+    # “解答された累計”を更新
+    words_data.response += 1
+
+    # “クイズの解答数の累計”を更新
+    users_data.total_quiz_response += 1
+
+    # クイズ正解時の場合
+    if answer_state == 'correct':
+        # “正解された累計”を更新
+        words_data.correct += 1
+
+        # “クイズの正解数の累計”を更新
+        users_data.total_quiz_correct += 1
+
+    Record = record(current_user.id)
+    # 解答した英単語が既出の場合
+    if Record.query.filter_by(word_id=word_id).first():
+        print('\033[31m' + ' >> 既出です。' + '\033[0m')      # 確認用
+
+        # 同一の英単語IDを持つ複数のレコードの中から、word_idと合致するy2000*テーブルの最新のorderを取得
+        x = Record.query.filter_by(word_id=word_id).all()
+        max_order = x[-1].order
+
+        # max_orderと合致するy2000*テーブルのデータを単一取得
+        records_data = Record.query.filter_by(order=max_order).first()
+
+        # “クイズでの解答数の累計”を更新
+        quiz_response = records_data.quiz_response + 1
+
+        # クイズ正解時の場合
+        if answer_state == 'correct':
+            # “学習待ち”から“テスト待ち”へ更新
+            word_state = 'test_state'
+            
+            # “クイズでの正解数の累計”を更新
+            quiz_correct = records_data.quiz_correct + 1
+
+        # クイズ不正解時の場合
+        elif answer_state == 'incorrect':
+            # “学習待ち”状態を継承
+            word_state = 'quiz_state'
+
+            # “クイズでの正解数の累計”を継承
+            quiz_correct = records_data.quiz_correct
+
+        # 初期値継承
+        test_response = records_data.test_response
+        test_correct = records_data.test_correct
+        test_challenge_index = records_data.test_challenge_index
+
+    # 解答した英単語が初出の場合
     else:
-        return "このランクの英単語データは存在しません。"
+        print('\033[31m' + ' >> 初出です。' + '\033[0m')      # 確認用
 
-# クイズ達成度計算API
-# @api.route('/quiz-achive-calc')
-# @login_required
-# def quiz_achive_clac():
-#     ranks = ['A1', 'A2', 'B1', 'B2']
-#     params = []
-#     for rank in ranks:
-#         words_datas = Word.query.filter_by(rank=rank).all()
-#         records_datas = Record.query.filter_by(user_id=current_user.id, rank=rank, test_state='active').all()
-#         diff = len(records_datas) * 100 // len(words_datas)
-#         params.append(diff)
-#     return jsonify(params)
+        # “クイズでの解答数の累計”の初期値を登録
+        quiz_response = 1
 
-# クイズ成績更新API
-# @api.route('/quiz-update/<rank>', methods=['POST'])
-# @login_required
-# def quiz_update(rank):
-#     # POSTリクエストを受け取る
-#     get_request = request.get_json()
-#     word_id = get_request['word_id']
-#     answer_state = get_request['answer_state']
+        # クイズ正解時の場合
+        if answer_state == 'correct':
+            # “テスト待ち”として登録
+            word_state = 'test_state'
+            
+            # “クイズにおける正解数の累計”の初期値を登録
+            quiz_correct = 1
 
-#     # wordsテーブルの出題数・正解数を更新
-#     words_data = Word.query.filter_by(id=word_id).first()
-#     words_data.response += 1
-#     if answer_state == 'correct':
-#         words_data.correct += 1
-    
-#     # recordsテーブルを検索
-#     records_data = Record.query.filter_by(user_id=current_user.id, word_id=word_id).first()
+        # クイズ不正解時の場合
+        elif answer_state == 'incorrect':
+            # “学習待ち”として登録
+            word_state = 'quiz_state'
 
-#     # 既出の場合
-#     if records_data:
-#         if answer_state == 'correct':
-#             # 学習待ちからテスト待ちへ
-#             records_data.test_state = 'active'
-#         elif answer_state == 'incorrect':
-#             # 再度学習待ちへ
-#             records_data.test_state = 'inactive'
-#     # 初出の場合
-#     else:
-#         # recordsテーブルにデータを登録
-#         if answer_state == 'correct':
-#             # テスト待ちへ
-#             test_state = 'active'
-#         elif answer_state == 'incorrect':
-#             # 学習待ちへ
-#             test_state = 'inactive'
+            # “クイズにおける正解数の累計”の初期値を登録
+            quiz_correct = 0
         
-#         set_db = Record(user_id=current_user.id, word_id=word_id, rank=rank, test_correct=0, test_state=test_state)
-#         # データベースに追加
-#         db.session.add(set_db)
+        # 初期値設定
+        test_response = 0
+        test_correct = 0
+        test_challenge_index = 0
     
-#     # データベースを更新する
-#     db.session.commit()
+    # 上記のデータをy2000*テーブルに新規登録
+    set_db = Record(word_id=word_id, rank=rank, quiz_response=quiz_response, quiz_correct=quiz_correct, test_response=test_response, test_correct=test_correct, word_state=word_state, response_date=datetime.now(pytz.timezone('Asia/Tokyo')), quiz_challenge_index=users_data.quiz_challenge_number, test_challenge_index=test_challenge_index)
 
-#     return jsonify('finish')
-
-# # テスト成績更新API
-# @api.route('/test-update', methods=['POST'])
-# @login_required
-# def test_update():
-#     # POSTリクエストを受け取る
-#     get_request = request.get_json()
-#     word_id = get_request['word_id']
-#     answer_state = get_request['answer_state']
-
-#     words_data = Word.query.filter_by(id=word_id).first()
-#     records_data = Record.query.filter_by(user_id=current_user.id, word_id=word_id).first()
-#     users_data = User.query.filter_by(id=current_user.id).first()
-
-#     words_data.response += 1                     # 全体の解答数を更新
+    # データベースに追加
+    db.session.add(set_db)
     
-#     # テスト正解時の場合
-#     if answer_state == 'correct':
-#         words_data.correct += 1                  # 全体の正解数を更新
-#         records_data.test_correct += 1           # テストの正解数を更新
-#         records_data.test_state = 'review'       # テスト待ちから復習待ちへ
-#         users_data.total_remembered += 1         # ユーザーの”覚えた”判定の累計を更新
+    # データベースを更新する
+    db.session.commit()
 
-#     # テスト不正解時の場合
-#     elif answer_state == 'incorrect':
-#         records_data.test_correct = 0            # テストの正解数をリセット
-#         records_data.test_state = 'inactive'     # テスト待ちから学習待ちへ
-    
-#     # データベースを更新する
-#     db.session.commit()
-    
-#     return jsonify('finish')
+    return jsonify('finish')
 
-# # ユーザー成績検索API
-# @api.route('/user-id-search/<user_id>')
-# def user_id_search(user_id):
-#     temp = []
-#     datas = Record.query.filter_by(user_id=user_id).all()
-#     if datas:
-#         for i in range(len(datas)):
-#             temp.append({
-#                 'user_id': datas[i].user_id,
-#                 'word_id': datas[i].word_id,
-#                 'rank': datas[i].rank,
-#                 'test_correct': datas[i].test_correct,
-#                 'test_state': datas[i].test_state
-#             })
-#         return jsonify(temp)
-#     return "このIDのユーザーは存在しません。"
+# テスト更新API
+@api.route('/test-update/<rank>', methods=['POST'])
+@login_required
+def test_update(rank):
+    # POSTリクエストを受け取る
+    get_request = request.get_json()
+    word_id = get_request['word_id']
+    answer_state = get_request['answer_state']
+    
+    # word_idに合致するwordsテーブルのデータを単一取得
+    words_data = Word.query.filter_by(id=word_id).first()
+
+    # 現在ログイン中のユーザーのIDと合致するusersテーブルのデータを単一取得
+    users_data = User.query.filter_by(id=current_user.id).first()
+
+    Record = record(current_user.id)
+    # 同一の英単語IDを持つ複数のレコードの中から、word_idと合致するy2000*テーブルの最新のorderを取得
+    x = Record.query.filter_by(word_id=word_id).all()
+    max_order = x[-1].order
+
+    # max_orderと合致するy2000*テーブルのデータを単一取得
+    records_data = Record.query.filter_by(order=max_order).first()
+
+    # “解答された累計”を更新
+    words_data.response += 1
+
+    # “テストの解答数の累計”を更新
+    users_data.total_test_response += 1
+
+    # “テストでの解答数の累計”を更新
+    test_response = records_data.test_response + 1
+    
+    # テスト正解時の場合
+    if answer_state == 'correct':
+        # “正解された累計”を更新
+        words_data.correct += 1
+
+        # “テスト待ち”から“復習待ち”へ更新
+        word_state = 'review_state'
+        
+        # “テストにおける連続正解数”を更新
+        test_correct = records_data.test_correct + 1
+
+        # “覚えた判定を出した累計”を更新
+        users_data.total_remembered += 1
+
+    # テスト不正解時の場合
+    elif answer_state == 'incorrect':
+        # “テスト待ち”から“学習待ち”へ更新
+        word_state = 'quiz_state'
+        
+        # “テストにおける連続正解数”をリセット
+        test_correct = 0
+
+    # 上記のデータをy2000*テーブルに新規登録
+    set_db = Record(word_id=word_id, rank=rank, quiz_response=records_data.quiz_response, quiz_correct=records_data.quiz_correct, test_response=test_response, test_correct=test_correct, word_state=word_state, response_date=datetime.now(pytz.timezone('Asia/Tokyo')), quiz_challenge_index=records_data.quiz_challenge_index, test_challenge_index=users_data.test_challenge_number)
+
+    # データベースに追加
+    db.session.add(set_db)
+    
+    # データベースを更新する
+    db.session.commit()
+    
+    return jsonify('finish')

@@ -1,8 +1,8 @@
-from __init__ import app, db, Word, User, roles_required
-import random
-from flask import Blueprint, jsonify, request
+from __init__ import db, Word, User, Y200004, Y200042, Y200051, Y200062, Y200065, Y200078, Y200080, Y200089, Y200090, record
+import random, collections
+from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
-from sqlalchemy import or_
+from sqlalchemy import or_, func
 
 feature = Blueprint('create_quiz', __name__, url_prefix='/feature')
 
@@ -21,172 +21,212 @@ def partcompare(ans, wrong): #品詞が同じかどうかの評価関数、〇�
     else:
         return 0
 
-def check_period():
+def check_movepoint(Record):
+    # 現在ログイン中のユーザーのIDと合致するusersテーブルのデータを単一取得
     users_data = User.query.filter_by(id=current_user.id).first()
-    # 復習待ち英単語群を取得
-    # records_datas = Record.query.filter_by(id=current_user.id, test_state='review').all()
 
-    # for i in range(len(records_datas)):
-    #     if records_datas[i].test_correct >= (users_data.total_remembered + 50 * records_datas[i].test_correct**2):
-    #         print('\033[32m' + f'{records_datas[i].word_id}:{records_datas[i].test_state} -> active' + '\033[0m')    # 確認用
-    #         # 復習待ちからテスト待ちへ
-    #         records_datas[i].test_state = 'active'
+    # “復習待ち”と合致するy2000*テーブルのデータを全取得
+    records = Record.query.filter_by(word_state='review_state').all()
 
-def for_quiz(rank):
-    params = []
+    if not records == []:
+        # 重複しないy2000*テーブルの英単語IDを取得
+        word_id_list = list(map(lambda x: x.word_id, records))
+        dedupe_keys = list(collections.Counter(word_id_list).keys())
+
+        for id in dedupe_keys:
+            # 同一の英単語IDを持つ複数のレコードの中から、idと合致するy2000*テーブルの最新のorderを取得
+            max_order = db.session.query(func.max(Record.order)).filter(Record.word_id==id).scalar()
+
+            # max_orderと合致するy2000*テーブルのデータを単一取得
+            records_data = Record.query.filter_by(order=max_order).first()
+
+            if records_data.test_correct >= (users_data.total_remembered + 50 * records_data.test_correct ** 2):
+                # “復習待ち”から“テスト待ち”へ更新
+                records_data.word_state = 'test_state'
+        
+                print('\033[32m' + f'{records_data.word_id} : 復習待ち -> テスト待ち | 更新完了' + '\033[0m')      # ログ確認用
+
+        # データベースを更新する
+        db.session.commit()
+
+def quiz_candidate(rank, Record):
+    # rnakと合致するwordsテーブルのデータを全取得
     words_datas = Word.query.filter_by(rank=rank).all()
-    # テスト待ち・復習待ち英単語を検索
-    # records_datas = Record.query.filter(Record.user_id==current_user.id, Record.rank==rank).filter(or_(Record.test_state=='active', Record.test_state=='review')).all()
-    # print('\033[32m' + f'{records_datas}' + '\033[0m')    # 確認用
-    # for i in range(len(words_datas)):
-    #     check = 0
-    #     # テスト待ち・復習待ち英単語を避けて出力する
-    #     for j in range(len(records_datas)):
-    #         if words_datas[i].id == records_datas[j].word_id:
-    #             check = 1
-    #             break
-    #     if check == 1:
-    #         continue
 
-    #     params.append({
-    #         'ID': words_datas[i].id,
-    #         'word': words_datas[i].word,
-    #         'translation': words_datas[i].translation,
-    #         'part_en': words_datas[i].part_en,
-    #         'part_jp': words_datas[i].part_jp,
-    #         'rank': words_datas[i].rank,
-    #         'freq_rank': words_datas[i].freq_rank,
-    #         'response': words_datas[i].response,
-    #         'correct': words_datas[i].correct
-    #     })
-    # return params
+    # rankかつ“テスト待ち”または“復習待ち”と合致するy2000*テーブルのデータを全取得
+    records = Record.query.filter_by(rank=rank).filter(or_(Record.word_state=='test_state', Record.word_state=='review_state')).all()
 
-# def for_test(rank):
-#     params = []
-#     # テスト待ち英単語を検索
-#     records_datas = Record.query.filter_by(user_id=current_user.id, rank=rank, test_state='active').all()
-#     # print('\033[32m' + f'{records_datas}' + '\033[0m')     # 確認用
-#     for i in range(len(records_datas)):
-#         words_data = Word.query.filter_by(id=records_datas[i].word_id).first()
-#         # print('\033[34m' + f'{words_data}' + '\033[0m')    # 確認用
-#         params.append({
-#             'ID': words_data.id,
-#             'word': words_data.word,
-#             'translation': words_data.translation,
-#             'part_en': words_data.part_en,
-#             'part_jp': words_data.part_jp,
-#             'rank': words_data.rank,
-#             'freq_rank': words_data.freq_rank,
-#             'response': words_data.response,
-#             'correct': words_data.correct
-#         })
-#     return params
+    records_datas = []
+    if not records == []:
+        # 重複しないy2000*テーブルの英単語IDを取得
+        word_id_list = list(map(lambda x: x.word_id, records))
+        dedupe_keys = list(collections.Counter(word_id_list).keys())
+
+        # 同一の英単語IDを持つ複数のレコードの中から最新のデータを取得
+        for id in dedupe_keys:
+            # idと合致するy2000*テーブルの最新のorderを取得
+            max_order = db.session.query(func.max(Record.order)).filter(Record.word_id==id).scalar()
+            # max_orderと合致するy2000*テーブルのデータを単一取得
+            records_datas.append(Record.query.filter_by(order=max_order).first())
+    
+    params = []
+    for i in range(len(words_datas)):
+        check = 0
+        # “テスト待ち”または“復習待ち”状態の英単語を除外
+        for j in range(len(records_datas)):
+            if words_datas[i].id == records_datas[j].word_id:
+                check = 1
+                break            
+        if check == 1:
+            continue
+
+        params.append({
+            'ID': words_datas[i].id,
+            'word': words_datas[i].word,
+            'translation': words_datas[i].translation,
+            'part_en': words_datas[i].part_en,
+            'part_jp': words_datas[i].part_jp,
+            'rank': words_datas[i].rank,
+            'freq_rank': words_datas[i].freq_rank,
+            'response': words_datas[i].response,
+            'correct': words_datas[i].correct
+        })
+    return params
+
+def test_candidate(rank, Record):
+    # rankかつ“テスト待ち”と合致するy2000*テーブルのデータを全取得
+    records = Record.query.filter_by(rank=rank, word_state='test_state').all()
+    # 重複しないy2000*テーブルの英単語IDを取得
+    word_id_list = list(map(lambda x: x.word_id, records))
+    dedupe_keys = list(collections.Counter(word_id_list).keys())
+
+    params = []
+    for id in dedupe_keys:
+        # 同一の英単語IDを持つ複数のレコードの中から、idと合致するy2000*テーブルの最新のorderを取得
+        max_order = db.session.query(func.max(Record.order)).filter(Record.word_id==id).scalar()
+        # max_orderと合致するy2000*テーブルのデータを単一取得
+        records_data = Record.query.filter_by(order=max_order).first()
+        # 上で取得した英単語IDと合致するwordsテーブルのデータを単一取得
+        words_data = Word.query.filter_by(id=records_data.word_id).first()
+
+        params.append({
+            'ID': words_data.id,
+            'word': words_data.word,
+            'translation': words_data.translation,
+            'part_en': words_data.part_en,
+            'part_jp': words_data.part_jp,
+            'rank': words_data.rank,
+            'freq_rank': words_data.freq_rank,
+            'response': words_data.response,
+            'correct': words_data.correct
+        })
+    return params
 
 def all_words():
-    params = []
+   # wordsテーブルのデータを全取得
     datas = Word.query.all()
+
+    params = []
     for i in range(len(datas)):
         params.append({
-            'ID': datas[i].id,
+            'word_id': datas[i].id,
             'word': datas[i].word,
             'translation': datas[i].translation,
             'part_en': datas[i].part_en,
             'part_jp': datas[i].part_jp,
             'rank': datas[i].rank,
-            'freq_rank': datas[i].freq_rank,
             'response': datas[i].response,
-            'correct': datas[i].correct
+            'correct': datas[i].correct,
+            'freq_rank': datas[i].freq_rank
         })
+
     return params
 
 # Create Questions API
 @feature.route('/create-questions/<category>/<rank>')
 @login_required
-def create_questions(category, rank):       #問題を作成し、辞書型変数で返す
-
-    check_period()
-
+def create_questions(category, rank):
+    # 問題として出題する英単語IDを格納する配列
     learningList = []
 
+    Record = record(current_user.id)
+
+    # クイズリクエスト時の処理
     if category == 'quiz':
-        fp = for_quiz(rank)
-        # print('\033[31m' + f'{fp}' + '\033[0m')      # 確認用
-        Qcount = 10 #問題数
+        # クイズに出題する候補の英単語データを取得
+        fp = quiz_candidate(rank, Record)        
+        random.shuffle(fp)
 
-        random.shuffle(fp)        
-
-        ###learninglist.jsonに10単語追加するコード。重み調整済み。
+        Qcount = 10    # 問題数
         j = 0
         while True:
-                l = random.randrange(len(fp))
-                i = random.randrange(1,1500)
-                x = int(fp[l]["freq_rank"])
-                threshold = 1000 * (0.5) ** (x / 1000) + 500         # 重み付け部分
-                if threshold >= i:
-                    # learningList.append({"ID":fp[l]['ID']})
-
-                    learningList.append(l)   # クイズに出題する英単語IDの配列番号を記憶
-                    
-                    # print(f"QUALIFIED >> rand:{i}, FreqRank:{fp[l]['freq_rank']}, Freqvalue:{threshold}")
-                    j+=1
-                else:
-                    # print(f"CONTINUED >> rand:{i}, FreqRank:{fp[l]['freq_rank']}, Freqvalue:{threshold}")
-                    continue
-                if j >= Qcount:
-                    break
+            l = random.randrange(len(fp))
+            i = random.randrange(1,1500)
+            x = int(fp[l]["freq_rank"])
+            threshold = 1000 * (0.5) ** (x / 1000) + 500    # 重み付け部分
+            if threshold >= i:
+                # クイズに出題する英単語IDの配列番号（行数）を記憶
+                learningList.append(l)
+                j+=1
+            else:
+                continue
+            if j >= Qcount:
+                break
     
+    # テストリクエスト時の処理
     if category == 'test':
-        # fp = for_test(rank)
-        # print('\033[31m' + f'{fp}' + '\033[0m')      # 確認用
-        Qcount = 20
+        # “復習待ち”状態の英単語を“テスト待ち”へ更新する条件を満たしているかの判定を行う
+        check_movepoint(Record)
+        
+        # テストに出題する候補の英単語データを取得
+        fp = test_candidate(rank, Record)
+        
+        Qcount = 20    # 問題数
         for q in range(Qcount):
+            # テストに出題する英単語IDの配列番号（行数）を記憶
             learningList.append(q)
 
-    op = all_words()      # 誤答選択肢用の英単語データを取得
+    # 誤答選択肢用の英単語データを取得
+    op = all_words()
     linecount = len(op)         #データファイルの行数をカウント
-    # print('\033[32m' + f'{linecount}' + '\033[0m')
 
     obj = [] #出力用リスト
-
     for _ in range(Qcount):
-        QuestionLine = [] #出題用の問題保存リスト
+        QuestionLine = [] #出題用の問題保存リスト    
 
-        # while True:
-        # a = int(learningList[_]["ID"])%10000-1  # 1~行数の乱数を生成        
-        ansline = list(fp[learningList[_]].values()) # fp(辞書)のa要素目の値をリストとして取得
+        # fp(辞書)のa要素目の値をリストとして取得
+        ansline = list(fp[learningList[_]].values())
 
-        # for b in range(6):
-        #     ansline[b] = ansline[b].rstrip('\n') #読み込んだデータの余分な空白などを削除(以下クリーンアップ)
+        #出題用の問題保存リストにアペンド
+        QuestionLine.append(ansline)
 
-        QuestionLine.append(ansline) #出題用の問題保存リストにアペンド
-
-        wrongline = []  # 誤答選択肢用のリストを用意
-            # break
+        # 誤答選択肢用のリストを用意
+        wrongline = []
 
         i = 0
-        while i < 3:  # 3回だけ
+        while i < 3:
             a = random.randrange(1, linecount)
-            imp = list(op[a].values()) # fp(辞書)のa要素目の値をリストとして取得
+            # fp(辞書)のa要素目の値をリストとして取得
+            imp = list(op[a].values())
 
-            # for j in range(6):
-            #     imp[j] = imp[j].rstrip('\n') #読み込んだデータをクリーンアップ
-
-            if partcompare(imp[3], ansline[3]) == 0: #品詞が正答と違ったら60%の確率でやり直し
+            #品詞が正答と違ったら60%の確率でやり直し
+            if partcompare(imp[3], ansline[3]) == 0:
                 if random.randrange(1,100) <= 60:
-                    #print("continued : parts")
                     continue
 
-            wrongline.append(imp)  #impに読み込んだデータをwronglineにアペンド
-            
-            QuestionLine.append(wrongline[i]) #出題用の問題保存リストにアペンド
+            #impに読み込んだデータをwronglineにアペンド
+            wrongline.append(imp)
+            #出題用の問題保存リストにアペンド
+            QuestionLine.append(wrongline[i])
 
-            i+=1 #ここまで来たらi+1してwhile続行
+            i += 1
 
         random.shuffle(QuestionLine) #問題のシャッフル
 
         opt = []
         for i in range(4):
-            opt.append(QuestionLine[i][2]) #optに日本語訳の選択肢をアペンド
+            #optに日本語訳の選択肢をアペンド
+            opt.append(QuestionLine[i][2])
 
         obj.append({
             "ID": ansline[0], 
@@ -195,7 +235,6 @@ def create_questions(category, rank):       #問題を作成し、辞書型変�
             "answer": f"{ansline[2]}",
             "correct": ansline[8], 
             "response": ansline[7]
-        }) #出力内容をobjにアペンド
+        })
 
     return jsonify(obj)
-    # return obj

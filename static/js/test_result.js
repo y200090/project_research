@@ -4,22 +4,22 @@ const resultComment = document.querySelector('#result-comment'),
 
 if (score == wordId.length) {
     resultComment.innerText = 'Perfect!';
-    resultImage.src = '../../../static/images/undraw_happy_music_g6wc.svg';
+    resultImage.src = '../../../../static/images/undraw_happy_music_g6wc.svg';
     happy();
 }
 else if ((70 * wordId.length / 100) <= score < wordId.length) {
     resultComment.innerText = 'Congratulations!';
-    resultImage.src = '../../../static/images/undraw_happy_news_re_tsbd.svg';
+    resultImage.src = '../../../../static/images/undraw_happy_news_re_tsbd.svg';
     happy();
 }
 else if ((40 * wordId.length / 100) <= score < (70 * wordId.length / 100)) {
     resultComment.innerText = 'Nice Challenge!';
-    resultImage.src = '../../../static/images/undraw_winners_re_wr1l.svg';
+    resultImage.src = '../../../../static/images/undraw_winners_re_wr1l.svg';
     happy();
 }
 else if (score < (40 * wordId.length / 100)) {
     resultComment.innerText = 'Do Your Best!';
-    resultImage.src = '../../../static/images/undraw_celebrating_rtuv.svg';
+    resultImage.src = '../../../../static/images/undraw_celebrating_rtuv.svg';
 }
 
 function happy() {

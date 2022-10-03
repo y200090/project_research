@@ -42,7 +42,8 @@ const word = [],              // 問題
 // メイン関数
 async function main() {
     // Create Questions APIを叩く
-    const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create-questions/test/${rank}`);
+    // const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create-questions/test/${rank}`);
+    const questions = await getAPI(`http://127.0.0.1:5000/feature/create-questions/test/${rank}`);
           
     // 問題・選択肢を表示する関数===========================================================
     function setTest() {
@@ -123,14 +124,14 @@ async function main() {
         // コンソール出力、確認用
         console.log(`ユーザーの回答: ${userAnswer[index]}`);
 
-        // テスト成績更新APIに送信するPOSTデータを設定
+        // テスト更新APIに送信するPOSTデータを設定
         const updateData = {
             word_id: wordId[index],
             answer_state: answerState[index]
         };
-        console.log(wordId[index], answerState[index]);
-        // テスト成績更新APIを叩く
-        await postAPI(`https://project-research.azurewebsites.net/api/test-update`, updateData);
+        // テスト更新APIを叩く
+        // await postAPI(`https://project-research.azurewebsites.net/api/test-update/${rank}`, updateData);
+        await postAPI(`http://127.0.0.1:5000/api/test-update/${rank}`, updateData);
 
         // テストの最後の問題を解答した時の処理
         if (index == questions.length -1) {
@@ -146,7 +147,7 @@ async function main() {
     };
 
     function toResult() {
-        document.resultForm.action = 'test/result';       // ページ遷移先をリザルトページへ変更
+        document.resultForm.action = `${rank}/result?score=${score}`;       // ページ遷移先をリザルトページへ変更
         document.resultForm.method = 'POST';
 
         wordId.forEach((id, i) => {
@@ -164,12 +165,6 @@ async function main() {
             post2.value = anss;
             nextForm.appendChild(post2);
         });
-
-        const post3 = document.createElement('input');
-        post3.type = 'hidden';
-        post3.name = 'score';
-        post3.value = score;
-        nextForm.appendChild(post3);
     };
 };
 main();

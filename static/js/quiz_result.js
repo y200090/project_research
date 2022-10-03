@@ -14,22 +14,24 @@ const reviewee = document.querySelector('.reviewee'),
 
 if (score == wordId.length) {
     resultComment.innerText = 'Perfect!';
-    resultImage.src = '../../../static/images/undraw_happy_music_g6wc.svg';
+    // resultImage.src = '../../../static/images/undraw_happy_music_g6wc.svg';
     happy();
 
 } else if ((70 * wordId.length / 100) <= score < wordId.length) {
     resultComment.innerText = 'Congratulations!';
-    resultImage.src = '../../../static/images/undraw_happy_news_re_tsbd.svg';
+    // resultImage.src = "{{ url_for('static', filename='images/undraw_happy_news_re_tsbd.svg') }}";
+    console.log(resultImage.src)
+    // resultImage.src = 'undraw_happy_news_re_tsbd.svg';
     happy();
 
 } else if ((40 * wordId.length / 100) <= score < (70 * wordId.length / 100)) {
     resultComment.innerText = 'Nice Challenge!';
-    resultImage.src = '../../../static/images/undraw_winners_re_wr1l.svg';
+    // resultImage.src = '../../../static/images/undraw_winners_re_wr1l.svg';
     happy();
 
 } else if (score < (40 * wordId.length / 100)) {
     resultComment.innerText = 'Do Your Best!';
-    resultImage.src = '../../../static/images/undraw_celebrating_rtuv.svg';
+    // resultImage.src = 'undraw_celebrating_rtuv.svg';
 }
 
 reviewButton.addEventListener('click', () => {
@@ -39,7 +41,8 @@ reviewButton.addEventListener('click', () => {
 
     wordId.forEach((id, index) => {
         // 英単語ID検索APIを叩く
-        fetch(`https://project-research.azurewebsites.net/api/word-id-search/${id}`)
+        // fetch(`https://project-research.azurewebsites.net/api/word-id-search/${id}`)
+        fetch(`http://127.0.0.1:5000/api/word-id-search/${id}`)
             .then(response => {
                 return response.json();
             })
@@ -113,7 +116,8 @@ editButton.addEventListener('click', async () => {
         'new_translation': editInput.value
     };
     // 英単語ID検索APIを叩く（POSTメソッド）
-    await postAPI(`https://project-research.azurewebsites.net/api/word-id-search/${editButton.id}`, updateDate);
+    // await postAPI(`https://project-research.azurewebsites.net/api/word-id-search/${editButton.id}`, updateDate);
+    await postAPI(`http://127.0.0.1:5000/api/word-id-search/${editButton.id}`, updateDate);
 
     alert('更新が完了しました。');
     editForm.classList.remove('active');

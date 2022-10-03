@@ -1,11 +1,12 @@
-from __init__ import app, db, bcrypt, login_manager, Word, User, y200004, y200042, y200051, y200062, y200065, y200078, y200080, y200089, y200090, roles_required
-import re, regex, pytz, random
+from __init__ import app, db, bcrypt, login_manager, Word, User, Y200004, Y200042, Y200051, Y200062, Y200065, Y200078, Y200080, Y200089, Y200090, roles_required, record
+import re, regex, pytz, random, collections
 from datetime import datetime
 from flask import render_template, request, url_for, redirect, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, ValidationError
+from sqlalchemy import or_, func
 
 # Blueprint（他のPythonファイルのモジュール化）を登録
 from feature import feature
@@ -94,6 +95,8 @@ def login():
                 # 第二引数にremember=Trueを渡すことで、Cookieにセッション情報を残している
                 login_user(now_user, remember=form.remember.data)
 
+                print('\033[31m' + f'{now_user.username} さんがログインしました。' + '\033[0m')      # 確認用
+
                 # ユーザーのログイン状態をアクティブに更新
                 now_user.login_state = 'active'
                 # ログイン日時を更新
@@ -105,18 +108,15 @@ def login():
             # パスワードが合致しなかった場合
             else :
                 flash('This password is incorrect', 'password')
-
         # ユーザー名が合致しなかった場合
         else :
             flash('This username is incorrect', 'username')
-
     return render_template('login.html', form=form)
 
 # マイページ
 @app.route('/mypage/home')
 @login_required
 def home():
-    print('\033[34m' + f'{current_user.id, type(current_user.id)}' + '\033[0m')    # 確認用
     return render_template('home.html')
 
 # ライブラリページ
@@ -125,23 +125,64 @@ def home():
 def library():
     return render_template('library.html')
 
-# 学習コースページ
+# クイズコースページ
 @app.route('/mypage/learnings')
 @login_required
 def learnings():
-    return render_template('learnings.html')
+    params = []
+    ranks = ['A1', 'A2', 'B1', 'B2']
+    Record = record(current_user.id)
+
+    for rank in ranks:
+        # wordsテーブルのレコード数を取得
+        words_length = Word.query.filter_by(rank=rank).count()
+
+        # rankと合致するy2000*テーブルのデータを全取得
+        records = Record.query.filter_by(rank=rank).all()
+        # 重複しないy2000*テーブルの英単語IDを取得
+        word_id_list = list(map(lambda x: x.word_id, records))
+        dedupe_keys = list(collections.Counter(word_id_list).keys())
+
+        print('\033[32m' + f'{len(dedupe_keys)}' + '\033[0m')      # 確認用
+
+        records_datas = []
+        # 同一の英単語IDを持つ複数のレコードの中から最新のデータを取得
+        for id in dedupe_keys:
+            # idと合致するy2000*テーブルの最新のorderを取得
+            max_order = db.session.query(func.max(Record.order)).filter(Record.word_id==id).scalar()
+            # max_orderかつ“テスト待ち”または“復習待ち”と合致するy2000*テーブルのデータを単一取得
+            records_data = Record.query.filter_by(order=max_order).filter(or_(Record.word_state=='test_state', Record.word_state=='review_state')).first()
+
+            if records_data is None:
+                continue
+
+            records_datas.append(max_order)
+
+        print('\033[31m' + f'{records_datas}' + '\033[0m')      # 確認用
+
+        diff = round(len(records_datas) * 100 / words_length)    # クイズの達成度（四捨五入したパーセンテージ）を計算
+        params.append(diff)
+    return render_template('learnings.html', params=params)
 
 # クイズページ
-@app.route('/mypage/learnings/quiz')
+@app.route('/mypage/learnings/quiz/<rank>')
 @login_required
-def quiz():
-    rank = request.args.get('rank')
+def quiz(rank):
+    # 現在ログイン中のユーザーのIDと合致するusersテーブルのデータを単一取得
+    data = User.query.filter_by(id=current_user.id).first()
+    # “クイズに挑戦した累計”の更新
+    data.quiz_challenge_number += 1
+    # データベースを更新する
+    db.session.commit()
     return render_template('quiz.html', rank=rank)
 
 # クイズリザルトページ
-@app.route('/mypage/learnings/quiz/result', methods=['POST'])
+@app.route('/mypage/learnings/quiz/<rank>/result', methods=['POST'])
 @login_required
-def quiz_result():
+def quiz_result(rank):
+    # クエリパラメータを取得
+    score = request.args.get('score')
+
     word_id = []
     for i in range(10):
         data = request.form.get(f'word_id{i}')
@@ -151,37 +192,63 @@ def quiz_result():
     for i in range(10):
         data = request.form.get(f'answer_state{i}')
         answer_state.append(data)
-    
-    rank = request.form.get('rank')
-    score = request.form.get('score')
-    
+        
     return render_template('quiz_result.html', userId=current_user.id, wordId=word_id, answerState=answer_state, rank=rank, score=score)
 
 # テストコースページ
 @app.route('/mypage/tasks')
 @login_required
 def tasks():
-    ranks = ['A1', 'A2', 'B1', 'B2']
     params = []
-    tester = current_user.id
-    for rank in ranks:
-        # テスト待ちの英単語群を取得
-        datas = tester.query.filter_by(rank=rank, test_state='active').all()
-        task = len(datas) // 20
+    ranks = ['A1', 'A2', 'B1', 'B2']
+    Record = record(current_user.id)
+
+    for rank in ranks:        
+        # rankと合致するy2000*のテーブルのデータを全取得
+        records = Record.query.filter_by(rank=rank).all()
+        # 重複しないy2000*テーブルの英単語IDを取得
+        word_id_list = list(map(lambda x: x.word_id, records))
+        dedupe_keys = list(collections.Counter(word_id_list).keys())
+
+        records_datas = []
+        # 同一の英単語IDを持つ複数のレコードの中から最新のデータを取得
+        for id in dedupe_keys:
+            # idと合致するy2000*テーブルの最新のorderを取得
+            max_order = db.session.query(func.max(Record.order)).filter(Record.word_id==id).scalar()
+            # max_orderと合致するy2000*テーブルのデータを単一取得
+            records_data = Record.query.filter_by(order=max_order, word_state='test_state').first()
+
+            if records_data is None:
+                continue
+
+            records_datas.append(records_data)
+
+        print('\033[31m' + f'{records_datas}' + '\033[0m')      # 確認用
+        
+        task = len(records_datas) // 20     # テストを受験できる回数を計算
         params.append(task)
+        
     return render_template('tasks.html', tasks=params)
 
 # テストページ
-@app.route('/mypage/tasks/test')
+@app.route('/mypage/tasks/test/<rank>')
 @login_required
-def test():
-    rank = request.args.get('rank')
+def test(rank):
+    # 現在ログイン中のユーザーのIDと合致するusersテーブルのデータを単一取得
+    data = User.query.filter_by(id=current_user.id).first()
+    # “テストに挑戦した累計”の更新
+    data.test_challenge_number += 1
+    # データベースを更新する
+    db.session.commit()
     return render_template('test.html', rank=rank)
 
 # テストリザルトページ
-@app.route('/mypage/tasks/test/result', methods=['POST'])
+@app.route('/mypage/tasks/test/<rank>/result', methods=['POST'])
 @login_required
-def test_result():
+def test_result(rank):
+    # クエリパラメータを取得
+    score = request.args.get('score')
+
     word_id = []
     for i in range(20):
         data = request.form.get(f'word_id{i}')
@@ -192,8 +259,6 @@ def test_result():
         data = request.form.get(f'answer_state{i}')
         answer_state.append(data)
     
-    score = request.form.get('score')
-
     return render_template('test_result.html', userId=current_user.id, wordId=word_id, answerState=answer_state, score=score)
 
 # 設定ページ
@@ -213,11 +278,13 @@ def profile():
 @app.route('/logout')
 @login_required
 def logout():
-    # ユーザー状態を非アクティブに更新
+    # “ログイン中”を“ログアウト中”へ更新
     current_user.login_state = 'inactive'
+    # データベースを更新する
     db.session.commit()
 
-    # 実際にログアウトを行う関数
+    print('\033[31m' + f'{current_user.username} さんがログアウトしました。' + '\033[0m')      # 確認用
+
     logout_user()
     return redirect(url_for('homepage'))
 
@@ -226,19 +293,26 @@ def logout():
 @login_required
 @roles_required
 def admin():
-    params = []
+    # usersテーブルのデータを全取得
     datas = User.query.all()
+
+    params = []
     for i in range(len(datas)):
         params.append({
-            'user_id': datas[i].id,
+            'ID': datas[i].id,
             'username': datas[i].username,
             'role': datas[i].role,
             'login_state': datas[i].login_state,
             'signup_date': str(datas[i].signup_date),
             'login_date': str(datas[i].login_date),
-            'total_remembered': datas[i].total_remembered
+            'total_quiz_response': datas[i].total_quiz_response,
+            'total_quiz_correct': datas[i].tota_quiz_correct,
+            'tota_test_response': datas[i].total_test_response,
+            'total_remembered': datas[i].total_remembered,
+            'quiz_challenge_number': datas[i].quiz_challenge_number,
+            'test_challenge_number': datas[i].test_challenge_number
         })
     return render_template('admin.html', users=params)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
