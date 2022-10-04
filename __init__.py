@@ -374,6 +374,7 @@ def roles_required(view):
             return view(**kwargs)
     return wrapped_view
 
+# ユーザー個人の成績データを返す関数
 def record(id):
     testers = [Y200004(), Y200042(), Y200051(), Y200062(), Y200065(), Y200078(), Y200080(), Y200089(), Y200090()]
     testers_id = [Y200004, Y200042, Y200051, Y200062, Y200065, Y200078, Y200080, Y200089, Y200090]
