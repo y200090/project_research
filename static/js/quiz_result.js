@@ -12,26 +12,32 @@ const reviewee = document.querySelector('.reviewee'),
       editCloseIcon = document.querySelector('.edit-field > span'),
       editButton = document.querySelector('.edit-field > button');
 
+const cloneElement = [];
+
+for (let i = 0; i < 10; i++) {
+    cloneElement[i] = sessionStorage.getItem(`quiz${i + 1}`);
+    console.log(cloneElement[i]);
+    reviewee.insertAdjacentHTML('afterend', `${cloneElement[i]}`);
+}
+      
 if (score == wordId.length) {
     resultComment.innerText = 'Perfect!';
-    // resultImage.src = '../../../static/images/undraw_happy_music_g6wc.svg';
+    resultImage.src = '../../../../static/images/undraw_happy_music_g6wc.svg';
     happy();
 
 } else if ((70 * wordId.length / 100) <= score < wordId.length) {
     resultComment.innerText = 'Congratulations!';
-    // resultImage.src = "{{ url_for('static', filename='images/undraw_happy_news_re_tsbd.svg') }}";
-    console.log(resultImage.src)
-    // resultImage.src = 'undraw_happy_news_re_tsbd.svg';
+    resultImage.src = '../../../../static/images/undraw_happy_news_re_tsbd.svg';
     happy();
 
 } else if ((40 * wordId.length / 100) <= score < (70 * wordId.length / 100)) {
     resultComment.innerText = 'Nice Challenge!';
-    // resultImage.src = '../../../static/images/undraw_winners_re_wr1l.svg';
+    resultImage.src = '../../../../static/images/undraw_winners_re_wr1l.svg';
     happy();
 
 } else if (score < (40 * wordId.length / 100)) {
     resultComment.innerText = 'Do Your Best!';
-    // resultImage.src = 'undraw_celebrating_rtuv.svg';
+    resultImage.src = '../../../../static/images/undraw_celebrating_rtuv.svg';
 }
 
 reviewButton.addEventListener('click', () => {

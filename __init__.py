@@ -35,7 +35,7 @@ login_manager = LoginManager()
 
 # 英単語データモデルの定義
 class Word(db.Model):
-    __tablename__ ="words"                          # テーブル名をwordsに再設定
+    __tablename__ = "words"                          # テーブル名をwordsに再設定
     id = db.Column(db.Integer, primary_key=True)    # 英単語の固有ID
     word = db.Column(db.String(50))                 # 英単語
     translation = db.Column(db.String(50))          # 日本語訳
@@ -66,7 +66,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.String(20), primary_key=True)       # ユーザーの固有ID
     username = db.Column(db.String(50), unique=True)      # ユーザー名
     password = db.Column(db.String(100))                  # パスワード
-    role = db.Column(db.String(20))                       # ユーザー権限（Admin=管理者, Student=生徒）
+    role = db.Column(db.String(20))                       # ユーザー権限（Admin=管理者, Tester=テスター, Student=生徒）
     login_state = db.Column(db.String(20))                # ログイン状態（active=ログイン中, inactive=ログアウト中）
     signup_date = db.Column(db.DateTime)                  # サインアップ日時
     login_date = db.Column(db.DateTime)                   # 最終ログイン日時
@@ -94,7 +94,40 @@ class User(db.Model, UserMixin):
         }
         return f"{params}\n"
 
-# ユーザーの成績データモデルの定義
+# 生徒の成績データモデルの定義
+class Student(db.Model):
+    __tablename__ = "students"                         # テーブル名をstudentsに再設定
+    order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
+    user_id = db.Column(db.Integer)                    # ユーザー固有のID
+    word_id = db.Column(db.Integer)                    # 英単語固有のID
+    rank = db.Column(db.String(10))                    # A1, A2, B1, B2
+    quiz_response = db.Column(db.Integer)              # クイズでの解答数の累計
+    quiz_correct = db.Column(db.Integer)               # クイズでの正解数の累計
+    test_response = db.Column(db.Integer)              # テストでの解答数の累計
+    test_correct = db.Column(db.Integer)               # テストでの連続正解数（一度でも間違えれば0に）
+    word_state = db.Column(db.String(20))              # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
+    response_date = db.Column(db.DateTime)             # 解答した日時
+    quiz_challenge_index = db.Column(db.Integer)       # ユーザーが解答したクイズのタイミング
+    test_challenge_index = db.Column(db.Integer)       # ユーザーが解答したテストのタイミング
+
+    def __repr__(self):
+        params = {
+            'order': self.order,
+            'user_id': self.user_id,
+            'word_id': self.word_id,
+            'rank': self.rank,
+            'quiz_response': self.quiz_response,
+            'quiz_correct': self.quiz_correct,
+            'test_response': self.test_response,
+            'test_correct': self.test_correct,
+            'word_state': self.word_state,
+            'response_date': self.response_date,
+            'quiz_challenge_index': self.quiz_challenge_index,
+            'test_challenge_index': self.test_challenge_index
+        }
+        return f"{params}\n"
+
+# テスターの成績データモデルの定義
 class Y200004(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
@@ -124,7 +157,7 @@ class Y200004(db.Model):
         }
         return f"{params}\n"
 
-# ユーザーの成績データモデルの定義
+# テスターの成績データモデルの定義
 class Y200042(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
@@ -154,7 +187,7 @@ class Y200042(db.Model):
         }
         return f"{params}\n"
 
-# ユーザーの成績データモデルの定義
+# テスターの成績データモデルの定義
 class Y200051(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
@@ -184,7 +217,7 @@ class Y200051(db.Model):
         }
         return f"{params}\n"
 
-# ユーザーの成績データモデルの定義
+# テスターの成績データモデルの定義
 class Y200062(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
@@ -214,7 +247,7 @@ class Y200062(db.Model):
         }
         return f"{params}\n"
 
-# ユーザーの成績データモデルの定義
+# テスターの成績データモデルの定義
 class Y200065(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
@@ -244,7 +277,7 @@ class Y200065(db.Model):
         }
         return f"{params}\n"
 
-# ユーザーの成績データモデルの定義
+# テスターの成績データモデルの定義
 class Y200078(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
@@ -274,7 +307,7 @@ class Y200078(db.Model):
         }
         return f"{params}\n"
 
-# ユーザーの成績データモデルの定義
+# テスターの成績データモデルの定義
 class Y200080(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
@@ -304,7 +337,7 @@ class Y200080(db.Model):
         }
         return f"{params}\n"
 
-# ユーザーの成績データモデルの定義
+# テスターの成績データモデルの定義
 class Y200089(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
@@ -334,7 +367,7 @@ class Y200089(db.Model):
         }
         return f"{params}\n"
 
-# ユーザーの成績データモデルの定義
+# テスターの成績データモデルの定義
 class Y200090(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
@@ -368,17 +401,18 @@ class Y200090(db.Model):
 def roles_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if current_user.role == 'Student':
+        if current_user.role == 'Student' or current_user.role == 'Tester':
             return 'アクセス権限がありません。'
         elif current_user.role == 'Admin':
             return view(**kwargs)
     return wrapped_view
 
-# ユーザー個人の成績データを返す関数
+# ユーザーの成績データモデルを返す関数
 def record(id):
-    testers = [Y200004(), Y200042(), Y200051(), Y200062(), Y200065(), Y200078(), Y200080(), Y200089(), Y200090()]
-    testers_id = [Y200004, Y200042, Y200051, Y200062, Y200065, Y200078, Y200080, Y200089, Y200090]
+    testers = [Y200004, Y200042, Y200051, Y200062, Y200065, Y200078, Y200080, Y200089, Y200090]
 
-    for i in range(len(testers)):
-        if testers[i].__class__.__name__ == id:
-            return testers_id[i]
+    for tester in testers:
+        if tester.__name__ == id:
+            return tester
+    else:
+        return Student

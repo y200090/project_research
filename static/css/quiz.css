@@ -22,14 +22,8 @@
 }
 body {
     position: relative;
-    /* VIEWPORT: 376px~414px, VALUES: 80px~90px */
-    height: calc(100vh - clamp(5rem, -1.184rem + 26.32vw, 5.625rem));
+    height: 100vh;
     width: 100vw;
-    /* VIEWPORT: 376px~414px, VALUES: 80px~90px */
-    margin-top: clamp(5rem, -1.184rem + 26.32vw, 5.625rem);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background-color: var(--background);
 }
 .dark-mode {
@@ -37,14 +31,20 @@ body {
     --text: #fff;
     --contents: #202528;
 }
-/* ========================================================= */
+
+.quiz-page {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    max-width: 415px;
+}
+
 .quiz-header {
     position: fixed;
     top: 0;
     /* VIEWPORT: 376px~414px, VALUES: 80px~90px */
     height: clamp(5rem, -1.184rem + 26.32vw, 5.625rem);
     width: 100%;
-    max-width: 415px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,11 +74,11 @@ body {
     font-weight: 600;
     color: var(--text);
 }
-#current-number {
+.current-number {
     /* VIEWPORT: 376px~414px, VALUES: 30px~32px */
     font-size: clamp(1.875rem, 0.638rem + 5.26vw, 2rem);
 }
-#max-number {
+.max-number {
     font-weight: 400;
     color: var(--secondary);
 }
@@ -104,19 +104,20 @@ body {
 .line.incorrect {
     background-color: var(--incorrect);
 }
-/* ========================================================= */
-.quiz {
-    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
-    height: calc(100% - clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem));
+
+.quiz-body {
+    position: relative;
+    /* VIEWPORT: 376px~414px, VALUES: 100px~120px */
+    height: calc(100% - clamp(6.25rem, -6.118rem + 52.63vw, 7.5rem));
     width: 100%;
-    max-width: 415px;
-    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
-    margin-top: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
+    /* VIEWPORT: 376px~414px, VALUES: 100px~120px */
+    margin-top: clamp(6.25rem, -6.118rem + 52.63vw, 7.5rem);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 .quiz-container {
+    position: relative;
     height: 100%;
     width: 90%;
     display: flex;
@@ -143,28 +144,32 @@ body {
     font-size: clamp(0.875rem, 0.347rem + 3.01vw, 1.125rem);
 }
 .statement span {
+    display: block;
     /* VIEWPORT: 376px~414px, VALUES: 14px~16px */
     font-size: clamp(0.875rem, -0.362rem + 5.26vw, 1rem);
     color: var(--secondary);
 }
-#quiz-word {
+.english-word {
     position: relative;
+    width: 100%;
+    display: block;
+    text-align: center;
     /* VIEWPORT: 281px~414px, VALUES: 30px~36px */
     font-size: clamp(1.875rem, 1.083rem + 4.51vw, 2.25rem);
-    font-weight: 700;
+    font-weight: 800;
 }
 .speak-icon {
     position: absolute;
     top: 50%;
-    left: 140%;
+    right: 10px;
     transform: translateY(-50%);
     /* VIEWPORT: 281px~414px, VALUES: 26px~30px */
     font-size: clamp(1.625rem, 1.097rem + 3.01vw, 1.875rem);
-    color: var(--text);
+    color: var(--secondary);
     z-index: 99;
     cursor: pointer;
 }
-#options {
+.options-content {
     width: 100%;
     display: flex;
     align-items: center;
@@ -173,15 +178,16 @@ body {
     /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
     row-gap: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
 }
-.option-content {
+.japanese-word {
     position: relative;
     /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
     height: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
     width: 100%;
 }
-.option-content input {
+.japanese-word input {
     height: 100%;
     width: 100%;
+    text-align: center;
     border: none;
     outline: none;
     background-color: var(--contents);
@@ -191,13 +197,13 @@ body {
     color: var(--text);
     cursor: pointer;
 }
-.option-content input.correct {
+.japanese-word input.correct {
     border: 2px solid var(--correct);
 }
-.option-content input.incorrect {
+.japanese-word input.incorrect {
     border: 2px solid var(--incorrect);
 }
-#options.none-events input {
+.options-content.none-events .japanese-word input {
     pointer-events: none;
 }
 .answer-image {
@@ -214,21 +220,25 @@ body {
 .answer-image.incorrect {
     color: var(--incorrect);
 }
-.next-form {
-    display: none;
+.next-content {
     position: relative;
     /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
     height: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
     width: 100%;
     /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
     margin-top: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
+    display: none;
 }
-.next-form.active {
+.next-content.active {
     display: block;
 }
-#next-button {
+.next-button {
+    display: block;
     height: 100%;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     outline: none;
     background-color: var(--accent);

@@ -6,3 +6,5 @@ select * from テーブル名 set 更新処理 where 条件式;
 delete from テーブル名 where 条件式;
 drop table テーブル名;
 .exit
+
+print('\033[32m' + f'{}' + '\033[0m')     # 確認用

@@ -2,17 +2,20 @@ params.forEach((param, index) => {
     const progressCircular = [...document.querySelectorAll('.progress-circular')],
           parameter = [...document.querySelectorAll('.parameter')];
       
-    let startValue = 0,
+    let startValue = 0.0,
         endValue = param,
-        speed = 20;
+        speed = 8;
 
     const progress = setInterval(() => {
-        if (endValue != 0) {
-            startValue++;
+        if (endValue > 0.0) {
+            startValue += 0.1;
         };
         progressCircular[index].style.background = `conic-gradient(#fff ${startValue * 3.6}deg, var(--bg) 0deg)`;
-        parameter[index].innerText = `${startValue}%`;
-        if (startValue == endValue) {
+        parameter[index].innerText = `${startValue.toFixed(1)}%`;
+        if (endValue <= 0.0 || Number(startValue.toFixed(1)) % Number(startValue.toFixed(0)) == 0) {
+            parameter[index].innerText = `${startValue.toFixed(0)}%`;
+        }
+        if (startValue.toFixed(1) == endValue) {
             clearInterval(progress);
         }
     }, speed);

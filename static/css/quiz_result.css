@@ -34,10 +34,11 @@ body {
     --text: #fff;
     --contents: #202528;
 }
-/* ========================================================= */
+
 .result-header {
     position: fixed;
-    top: 20px;
+    top: 10px;
+    height: 60px;
     width: 90%;
     max-width: 415px;
     display: flex;
@@ -45,46 +46,47 @@ body {
     justify-content: flex-end;
     z-index: 99;
 }
-.quit-icon {
+#exit-icon {
+    color: var(--text);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#exit-icon span {
     /* VIEWPORT: 281px~414px, VALUES: 30px~38px */
     font-size: clamp(1.875rem, 0.819rem + 6.02vw, 2.375rem);
-    font-weight: 700;
-    color: var(--text);
+    font-weight: 600;
 }
-.quit-icon.inactive {
-    display: none;
-}
-/* ========================================================= */
-.result {
+
+.result-body {
+    position: relative;
     width: 90%;
     max-width: 415px;
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
-}
-.result-image {
-    /* VIEWPORT: 281px~414px, VALUES: 200px~300px */
-    width: clamp(12.5rem, -0.705rem + 75.19vw, 18.75rem);
-}
-#result-comment {
     /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
-    margin-top: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
-    color: var(--correct);
-    /* VIEWPORT: 281px~414px, VALUES: 28px~34px */
-    font-size: clamp(1.75rem, 0.958rem + 4.51vw, 2.125rem);
-    font-weight: 800;
-    white-space: nowrap;
-    letter-spacing: 2px;
+    row-gap: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
 }
-.scoreboard {
-    /* VIEWPORT: 376px~414px, VALUES: 10px~20px */
-    margin-top: clamp(0.625rem, -5.559rem + 26.32vw, 1.25rem);
+#trophy-image {
+    /* VIEWPORT: 281px~414px, VALUES: 140px~200px */
+    width: clamp(8.75rem, 0.827rem + 45.11vw, 12.5rem);
+}
+#result-word {
+    /* VIEWPORT: 281px~414px, VALUES: 30px~42px */
+    font-size: clamp(1.875rem, 0.29rem + 9.02vw, 2.625rem);
+    font-weight: 800;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    color: var(--correct);
+}
+#scoreboard {
     width: 100%;
     text-align: center;
     color: var(--text);
 }
-.scoreboard span {
+#scoreboard span {
     /* VIEWPORT: 281px~414px, VALUES: 40px~50px */
     font-size: clamp(2.5rem, 1.18rem + 7.52vw, 3.125rem);
     font-weight: 700;
@@ -96,18 +98,16 @@ body {
 #max-score {
     color: var(--secondary);
 }
-.result-form {
+.next-content {
     width: 100%;
-    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
-    margin-top: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
     display: grid;
     grid-template-columns: 45% 45%;
     align-items: center;
     justify-content: space-around;
     text-align: center;
 }
-.result-form button,
-.result-form a {
+.next-content button, 
+.next-content a {
     width: 100%;
     /* VIEWPORT: 281px~376px, VALUES: 10px~15px */
     padding: clamp(0.625rem, -0.299rem + 5.26vw, 0.938rem) 0;
@@ -115,11 +115,6 @@ body {
     /* VIEWPORT: 281px~414px, VALUES: 16px~20px */
     font-size: clamp(1rem, 0.472rem + 3.01vw, 1.25rem);
     font-weight: 800;
-    transition: all 0.3s;
-}
-.result-form button:hover,
-.result-form a:hover {
-    transform: scale(1.02);
 }
 #review-button {
     border: none;
@@ -128,10 +123,11 @@ body {
     color: var(--text);
     cursor: pointer;
 }
-#return {
+#retry-button {
     background-color: var(--accent);
     color: #fff;
 }
+
 /* ========================================================= */
 .reviewee {
     position: absolute;

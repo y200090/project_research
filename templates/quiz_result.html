@@ -6,30 +6,54 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/quiz_result.css') }}">
-    <script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script defer src="{{ url_for('static', filename='js/quiz_result.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mypage.js') }}" defer></script>
+    <!-- Swiper.css CDN 導入 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
+    <!-- Swiper.js CDN 導入 -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js" defer></script>
+    <!-- Canvas Confetti CDN 導入 -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js" defer></script>
+    <script src="{{ url_for('static', filename='js/quiz_result.js') }}" defer></script>
 {% endblock %}
 
 {% block body %}
     <div class="result-header">
-        <a href="{{ url_for('learnings') }}">
-            <span class="material-symbols-outlined quit-icon">close</span>
+        <a href="{{ url_for('learnings') }}" id="exit-icon">
+            <span class="material-symbols-outlined">close</span>
         </a>
-        <span class="material-symbols-outlined close-icon">close</span>
     </div>
-    <!-- ============================================================================ -->
-    <div class="result">
-        <img src="{{ url_for('static', filename='images/undraw_happy_news_re_tsbd.svg') }}" class="result-image">
-        <h1 id="result-comment"></h1>
-        <span class="scoreboard">
+
+    <div class="result-body">
+        <span id="result-word">congratulations!</span>
+        <img src="trophy-icon.svg" alt="" id="trophy-image">
+        <span id="scoreboard">
             <span id="user-score">{{ score }}</span><span id="max-score">/10</span>
         </span>
-        <div class="result-form">
-            <button id="review-button">Review</button>
-            <a href="{{ url_for('quiz', rank=rank) }}" id="return">Again</a>
+        <div class="next-content">
+            <button id="review-button">レビュー</button>
+            <a href="{{ url_for('quiz', rank=rank) }}" id="retry-button">もう一度</a>
         </div>
     </div>
+
+    <div class="review-window">
+        <div class="swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">1</div>
+                <div class="swiper-slide">2</div>
+                <div class="swiper-slide">3</div>
+                <div class="swiper-slide">4</div>
+                <div class="swiper-slide">5</div>
+                <div class="swiper-slide">6</div>
+                <div class="swiper-slide">7</div>
+                <div class="swiper-slide">8</div>
+                <div class="swiper-slide">9</div>
+                <div class="swiper-slide">10</div>
+            </div>
+        </div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+
     <!-- ============================================================================ -->
     <div class="reviewee">
         <div class="reviewee-container">
@@ -53,12 +77,7 @@
     </div>
     <!-- ============================================================================ -->
     <script>
-        const userId = '{{ userId|tojson }}',
-              wordId = JSON.parse('{{ wordId|tojson|safe }}'),
-              answerState = JSON.parse('{{ answerState|tojson|safe }}'),
-              rank = '{{ rank }}',
+        const rank = '{{ rank }}',
               score = '{{ score }}';
-        
-        console.log(score);
     </script>
 {% endblock %}

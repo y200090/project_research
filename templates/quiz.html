@@ -11,34 +11,35 @@
 {% endblock %}
 
 {% block body %}
-    <div class="quiz-header">
-        <div class="quiz-title">
-            <span class="quiz-name">{{ rank }} Quiz</span>
-            <span class="quiz-number">Question
-                <span id="current-number"></span><span id="max-number"></span>
-            </span>
-        </div>
-        <div class="quiz-progress">
-        </div>
-    </div>
-    <!-- ============================================================= -->
-    <div class="quiz">
-        <div class="quiz-container">
-            <div class="quiz-content">
-                <p class="statement">
-                    適切な日本語訳を選択してください。<br>
-                    <span></span>
-                </p>
-                <h1 id="quiz-word"></h1>
+    <div class="quiz-page">
+
+        <div class="quiz-header">
+            <div class="quiz-title">
+                <span class="quiz-name">{{ rank }} Quiz</span>
+                <span class="quiz-number">Question
+                    <span class="current-number"></span><span class="max-number"></span>
+                </span>
             </div>
-            <div id="options">
-            </div>
-            <form action="" method="" class="next-form" name="resultForm">
-                <input type="button" value="次の問題へ" id="next-button">
-            </form>
+            <div class="quiz-progress"></div>
         </div>
+        
+        <div class="quiz-body">
+            <div class="quiz-container">
+                <div class="quiz-content">
+                    <p class="statement">適切な日本語訳を選択してください。
+                        <span></span>
+                    </p>
+                    <span class="english-word"></span>
+                </div>
+                <div class="options-content"></div>
+                <div class="next-content">
+                    <a href="{{ url_for('quiz_result', rank=rank, score=10)}}"></a>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <!-- ============================================================= -->
+    
     <script>
         const rank = '{{ rank }}';
     </script>
