@@ -41,6 +41,9 @@ body {
     width: 100%;
     max-width: 415px;
 }
+.result-page.inactive {
+    display: none;
+}
 
 .result-header {
     position: fixed;
@@ -164,7 +167,19 @@ body {
 }
 
 .review-window {
-    display: none;
+    position: absolute;
+    height: 90%;
+    width: 90%;
+    max-width: 415px;
+    background-color: rebeccapurple;
+    z-index: 100;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.8s;
+}
+.review-window.active {
+    visibility: visible;
+    opacity: 1;
 }
 
 /* ========================================================= */

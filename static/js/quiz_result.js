@@ -4,7 +4,9 @@ const resultPage = document.querySelector('.result-page'),
       maxScore = document.querySelector('#max-score'),
       reviewButton = document.querySelector('#review-button');
 
-const reviewWindow = document.querySelector('.review-window');
+const clone = [],
+      reviewWindow = document.querySelector('.review-window'),
+      swiperWrapper = document.querySelector('.swiper-wrapper');
 
 if (score < 10) {
     userScore.innerText = '0' + score;
@@ -13,17 +15,33 @@ else {
     userScore.innerText = score;
 }
 
-if (7 < score <= 10) {
+if (7 < score && score <= 10) {
     resultWord.innerText = 'Congratulations!';
     happy();
 }
-else if (3 < score <= 7) {
+else if (3 < score && score <= 7) {
     resultWord.innerText = 'Nice Challenge!';
     happy();
 }
 else if (score <= 3) {
     resultWord.innerText = 'Do Your Best!';
 }
+
+for (let i = 0; i < 10; i++) {
+    clone[i] = sessionStorage.getItem(`question.${i + 1}`);
+    console.log(clone[i]);
+
+    const quizPage = document.createElement('div');
+    quizPage.classList.add('quiz-page', `question.${i + 1}`);
+    quizPage.insertAdjacentHTML('beforeend', `${clone[i]}`);
+    
+    swiperWrapper.appendChild(quizPage);
+}
+
+reviewButton.addEventListener('click', () => {
+    resultPage.classList.add('inactive');
+    reviewWindow.classList.add('active');
+});
 
 // const quitIcon = document.querySelector('.quit-icon'),
 //       resultComment = document.querySelector('#result-comment'),
@@ -39,13 +57,6 @@ else if (score <= 3) {
 //       editCloseIcon = document.querySelector('.edit-field > span'),
 //       editButton = document.querySelector('.edit-field > button');
 
-const cloneElement = [];
-
-// for (let i = 0; i < 10; i++) {
-//     cloneElement[i] = sessionStorage.getItem(`quiz${i + 1}`);
-//     console.log(cloneElement[i]);
-//     reviewee.insertAdjacentHTML('afterend', `${cloneElement[i]}`);
-// }
       
 // if (score == wordId.length) {
 //     resultComment.innerText = 'Perfect!';

@@ -46,7 +46,7 @@
     <div class="review-window">
         <div class="swiper">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">1</div>
+                <!-- <div class="swiper-slide">1</div>
                 <div class="swiper-slide">2</div>
                 <div class="swiper-slide">3</div>
                 <div class="swiper-slide">4</div>
@@ -55,7 +55,7 @@
                 <div class="swiper-slide">7</div>
                 <div class="swiper-slide">8</div>
                 <div class="swiper-slide">9</div>
-                <div class="swiper-slide">10</div>
+                <div class="swiper-slide">10</div> -->
             </div>
         </div>
         <div class="swiper-button-prev"></div>
@@ -63,7 +63,7 @@
     </div>
 
     <!-- ============================================================================ -->
-    <div class="reviewee">
+    <!-- <div class="reviewee">
         <div class="reviewee-container">
             {% for i in range(10) %}
                 <div class="reviewee-card">
@@ -72,7 +72,7 @@
                 </div>
             {% endfor %}
         </div>
-    </div>
+    </div> -->
     <!-- ============================================================================ -->
     <div class="edit-form">
         <div class="edit-field">
@@ -86,6 +86,6 @@
     <!-- ============================================================================ -->
     <script>
         const rank = '{{ rank }}',
-              score = '{{ score }}';
+              score = Number('{{ score }}');
     </script>
 {% endblock %}
