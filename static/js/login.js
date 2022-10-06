@@ -1,3 +1,10 @@
+const setFillHeight = () => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
+window.addEventListener('resize', setFillHeight);
+setFillHeight();
+
 const loginIcon = document.querySelector('.login-icon'),
       icons = ['../static/images/undraw_conversation_re_c26v.svg',
                '../static/images/undraw_designer_re_5v95.svg',
