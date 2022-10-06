@@ -63,6 +63,7 @@ body {
     /* VIEWPORT: 281px~414px, VALUES: 24px~32px */
     font-size: clamp(1.5rem, 0.444rem + 6.02vw, 2rem);
     font-weight: 600;
+    color: var(--text);
 }
 #exit-icon {
     position: absolute;
@@ -83,16 +84,19 @@ body {
 
 .result-body {
     position: relative;
-    height: 100%;
+    height: calc(100% - 70px);
     width: 100%;
+    margin-top: 70px;
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
 }
 .result-container {
     position: relative;
     height: 100%;
     width: 90%;
+    padding: 20px 0;
     display: flex;
     align-items: center;
     justify-content: center;
