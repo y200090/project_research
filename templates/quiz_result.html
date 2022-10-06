@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    <title>Quiz Result Page</title>
+    <title>{{ rank }} Quiz Result Page</title>
 {% endblock %}
 
 {% block head %}
@@ -17,22 +17,30 @@
 {% endblock %}
 
 {% block body %}
-    <div class="result-header">
-        <a href="{{ url_for('learnings') }}" id="exit-icon">
-            <span class="material-symbols-outlined">close</span>
-        </a>
-    </div>
+    <div class="result-page">
 
-    <div class="result-body">
-        <span id="result-word">congratulations!</span>
-        <img src="trophy-icon.svg" alt="" id="trophy-image">
-        <span id="scoreboard">
-            <span id="user-score">{{ score }}</span><span id="max-score">/10</span>
-        </span>
-        <div class="next-content">
-            <button id="review-button">レビュー</button>
-            <a href="{{ url_for('quiz', rank=rank) }}" id="retry-button">もう一度</a>
+        <div class="result-header">
+            <div class="result-title">{{ rank }} Quiz Result
+                <a href="{{ url_for('learnings') }}" id="exit-icon">
+                    <span class="material-symbols-outlined">close</span>
+                </a>
+            </div>
         </div>
+
+        <div class="result-body">
+            <div class="result-container">
+                <img src="{{ url_for('static', filename='images/trophy-icon.svg') }}" alt="trophy" id="trophy-image">
+                <span id="result-word">congratulations!</span>
+                <span id="scoreboard">
+                    <span id="user-score">{{ score }}</span><span id="max-score">/10</span>
+                </span>
+                <div class="next-content">
+                    <button id="review-button">Review</button>
+                    <a href="{{ url_for('quiz', rank=rank) }}" id="retry-button">Continue</a>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div class="review-window">

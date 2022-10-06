@@ -1,16 +1,23 @@
-const quitIcon = document.querySelector('.quit-icon'),
-      resultComment = document.querySelector('#result-comment'),
-      resultImage = document.querySelector('.result-image'),
+const resultPage = document.querySelector('.result-page'),
+      userScore = document.querySelector('#user-score'),
+      maxScore = document.querySelector('#max-score'),
       reviewButton = document.querySelector('#review-button');
 
-const reviewee = document.querySelector('.reviewee'),
-      revieweeCard = [...document.querySelectorAll('.reviewee-card')],
-      revieweeCloseIcon = document.querySelector('.close-icon'),
-      quizWord = [...document.querySelectorAll('.quiz-word')],
-      quizAnswer = [...document.querySelectorAll('.quiz-answer')],
-      editForm = document.querySelector('.edit-form'),
-      editCloseIcon = document.querySelector('.edit-field > span'),
-      editButton = document.querySelector('.edit-field > button');
+const reviewWindow = document.querySelector('.review-window');
+
+// const quitIcon = document.querySelector('.quit-icon'),
+//       resultComment = document.querySelector('#result-comment'),
+//       resultImage = document.querySelector('.result-image'),
+//       reviewButton = document.querySelector('#review-button');
+
+// const reviewee = document.querySelector('.reviewee'),
+//       revieweeCard = [...document.querySelectorAll('.reviewee-card')],
+//       revieweeCloseIcon = document.querySelector('.close-icon'),
+//       quizWord = [...document.querySelectorAll('.quiz-word')],
+//       quizAnswer = [...document.querySelectorAll('.quiz-answer')],
+//       editForm = document.querySelector('.edit-form'),
+//       editCloseIcon = document.querySelector('.edit-field > span'),
+//       editButton = document.querySelector('.edit-field > button');
 
 const cloneElement = [];
 
