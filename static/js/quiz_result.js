@@ -29,10 +29,9 @@ else if (score <= 3) {
 
 for (let i = 0; i < 10; i++) {
     clone[i] = sessionStorage.getItem(`question.${i + 1}`);
-    console.log(clone[i]);
 
     const quizPage = document.createElement('div');
-    quizPage.classList.add('quiz-page', `question.${i + 1}`);
+    quizPage.classList.add('swiper-slide', 'quiz-page', `question.${i + 1}`);
     quizPage.insertAdjacentHTML('beforeend', `${clone[i]}`);
     
     swiperWrapper.appendChild(quizPage);
@@ -42,58 +41,6 @@ reviewButton.addEventListener('click', () => {
     resultPage.classList.add('inactive');
     reviewWindow.classList.add('active');
 });
-
-// const quitIcon = document.querySelector('.quit-icon'),
-//       resultComment = document.querySelector('#result-comment'),
-//       resultImage = document.querySelector('.result-image'),
-//       reviewButton = document.querySelector('#review-button');
-
-// const reviewee = document.querySelector('.reviewee'),
-//       revieweeCard = [...document.querySelectorAll('.reviewee-card')],
-//       revieweeCloseIcon = document.querySelector('.close-icon'),
-//       quizWord = [...document.querySelectorAll('.quiz-word')],
-//       quizAnswer = [...document.querySelectorAll('.quiz-answer')],
-//       editForm = document.querySelector('.edit-form'),
-//       editCloseIcon = document.querySelector('.edit-field > span'),
-//       editButton = document.querySelector('.edit-field > button');
-
-      
-// if (score == wordId.length) {
-//     resultComment.innerText = 'Perfect!';
-//     resultImage.src = '../../../../static/images/undraw_happy_music_g6wc.svg';
-//     happy();
-
-// } else if ((70 * wordId.length / 100) <= score < wordId.length) {
-//     resultComment.innerText = 'Congratulations!';
-//     resultImage.src = '../../../../static/images/undraw_happy_news_re_tsbd.svg';
-//     happy();
-
-// } else if ((40 * wordId.length / 100) <= score < (70 * wordId.length / 100)) {
-//     resultComment.innerText = 'Nice Challenge!';
-//     resultImage.src = '../../../../static/images/undraw_winners_re_wr1l.svg';
-//     happy();
-
-// } else if (score < (40 * wordId.length / 100)) {
-//     resultComment.innerText = 'Do Your Best!';
-//     resultImage.src = '../../../../static/images/undraw_celebrating_rtuv.svg';
-// }
-
-// reviewButton.addEventListener('click', () => {
-//     quitIcon.classList.add('inactive');
-//     reviewee.classList.add('active');
-//     revieweeCloseIcon.classList.add('active');
-
-//     wordId.forEach((id, index) => {
-//         // 英単語ID検索APIを叩く
-//         // fetch(`https://project-research.azurewebsites.net/api/word-id-search/${id}`)
-//         fetch(`http://127.0.0.1:5000/api/word-id-search/${id}`)
-//             .then(response => {
-//                 return response.json();
-//             })
-//             .then(data => review(data, index))
-//             .catch(error => console.error('APIの取得に失敗しました。', error));
-//     });
-// });
 
 // function review(data, index) {    
 //     if (answerState[index] == "correct") {
