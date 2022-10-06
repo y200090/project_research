@@ -1,3 +1,10 @@
+const setFillHeight = () => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
+window.addEventListener('resize', setFillHeight);
+setFillHeight();
+
 const signupIcon = document.querySelector('.signup-icon');
 const icons = ['../static/images/undraw_female_avatar_w3jk.svg', 
                 '../static/images/undraw_male_avatar_323b.svg', 
@@ -18,7 +25,8 @@ ShowHide.forEach(eyeIcon => {
                 ShowHide.forEach(icon => {
                     icon.classList.replace('bx-hide', 'bx-show');
                 });
-            } else {
+            }
+            else {
                 password.type = "password";
                 ShowHide.forEach(icon => {
                     icon.classList.replace('bx-show', 'bx-hide');

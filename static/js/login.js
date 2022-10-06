@@ -18,7 +18,6 @@ const loginIcon = document.querySelector('.login-icon'),
                '../static/images/undraw_my_universe_803e.svg',
                '../static/images/undraw_to_the_moon_re_q21i.svg',
                '../static/images/undraw_refreshing_beverage_td3r.svg'];
-
 window.addEventListener('load', () => {
     const iconNumber = Math.floor(Math.random() * icons.length);
     loginIcon.src = icons[iconNumber];
@@ -34,7 +33,8 @@ showHide.forEach(eyeIcon => {
                 showHide.forEach(icon => {
                     icon.classList.replace('bx-hide', 'bx-show');
                 });
-            } else {
+            }
+            else {
                 password.type = "password";
                 showHide.forEach(icon => {
                     icon.classList.replace('bx-show', 'bx-hide');

@@ -10,22 +10,28 @@
 {% endblock %}
 
 {% block body %}
-    <header class="bland-header">
-        <i class="fa-brands fa-dev bland-logo"></i>
-        <h1 class="bland-name">英単語学習アプリ</h1>
-    </header>
-    <!-- ============================================================================ -->
-    <main class="hero-container">
-        <img src="{{ url_for('static', filename='images/undraw_stars_re_6je7.svg') }}" class="hero-image">
-        <button class="start-button">α版をテストプレイ</button>
-    </main>
-    <!-- ============================================================================ -->
+    <div class="hero-page">
+
+        <div class="hero-header">
+            <i class="fa-brands fa-dev bland-logo"></i>
+            <h1 class="bland-name">英単語学習アプリ</h1>
+        </div>
+
+        <div class="hero-body">
+            <img src="{{ url_for('static', filename='images/undraw_stars_re_6je7.svg') }}" class="hero-image">
+            <button class="modal-button">α版をテストプレイ</button>
+        </div>
+        
+    </div>
+    
     <div class="modal-window">
-        <i class='bx bx-x close-icon'></i>
-        <img src="../static/images/undraw_welcome_cats_thqn.svg" class="welcome-image">
-        <div class="anchor">
-            <a href="{{ url_for('login') }}">login</a>
-            <a href="{{ url_for('signup') }}">signup</a>
+        <div class="modal-container">
+            <span class="material-symbols-outlined close-icon">close</span>
+            <img src="../static/images/undraw_welcome_cats_thqn.svg" class="welcome-image">
+            <div class="anchor">
+                <a href="{{ url_for('login') }}" id="login">login</a>
+                <a href="{{ url_for('signup') }}" id="signup">signup</a>
+            </div>
         </div>
     </div>
 {% endblock %}

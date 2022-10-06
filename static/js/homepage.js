@@ -1,14 +1,21 @@
-const heroContainer = document.querySelector('.hero-container'),
-      startButton = document.querySelector('.start-button'),
+const setFillHeight = () => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+};
+window.addEventListener('resize', setFillHeight);
+setFillHeight();
+
+const heroPage = document.querySelector('.hero-page'),
+      modalButton = document.querySelector('.modal-button'),
       modalWindow = document.querySelector('.modal-window'),
       closeIcon = document.querySelector('.close-icon');
 
-startButton.addEventListener('click', () => {
-    heroContainer.classList.toggle('inactive');
+modalButton.addEventListener('click', () => {
+    heroPage.classList.toggle('inactive');
     modalWindow.classList.toggle('active');
 });
 
 closeIcon.addEventListener('click', () => {
-    heroContainer.classList.toggle('inactive');
+    heroPage.classList.toggle('inactive');
     modalWindow.classList.toggle('active');
 });
