@@ -47,7 +47,8 @@ body {
 .root-header {
     position: absolute;
     top: 0;
-    height: 60px;
+    /* VIEWPORT: 376px~414px, VALUES: 60px~80px */
+    height: clamp(3.75rem, -8.618rem + 52.63vw, 5rem);
     width: 100%;
     max-width: 415px;
     display: flex;
@@ -75,13 +76,15 @@ body {
 }
 
 .course-navigator {
-    height: calc(100% - 60px);
+    /* VIEWPORT: 376px~414px, VALUES: 60px~80px */
+    height: calc(100% - clamp(3.75rem, -8.618rem + 52.63vw, 5rem));
     width: 100%;
     max-width: 415px;
-    margin-top: 60px;
+    /* VIEWPORT: 376px~414px, VALUES: 60px~80px */
+    margin-top: clamp(3.75rem, -8.618rem + 52.63vw, 5rem);
     display: grid;
     grid-template-rows: 25% 25% 25% 25%;
-    align-items: center;
+    align-items: flex-start;
 }
 .learning {
     position: relative;
