@@ -59,12 +59,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text);
 }
 .back-icon span {
     /* VIEWPORT: 281px~414px, VALUES: 32px~40px */
     font-size: clamp(2rem, 0.944rem + 6.02vw, 2.5rem);
     font-weight: 600;
+    color: var(--text);
 }
 .root-title {
     /* VIEWPORT: 281px~414px, VALUES: 22px~26px */

@@ -97,12 +97,11 @@ body {
     justify-content: center;
     background-color: var(--c);
     border-radius: 12px;
-    box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s;
 }
 .task:nth-child(n) {
     top: var(--t);
-    width: var(--w);
     z-index: var(--z);
 }
 .task:hover {

@@ -16,16 +16,19 @@ colorThemeSwitch.addEventListener('click', () => {
         colorThemeIcon.classList.remove('bx-sun');
         colorThemeIcon.classList.add('bx-moon')
         currentTheme.innerText = 'ダークモード';
+        // ローカルストレージに保存（キーの更新）
         localStorage.setItem('color-theme', 'dark-mode');
 
     } else if (colorThemeIcon.classList.contains('bx-moon')) {
         colorThemeIcon.classList.remove('bx-moon');
         colorThemeIcon.classList.add('bx-sun');
         currentTheme.innerText = 'ライトモード';
+        // ローカルストレージに保存（キーの更新）
         localStorage.setItem('color-theme', 'light-mode');
     }
 });
 
+// ローカルストレージから取得
 if (localStorage.getItem('color-theme') === 'dark-mode') {
     colorThemeIcon.classList.remove('bx-sun');
     colorThemeIcon.classList.add('bx-moon');

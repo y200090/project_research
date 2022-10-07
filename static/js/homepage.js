@@ -5,17 +5,17 @@ const setFillHeight = () => {
 window.addEventListener('resize', setFillHeight);
 setFillHeight();
 
-const heroPage = document.querySelector('.hero-page'),
+const heroSection = document.querySelector('.hero-section'),
       modalButton = document.querySelector('.modal-button'),
       modalWindow = document.querySelector('.modal-window'),
       closeIcon = document.querySelector('.close-icon');
 
 modalButton.addEventListener('click', () => {
-    heroPage.classList.toggle('inactive');
+    heroSection.classList.toggle('inactive');
     modalWindow.classList.toggle('active');
 });
 
 closeIcon.addEventListener('click', () => {
-    heroPage.classList.toggle('inactive');
+    heroSection.classList.toggle('inactive');
     modalWindow.classList.toggle('active');
 });
