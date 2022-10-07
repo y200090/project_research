@@ -152,8 +152,8 @@ body {
     align-items: center;
     justify-content: space-around;
 }
-.next-content button, 
-.next-content a {
+.next-content #review-button, 
+.next-content #continue-button {
     width: 100%;
     /* VIEWPORT: 281px~376px, VALUES: 10px~15px */
     padding: clamp(0.625rem, -0.299rem + 5.26vw, 0.938rem) 0;

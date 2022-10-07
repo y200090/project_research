@@ -31,7 +31,9 @@
                 <div class="next-content">
                     <button id="review-button">Review</button>
                     <a href="{{ url_for('quiz', rank=rank) }}" id="continue-button">Continue</a>
-                    <img src="{{ url_for('static', filename='images/close-round-icon.svg') }}" alt="close" id="close-icon">
+                    <a href="{{ url_for('learnings') }}">
+                        <img src="{{ url_for('static', filename='images/close-round-icon.svg') }}" alt="close" id="close-icon">
+                    </a>
                 </div>
             </div>
         </div>
