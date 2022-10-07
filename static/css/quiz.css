@@ -124,11 +124,11 @@ body {
 }
 .quiz-container {
     position: relative;
-    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
-    height: calc(100% - clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem));
+    /* VIEWPORT: 376px~414px, VALUES: 10px~20px */
+    height: calc(100% - clamp(0.625rem, -5.559rem + 26.32vw, 1.25rem));
     width: 100%;
-    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
-    margin-top: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
+    /* VIEWPORT: 376px~414px, VALUES: 10px~20px */
+    margin-top: clamp(0.625rem, -5.559rem + 26.32vw, 1.25rem);
     /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
     padding-bottom: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
     display: flex;
@@ -138,14 +138,14 @@ body {
 }
 .quiz-content {
     width: 100%;
-    /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
-    margin-bottom: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
+    /* VIEWPORT: 376px~414px, VALUES: 30px~40px */
+    margin-bottom: clamp(1.875rem, -4.309rem + 26.32vw, 2.5rem);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
-    row-gap: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
+    /* VIEWPORT: 376px~414px, VALUES: 30px~40px */
+    row-gap: clamp(1.875rem, -4.309rem + 26.32vw, 2.5rem);
     color: var(--text);
 }
 .statement {
