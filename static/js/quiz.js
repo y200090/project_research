@@ -46,8 +46,8 @@ const quizPage = document.querySelector('.quiz-page'),
 // メイン関数
 async function main() {
     // Create Questions APIを叩く
-    // const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create-questions/quiz/${rank}`);
-    const questions = await getAPI(`http://127.0.0.1:5000/feature/create-questions/quiz/${rank}`);
+    const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create-questions/quiz/${rank}`);
+    // const questions = await getAPI(`http://127.0.0.1:5000/feature/create-questions/quiz/${rank}`);
 
     // セッションストレージを初期化
     sessionStorage.clear();
@@ -192,8 +192,8 @@ async function main() {
             'answer_state': answerState[index]
         };
         // クイズ更新APIを叩く
-        // await postAPI(`https://project-research.azurewebsites.net/api/quiz-update/${rank}`, updateData);
-        await postAPI(`http://127.0.0.1:5000/api/quiz-update/${rank}`, updateData);
+        await postAPI(`https://project-research.azurewebsites.net/api/quiz-update/${rank}`, updateData);
+        // await postAPI(`http://127.0.0.1:5000/api/quiz-update/${rank}`, updateData);
 
         // クイズページのクローンを取得
         clone[index] = quizPage.cloneNode(true);
