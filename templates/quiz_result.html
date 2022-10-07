@@ -19,24 +19,19 @@
 {% block body %}
     <div class="result-page">
 
-        <div class="result-header">
-            <div class="result-title">{{ rank }} Quiz Result
-                <a href="{{ url_for('learnings') }}" id="exit-icon">
-                    <span class="material-symbols-outlined">close</span>
-                </a>
-            </div>
-        </div>
+        <div class="result-header">{{ rank }} Quiz Result</div>
 
         <div class="result-body">
             <div class="result-container">
-                <img src="{{ url_for('static', filename='images/trophy-icon.svg') }}" alt="trophy" id="trophy-image">
                 <span id="result-word"></span>
-                <span id="scoreboard">
+                <img src="{{ url_for('static', filename='images/trophy-icon.svg') }}" alt="trophy" id="trophy-image">
+                <span id="scoreboard">Your Score<br>
                     <span id="user-score"></span><span id="max-score">/10</span>
                 </span>
                 <div class="next-content">
                     <button id="review-button">Review</button>
-                    <a href="{{ url_for('quiz', rank=rank) }}" id="retry-button">Continue</a>
+                    <a href="{{ url_for('quiz', rank=rank) }}" id="continue-button">Continue</a>
+                    <img src="{{ url_for('static', filename='images/close-round-icon.svg') }}" alt="close" id="close-icon">
                 </div>
             </div>
         </div>
