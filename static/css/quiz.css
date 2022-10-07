@@ -22,8 +22,6 @@
 }
 body {
     position: relative;
-    height: 100vh;
-    width: 100vw;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -37,13 +35,17 @@ body {
 
 .quiz-page {
     position: relative;
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    width: 90%;
     max-width: 415px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .quiz-header {
-    position: fixed;
+    position: absolute;
     top: 0;
     /* VIEWPORT: 376px~414px, VALUES: 80px~90px */
     height: clamp(5rem, -1.184rem + 26.32vw, 5.625rem);
@@ -56,7 +58,7 @@ body {
 }
 .quiz-title {
     height: calc(100% - 3px);
-    width: 90%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -88,7 +90,7 @@ body {
 }
 .quiz-progress {
     height: 3px;
-    width: 90%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -123,7 +125,7 @@ body {
 .quiz-container {
     position: relative;
     height: 100%;
-    width: 90%;
+    width: 100%;
     /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
     padding-bottom: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
     display: flex;
