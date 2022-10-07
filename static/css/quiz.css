@@ -113,19 +113,22 @@ body {
 
 .quiz-body {
     position: relative;
-    /* VIEWPORT: 376px~414px, VALUES: 100px~120px */
-    height: calc(100% - clamp(6.25rem, -6.118rem + 52.63vw, 7.5rem));
+    /* VIEWPORT: 376px~414px, VALUES: 80px~90px */
+    height: calc(100% - clamp(5rem, -1.184rem + 26.32vw, 5.625rem));
     width: 100%;
-    /* VIEWPORT: 376px~414px, VALUES: 100px~120px */
-    margin-top: clamp(6.25rem, -6.118rem + 52.63vw, 7.5rem);
+    /* VIEWPORT: 376px~414px, VALUES: 80px~90px */
+    margin-top: clamp(5rem, -1.184rem + 26.32vw, 5.625rem);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 .quiz-container {
     position: relative;
-    height: 100%;
+    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
+    height: calc(100% - clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem));
     width: 100%;
+    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
+    margin-top: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
     /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
     padding-bottom: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
     display: flex;
@@ -183,13 +186,13 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
-    row-gap: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
+    /* VIEWPORT: 376px~414px, VALUES: 30px~40px */
+    row-gap: clamp(1.875rem, -4.309rem + 26.32vw, 2.5rem);
 }
 .japanese-word {
     position: relative;
-    /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
-    height: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
+    /* VIEWPORT: 281px~375px, VALUES: 40px~50px */
+    height: clamp(2.5rem, 0.651rem + 10.53vw, 3.125rem);
     width: 100%;
 }
 .japanese-word input {
@@ -230,11 +233,11 @@ body {
 }
 .next-content {
     position: relative;
-    /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
-    height: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
+    /* VIEWPORT: 281px~375px, VALUES: 40px~50px */
+    height: clamp(2.5rem, 0.651rem + 10.53vw, 3.125rem);
     width: 100%;
-    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
-    margin-top: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
+    /* VIEWPORT: 376px~414px, VALUES: 30px~40px */
+    margin-top: clamp(1.875rem, -4.309rem + 26.32vw, 2.5rem);
     display: none;
 }
 .next-content.active {
