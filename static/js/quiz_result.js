@@ -1,3 +1,6 @@
+// セッションストレージの数を取得
+const quizCount = sessionStorage.length;
+
 const resultPage = document.querySelector('.result-page'),
       resultWord = document.querySelector('#result-word'),
       userScore = document.querySelector('#user-score'),
@@ -6,28 +9,29 @@ const resultPage = document.querySelector('.result-page'),
 
 const clone = [],
       reviewWindow = document.querySelector('.review-window'),
+      closeIcon = document.querySelector('.close-icon'),
       swiperWrapper = document.querySelector('.swiper-wrapper');
 
-if (score < 10) {
+if (score < quizCount) {
     userScore.innerText = '0' + score;
 }
 else {
     userScore.innerText = score;
 }
 
-if (7 < score && score <= 10) {
+if (quizCount * 0.7 < score && score <= quizCount) {
     resultWord.innerText = 'Congratulations!';
     happy();
 }
-else if (3 < score && score <= 7) {
+else if (quizCount * 0.3 < score && score <= quizCount * 0.7) {
     resultWord.innerText = 'Nice Challenge!';
     happy();
 }
-else if (score <= 3) {
+else if (score <= quizCount * 0.3) {
     resultWord.innerText = 'Do Your Best!';
 }
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < quizCount; i++) {
     clone[i] = sessionStorage.getItem(`question.${i + 1}`);
 
     const quizPage = document.createElement('div');
@@ -42,77 +46,35 @@ reviewButton.addEventListener('click', () => {
     reviewWindow.classList.add('active');
 });
 
-// function review(data, index) {    
-//     if (answerState[index] == "correct") {
-//         revieweeCard[index].classList.add('correct');
+closeIcon.addEventListener('click', () => {
+    resultPage.classList.remove('inactive');
+    reviewWindow.classList.remove('active');
+});
 
-//     } else {
-//         revieweeCard[index].classList.add('incorrect');
-//     }
-
-//     quizWord[index].innerText = data.word;
-
-//     const speakIcon = document.createElement('span');
-//     speakIcon.classList.add('material-symbols-outlined', 'speak-icon');
-//     quizWord[index].appendChild(speakIcon);
-//     speakIcon.innerText = 'volume_up';
-//     // ブラウザにWeb Speech API Speech Synthesis機能があるか判定
-//     speakIcon.addEventListener('click', () => {
-//         if ('speechSynthesis' in window) {
-//             const uttr = new SpeechSynthesisUtterance();
-//             uttr.text = data.word;
-//             uttr.lang = 'en-US';
-//             uttr.rate = 0.8;
-//             const voices = speechSynthesis.getVoices();
-//             voices.forEach(voice => {
-//                 if (voice.lang === 'en-US') {
-//                     uttr.voice = voice;
-//                 }
-//             });
-//             window.speechSynthesis.speak(uttr);
-
-//         } else {
-//             alert('このブラウザは音声合成に対応していません。');
-//         }
-//     });
-
-//     quizAnswer[index].innerText = "日本語訳 : " + data.translation;
-
-//     const editIcon = document.createElement('span');
-//     editIcon.classList.add('material-symbols-outlined', 'edit-icon');
-//     quizAnswer[index].appendChild(editIcon);
-//     editIcon.innerText = 'edit';
-//     editIcon.addEventListener('click', () => {
-//         editForm.classList.add('active');
-//         editButton.setAttribute('id', `${data.word_id}`)
-//     });
-
-// };
-
-// revieweeCloseIcon.addEventListener('click', () => {
-//     quitIcon.classList.remove('inactive');
-//     reviewee.classList.remove('active');
-//     revieweeCloseIcon.classList.remove('active');
-// });
-
-// editCloseIcon.addEventListener('click', () => {
-//     editForm.classList.remove('active');
-// });
-
-// editButton.addEventListener('click', async () => {
-//     const editInput = document.querySelector('.edit-field > input');
-
-//     // 英単語ID検索APIに送信するPOSTデータを設定
-//     const updateDate = {
-//         'new_translation': editInput.value
-//     };
-//     // 英単語ID検索APIを叩く（POSTメソッド）
-//     // await postAPI(`https://project-research.azurewebsites.net/api/word-id-search/${editButton.id}`, updateDate);
-//     await postAPI(`http://127.0.0.1:5000/api/word-id-search/${editButton.id}`, updateDate);
-
-//     alert('更新が完了しました。');
-//     editForm.classList.remove('active');
-// });
+const englishWord = [...document.querySelectorAll('.english-word')],
+      speakIcons = [...document.querySelectorAll('.speak-icon')];
+speakIcons.forEach((speakIcon, index) => {
+    // Web Speech API Synthesisを利用して英単語の発音を確認できる機能を実装
+    speakIcon.addEventListener('click', () => {
+        // ブラウザにWeb Speech API Speech Synthesisがあるか判定
+        if ('speechSynthesis' in window) {
+            const uttr = new SpeechSynthesisUtterance();
+            uttr.text = englishWord[index].textContent.replace('volume_up', '');
+            uttr.lang = 'en-US';
+            uttr.rate = 0.8;
+            const voices = speechSynthesis.getVoices();
+            voices.forEach(voice => {
+                if (voice.lang === 'en-US') {
+                    uttr.voice = voice;
+                }
+            });
+            window.speechSynthesis.speak(uttr);
+        }
+        else {
+            alert('このブラウザは音声合成に対応していません。');
+        }
+    });
+})
 
 function happy() {
     confetti({

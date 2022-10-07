@@ -9,8 +9,6 @@
     <script src="{{ url_for('static', filename='js/mypage.js') }}" defer></script>
     <!-- Swiper.css CDN 導入 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
-    <!-- Swiper.js CDN 導入 -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js" defer></script>
     <!-- Canvas Confetti CDN 導入 -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js" defer></script>
     <script src="{{ url_for('static', filename='js/quiz_result.js') }}" defer></script>
@@ -18,7 +16,6 @@
 
 {% block body %}
     <div class="result-page">
-
         <div class="result-header">{{ rank }} Quiz Result</div>
 
         <div class="result-body">
@@ -37,29 +34,40 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <div class="review-window">
+        <span class="material-symbols-outlined close-icon">close</span>
         <div class="swiper">
             <div class="swiper-wrapper"></div>
-        </div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-    </div>
-    <!-- ============================================================================ -->
-    <div class="edit-form">
-        <div class="edit-field">
-            <p>不適切な日本語訳を編集します。<br>
-            編集した日本語訳はwebアプリ全体に反映されます。編集する際は慎重に検討してください。</p>
-            <span class="material-symbols-outlined">close</span>
-            <input type="text">
-            <button>request</button>
+            <div class="swiper-pagination"></div>
         </div>
     </div>
-    <!-- ============================================================================ -->
+
     <script>
         const rank = '{{ rank }}',
               score = Number('{{ score }}');
+    </script>
+
+    <!-- Swiper.js CDN 導入 -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script>
+        const swiper = new Swiper('.swiper', {
+            // Optional parameters
+            direction: 'horizontal',
+            loop: true,
+            mousewheel: true,
+            grabCursor: true,
+            effect: 'coverflow',
+            coverflowEffect: {
+                slideShadows: false,
+            },
+        
+            // If we need pagination
+            pagination: {
+              el: '.swiper-pagination',
+              clickable: true,
+            },
+        });
     </script>
 {% endblock %}
