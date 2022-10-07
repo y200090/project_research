@@ -5,7 +5,9 @@ const resultPage = document.querySelector('.result-page'),
       resultWord = document.querySelector('#result-word'),
       userScore = document.querySelector('#user-score'),
       maxScore = document.querySelector('#max-score'),
-      reviewButton = document.querySelector('#review-button');
+      nextContent = document.querySelector('.next-content'),
+      reviewButton = document.querySelector('#review-button'),
+      browserBack = document.querySelector('#browser-back');
 
 const clone = [],
       reviewWindow = document.querySelector('.review-window'),
@@ -30,6 +32,16 @@ else if (quizCount * 0.3 < score && score <= quizCount * 0.7) {
 else if (score <= quizCount * 0.3) {
     resultWord.innerText = 'Do Your Best!';
 }
+
+window.addEventListener('load', () => {
+    height = nextContent.clientHeight;
+    browserBack.style.height = `${height * 1.2}px`;
+});
+
+window.addEventListener('resize', () => {
+    height = nextContent.clientHeight;
+    browserBack.style.height = `${height * 1.2}px`;
+});
 
 for (let i = 0; i < quizCount; i++) {
     clone[i] = sessionStorage.getItem(`question.${i + 1}`);
