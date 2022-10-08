@@ -300,7 +300,6 @@ def test_update(rank):
 
 @api.route('/database/create_backup')
 @login_required
-@roles_required
 def create_backup():
     src = './database.db'
     # コピー元ファイルの存在を判定
