@@ -86,7 +86,7 @@ function records(records, total_remembered) {
 };
 
 async function main() {
-    // const filename = await postAPI('http://127.0.0.1:5000/api/database/create_backup');
+    // const filename = await getAPI('http://127.0.0.1:5000/api/database/create_backup');
     const filename = await getAPI('https://project-research.azurewebsites.net/api/database/create_backup');
     console.log(filename);
     const backupButton = document.querySelector('#backup');
