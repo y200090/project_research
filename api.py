@@ -1,7 +1,8 @@
+import mimetypes
 from __init__ import db, Word, User, Student, Y200004, Y200042, Y200051, Y200062, Y200065, Y200078, Y200080, Y200089, Y200090, roles_required, record
 import pytz, json, collections, os, shutil
 from datetime import datetime
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, send_file
 from flask_login import login_required, current_user
 from sqlalchemy import or_, func
 
@@ -311,7 +312,7 @@ def create_backup():
         shutil.copy(src, dst)
 
         print('\033[31m' + f'{filename} の作成が完了しました。\nデータベースのバックアップに成功しました。' + '\033[0m')      # 確認用
-        
-        return jsonify(f'{filename}')
+
+        return send_file(dst)
     else:
         return jsonify('Failure')

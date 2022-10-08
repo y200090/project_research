@@ -84,27 +84,3 @@ function records(records, total_remembered) {
         recordsTableTbody.appendChild(recordTr);
     });
 };
-
-async function main() {
-    // const filename = await getAPI('http://127.0.0.1:5000/api/database/create_backup');
-    const filename = await getAPI('https://project-research.azurewebsites.net/api/database/create_backup');
-    console.log(filename);
-    const backupButton = document.querySelector('#backup');
-    // backupButton.href = `./backup/${filename}`;
-    backupButton.href = `./database.db`;
-}
-main();
-
-// APIからデータを受け取る関数
-async function getAPI(url) {
-    return await fetch(url)
-        .then(response => {
-            return response.json();
-        })
-        .then(datas => {
-            return datas;
-        })
-        .catch(error => {
-            console.error('APIの取得に失敗しました。', error);
-        });
-};
