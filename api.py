@@ -301,7 +301,7 @@ def test_update(rank):
 @api.route('/database/create_backup')
 @login_required
 def create_backup():
-    src = 'https://project-research.azurewebsites.net/database.db'
+    src = './database.db'
     # コピー元ファイルの存在を判定
     if os.path.isfile(src):
         now = datetime.now(pytz.timezone('Asia/Tokyo'))
