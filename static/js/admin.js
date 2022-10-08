@@ -87,30 +87,23 @@ function records(records, total_remembered) {
 
 async function main() {
     // const filename = await postAPI('http://127.0.0.1:5000/api/database/create_backup');
-    const filename = await postAPI('https://project-research.azurewebsites.net/api/database/create_backup');
-    const backupButton = document.querySelector('#backup');
-    backupButton.href = `./backup/${filename}`;
+    const filename = await getAPI('https://project-research.azurewebsites.net/api/database/create_backup');
     console.log(filename);
+    const backupButton = document.querySelector('#backup');
+    backupButton.href = `https://project-research.azurewebsites.net/backup/${filename}`;
 }
 main();
 
-// APIにPOSTデータを送る関数
-async function postAPI(url) {
-    const param = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-    };
-    return await fetch(url, param)
+// APIからデータを受け取る関数
+async function getAPI(url) {
+    return await fetch(url)
         .then(response => {
             return response.json();
         })
-        .then(data => {
-            return data;
+        .then(datas => {
+            return datas;
         })
         .catch(error => {
-            console.error('APIへデータの送信に失敗しました。', error);
+            console.error('APIの取得に失敗しました。', error);
         });
 };
-

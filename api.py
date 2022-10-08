@@ -298,7 +298,7 @@ def test_update(rank):
     db.session.commit()    
     return jsonify('finish')
 
-@api.route('/database/create_backup', methods=['POST'])
+@api.route('/database/create_backup')
 @login_required
 @roles_required
 def create_backup():
@@ -310,7 +310,7 @@ def create_backup():
         dst = f'./backup/{filename}'
         # ファイルをコピー
         shutil.copy(src, dst)
-        
+
         print('\033[31m' + f'{filename} の作成が完了しました。\nデータベースのバックアップに成功しました。' + '\033[0m')      # 確認用
         
         return jsonify(f'{filename}')
