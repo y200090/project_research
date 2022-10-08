@@ -90,7 +90,8 @@ async function main() {
     const filename = await getAPI('https://project-research.azurewebsites.net/api/database/create_backup');
     console.log(filename);
     const backupButton = document.querySelector('#backup');
-    backupButton.href = `./backup/${filename}`;
+    // backupButton.href = `./backup/${filename}`;
+    backupButton.href = `./database.db`;
 }
 main();
 
