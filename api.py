@@ -306,7 +306,7 @@ def create_backup():
     if os.path.isfile(src):
         now = datetime.now(pytz.timezone('Asia/Tokyo'))
         filename = now.strftime('%Y%m%d_%H%M%S') + '.db'
-        dst = f'https://project-research.azurewebsites.net/backup/{filename}'
+        dst = f'./backup/{filename}'
         # ファイルをコピー
         shutil.copy(src, dst)
 
