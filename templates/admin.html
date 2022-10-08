@@ -11,6 +11,7 @@
 
 {% block body %}
     <a href="{{ url_for('logout') }}" id="logout">ログアウト</a>
+    <a href="" id="backup">データベースのバックアップを作成</a>
     <div class="users">
         <table>
             <caption>
@@ -30,7 +31,7 @@
             <tbody>
                 {% for user in users %}
                     <tr class="user-info">
-                        <td class="user-id">{{ user.user_id }}</td>
+                        <td class="user-id">{{ user.ID }}</td>
                         <td class="username">{{ user.username }}</td>
                         <td class="user-role">{{ user.role }}</td>
                         <td class="user-login-state">{{ user.login_state }}</td>

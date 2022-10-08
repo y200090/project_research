@@ -1,7 +1,7 @@
 from __init__ import app, db, bcrypt, login_manager, Word, User, Student, Y200004, Y200042, Y200051, Y200062, Y200065, Y200078, Y200080, Y200089, Y200090, roles_required, record
-import re, regex, pytz, random, collections
+import os, re, regex, pytz, random, collections, shutil
 from datetime import datetime
-from flask import render_template, request, url_for, redirect, flash
+from flask import render_template, request, url_for, redirect, flash, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
@@ -142,6 +142,8 @@ def login():
                 now_user.login_date = datetime.now(pytz.timezone('Asia/Tokyo'))
                 # データベースを更新
                 db.session.commit()
+                if now_user.role == 'Admin':
+                    return redirect(url_for('admin'))
                 return redirect(url_for('home'))
 
             # パスワードが合致しなかった場合
@@ -365,8 +367,8 @@ def admin():
             'signup_date': str(datas[i].signup_date),
             'login_date': str(datas[i].login_date),
             'total_quiz_response': datas[i].total_quiz_response,
-            'total_quiz_correct': datas[i].tota_quiz_correct,
-            'tota_test_response': datas[i].total_test_response,
+            'total_quiz_correct': datas[i].total_quiz_correct,
+            'total_test_response': datas[i].total_test_response,
             'total_remembered': datas[i].total_remembered,
             'quiz_challenge_number': datas[i].quiz_challenge_number,
             'test_challenge_number': datas[i].test_challenge_number

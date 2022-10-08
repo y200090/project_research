@@ -1,6 +1,5 @@
-import re
 from __init__ import db, Word, User, Student, Y200004, Y200042, Y200051, Y200062, Y200065, Y200078, Y200080, Y200089, Y200090, roles_required, record
-import pytz, json, collections
+import pytz, json, collections, os, shutil
 from datetime import datetime
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
@@ -28,7 +27,6 @@ def word_all_search():
             'correct': datas[i].correct,
             'freq_rank': datas[i].freq_rank
         })
-
     return jsonify(params)
 
 # 英単語ID検索API
@@ -38,7 +36,6 @@ def word_id_search(word_id):
     if request.method == 'GET':
         # word_idに合致するwordsテーブルのデータを単一取得
         data = Word.query.get(word_id)
-
         return jsonify({
             'word_id': data.id,
             'word': data.word,
@@ -58,13 +55,11 @@ def word_id_search(word_id):
 
         # word_idに合致するwordsテーブルのデータを単一取得
         data = Word.query.get(word_id)
-
         # 英単語データの日本語訳を更新
         data.translation = new_translation
 
         # データベースを更新する
         db.session.commit()
-
         return jsonify('finish')
 
 # 英単語ランク検索API
@@ -87,7 +82,6 @@ def word_rank_search(rank):
             'response': datas[i].response,
             'correct': datas[i].correct
         })
-    
     return jsonify(params)
 
 # クイズ解答時更新API
@@ -145,7 +139,6 @@ def quiz_update(rank):
             word_state = 'test_state'
             # “クイズでの正解数の累計”を更新
             quiz_correct = records_data.quiz_correct + 1
-
         # クイズ不正解時の場合
         elif answer_state == 'incorrect':
             # “学習待ち”状態を継承
@@ -159,7 +152,6 @@ def quiz_update(rank):
         test_response = records_data.test_response
         test_correct = records_data.test_correct
         test_challenge_index = records_data.test_challenge_index
-
     # 解答した英単語が初出の場合
     else:
         print('\033[31m' + ' >> 初出です。' + '\033[0m')      # 確認用
@@ -170,7 +162,6 @@ def quiz_update(rank):
             word_state = 'test_state'
             # “クイズにおける正解数の累計”の初期値を登録
             quiz_correct = 1
-
         # クイズ不正解時の場合
         elif answer_state == 'incorrect':
             # “学習待ち”として登録
@@ -264,7 +255,6 @@ def test_update(rank):
         test_correct = records_data.test_correct + 1
         # “覚えた判定を出した累計”を更新
         users_data.total_remembered += 1
-
     # テスト不正解時の場合
     elif answer_state == 'incorrect':
         # “テスト待ち”から“学習待ち”へ更新
@@ -307,3 +297,22 @@ def test_update(rank):
     # データベースを更新
     db.session.commit()    
     return jsonify('finish')
+
+@api.route('/database/create_backup', methods=['POST'])
+@login_required
+@roles_required
+def create_backup():
+    src = './database.db'
+    # コピー元ファイルの存在を判定
+    if os.path.isfile(src):
+        now = datetime.now(pytz.timezone('Asia/Tokyo'))
+        filename = now.strftime('%Y%m%d_%H%M%S') + '.db'
+        dst = f'./backup/{filename}'
+        # ファイルをコピー
+        shutil.copy(src, dst)
+        
+        print('\033[31m' + f'{filename} の作成が完了しました。\nデータベースのバックアップに成功しました。' + '\033[0m')      # 確認用
+        
+        return jsonify(f'{filename}')
+    else:
+        return jsonify('Failure')
