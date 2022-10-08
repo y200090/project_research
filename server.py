@@ -108,7 +108,6 @@ def signup():
             quiz_challenge_number = 0,
             test_challenge_number = 0
         )
-
         # データベースに追加
         db.session.add(new_user)
         # データベースを更新
@@ -132,8 +131,6 @@ def login():
         if now_user:
             # ハッシュ化されたパスワードのチェック
             if bcrypt.check_password_hash(now_user.password, form.password.data):
-                print('\033[31m' + f'{now_user.username} さんがログインしました。' + '\033[0m')      # 確認用
-
                 # 第二引数にremember=Trueを渡すことで、Cookieにセッション情報を残している
                 login_user(now_user, remember=form.remember.data)
                 # ユーザーのログイン状態をアクティブに更新
@@ -142,10 +139,7 @@ def login():
                 now_user.login_date = datetime.now(pytz.timezone('Asia/Tokyo'))
                 # データベースを更新
                 db.session.commit()
-                if now_user.role == 'Admin':
-                    return redirect(url_for('admin'))
                 return redirect(url_for('home'))
-
             # パスワードが合致しなかった場合
             else :
                 flash('パスワードが間違っています。', 'password')
@@ -174,8 +168,6 @@ def learnings():
     params = []
     ranks = ['A1', 'A2', 'B1', 'B2']
     Record = record(current_user.id)
-    print('\033[32m' + f'{Record}' + '\033[0m')     # 確認用
-
 
     for rank in ranks:
         # wordsテーブルのレコード数を取得
@@ -206,7 +198,6 @@ def learnings():
             records_data = Record.query.filter_by(order=max_order).filter(or_(Record.word_state=='test_state', Record.word_state=='review_state')).first()
             if records_data is None:
                 continue
-            
             records_datas.append(max_order)
 
         diff = round((len(records_datas) * 100 / words_length), 1)    # クイズの達成度（四捨五入したパーセンテージ）を計算
@@ -268,7 +259,6 @@ def tasks():
             records_data = Record.query.filter_by(order=max_order, word_state='test_state').first()
             if records_data is None:
                 continue
-
             records_datas.append(records_data)
         
         task = len(records_datas) // 20     # テストを受験できる回数を計算
@@ -289,29 +279,12 @@ def test(rank):
     return render_template('test.html', rank=rank)
 
 # テストリザルトページ
-@app.route('/mypage/tasks/test/<rank>/result', methods=['POST'])
+@app.route('/mypage/tasks/test/<rank>/result')
 @login_required
 def test_result(rank):
     # クエリパラメータを取得
     score = request.args.get('score')
-
-    word_id = []
-    for i in range(20):
-        data = request.form.get(f'word_id{i}')
-        word_id.append(data)
-    
-    answer_state = []
-    for i in range(20):
-        data = request.form.get(f'answer_state{i}')
-        answer_state.append(data)
-    
-    return render_template(
-        'test_result.html', 
-        userId=current_user.id, 
-        wordId=word_id, 
-        answerState=answer_state, 
-        score=score
-    )
+    return render_template('test_result.html', rank=rank ,score=score)
 
 # 設定ページ
 @app.route('/mypage/settings')
@@ -340,8 +313,6 @@ def profile():
 @app.route('/logout')
 @login_required
 def logout():
-    print('\033[31m' + f'{current_user.username} さんがログアウトしました。' + '\033[0m')      # 確認用
-
     # “ログイン中”を“ログアウト中”へ更新
     current_user.login_state = 'inactive'
     # データベースを更新

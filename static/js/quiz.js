@@ -1,10 +1,3 @@
-const quizProgress = document.querySelector('.quiz-progress');
-for (let i = 0; i < 10; i++) {
-    const line = document.createElement('div');
-    line.classList.add('line');
-    quizProgress.appendChild(line);
-}
-
 // ブラウザのリロード・タブ閉じをアラート
 window.addEventListener('beforeunload', browserReload);
 function browserReload(e) {
@@ -20,37 +13,47 @@ function browserBack() {
     history.go(1);
 };
 
-const word = [],              // 問題
-      wordId = [],            // 問題の英単語ID
-      answer = [],            // 正解
-      userAnswer = [],        // ユーザーの解答
-      answerState = [],       // 正誤判定の結果を記憶
-      clone = [];             // クイズページのクローンを記憶
-
-let index = 0,                // 問題番号
-    score = 0,                // 得点
-    allResponse = [],         // 全体の出題数
-    allCorrect = [],          // 全体の正解数
-    answerImage,              // 正誤判定時のイメージ
-    nextButton;               // クイズページを切り替えるボタン
-
-const quizPage = document.querySelector('.quiz-page'),
-      currentNumber = document.querySelector('.current-number'),
-      maxNumber = document.querySelector('.max-number'),
-      lines = [...document.querySelectorAll('.line')],
-      statementSpan = document.querySelector('.statement > span'),
-      englishWord = document.querySelector('.english-word'),
-      optionsContent = document.querySelector('.options-content'),
-      nextContent = document.querySelector('.next-content');
-
 // メイン関数
 async function main() {
-    // Create Questions APIを叩く
-    const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create-questions/quiz/${rank}`);
-    // const questions = await getAPI(`http://127.0.0.1:5000/feature/create-questions/quiz/${rank}`);
+    // クイズ作成APIを叩く
+    // const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create-questions/quiz/${rank}`);
+    const questions = await getAPI(`http://127.0.0.1:5000/feature/create-questions/quiz/${rank}`);
+
+    const quizProgress = document.querySelector('.quiz-progress');
+    for (let i = 0; i < questions.length; i++) {
+        const line = document.createElement('div');
+        line.classList.add('line');
+        quizProgress.appendChild(line);
+    }
 
     // セッションストレージを初期化
     sessionStorage.clear();
+
+    const word = [],              // 問題
+          wordId = [],            // 問題の英単語ID
+          answer = [],            // 正解
+          userAnswer = [],        // ユーザーの解答
+          answerState = [],       // 正誤判定の結果を記憶
+          responseSpan = [],      // 解答時間を算出
+          clone = [];             // クイズページのクローンを記憶
+
+    let index = 0,                // 問題番号
+        score = 0,                // 得点
+        allResponse = [],         // 全体の出題数
+        allCorrect = [],          // 全体の正解数
+        answerImage,              // 正誤判定時のイメージ
+        startTime,                // 解答開始時刻
+        endTime,                  // 解答完了時刻
+        nextButton;               // クイズページを切り替えるボタン
+
+    const quizPage = document.querySelector('.quiz-page'),
+          currentNumber = document.querySelector('.current-number'),
+          maxNumber = document.querySelector('.max-number'),
+          lines = [...document.querySelectorAll('.line')],
+          statementSpan = document.querySelector('.statement > span'),
+          englishWord = document.querySelector('.english-word'),
+          optionsContent = document.querySelector('.options-content'),
+          nextContent = document.querySelector('.next-content');
     
     // 問題・選択肢を表示する関数===========================================================
     function setQuiz() {
@@ -73,8 +76,11 @@ async function main() {
         }
         maxNumber.innerText = '/' + questions.length;
         lines[index].classList.add('current');        
-        statementSpan.innerText = `ユーザー正解率：${Math.floor(allCorrect[index] / allResponse[index] * 100)}%`;
+        statementSpan.innerText = `ユーザー正解率 ：${Math.floor(allCorrect[index] / allResponse[index] * 100)}%`;
         englishWord.innerText = word[index];
+
+        // 解答開始時刻取得
+        startTime = new Date();
 
         // スピーカーアイコン生成
         const speakIcon = document.createElement('span');
@@ -135,6 +141,10 @@ async function main() {
 
     // 正誤判定する関数====================================================================
     async function checkAnswer(input) {
+        // 解答完了時刻取得
+        endTime = new Date();
+        responseSpan[index] = endTime.getTime() - startTime.getTime();
+        
         // ユーザーの解答を格納
         userAnswer[index] = input.value;
 
@@ -159,53 +169,53 @@ async function main() {
             modelAnswer.insertAdjacentHTML('afterend', `${modelAnswerImage}`);
         }
         input.insertAdjacentHTML('afterend', `${answerImage}`);
+
+        // コンソール確認用
+        console.log(`解答時間: ${responseSpan[index]}ms`);
+        console.log(`ユーザーの回答: ${userAnswer[index]}`);
+        console.log(`正解: ${answer[index]}`);
+        console.log(`成績: ${score}/${questions.length}`);
         
         optionsContent.classList.add('none-events');
         nextContent.classList.add('active');
+
+        // クイズ更新APIに送信するPOSTデータを設定
+        const updateData = {
+            'word_id': wordId[index],
+            'answer_state': answerState[index],
+            'response_span': responseSpan[index]
+        };
+        // クイズ更新APIを叩く
+        // await postAPI(`https://project-research.azurewebsites.net/api/quiz-update/${rank}`, updateData);
+        await postAPI(`http://127.0.0.1:5000/api/quiz-update/${rank}`, updateData);
 
         // 前問のボタンを削除
         while (nextContent.firstChild) {
             nextContent.removeChild(nextContent.firstChild);
         }
-        if ((index + 1) < questions.length) {
-            nextButton = document.createElement('button');
-            nextButton.classList.add('next-button');
-            nextButton.innerText = '次の問題へ';
-            nextButton.addEventListener('click', () => nextQuiz());
-        }
-        else {
+        
+        // クイズの最後の問題を解答した時の処理
+        if ((index + 1) == questions.length) {
+            window.removeEventListener('beforeunload', browserReload);
+            window.removeEventListener('popstate', browserBack);
+
             nextButton = document.createElement('a');
             nextButton.classList.add('next-button');
             nextButton.href = `/mypage/learnings/quiz/${rank}/result?score=${score}`;
             nextButton.innerText = '終了する';
         }
+        else {
+            nextButton = document.createElement('button');
+            nextButton.classList.add('next-button');
+            nextButton.innerText = '次の問題へ';
+            nextButton.addEventListener('click', () => nextQuiz());
+        }
         nextContent.appendChild(nextButton);
-        
-        // コンソール確認用
-        console.log(`ユーザーの回答: ${userAnswer[index]}`);
-        console.log(`正解: ${answer[index]}`);
-        console.log(`成績: ${score}/${questions.length}`);
-
-        // クイズ更新APIに送信するPOSTデータを設定
-        const updateData = {
-            'word_id': wordId[index],
-            'answer_state': answerState[index]
-        };
-        // クイズ更新APIを叩く
-        await postAPI(`https://project-research.azurewebsites.net/api/quiz-update/${rank}`, updateData);
-        // await postAPI(`http://127.0.0.1:5000/api/quiz-update/${rank}`, updateData);
 
         // クイズページのクローンを取得
         clone[index] = quizPage.cloneNode(true);
         // セッションストレージにクローンを保存
-        sessionStorage.setItem(`question.${index + 1}`, `${clone[index].innerHTML}`);
-        console.log(clone[index])
-
-        // クイズの最後の問題を解答した時の処理
-        if ((index + 1) == questions.length) {
-            window.removeEventListener('beforeunload', browserReload);
-            window.removeEventListener('popstate', browserBack);
-        }
+        sessionStorage.setItem(`quiz-${index + 1}`, `${clone[index].innerHTML}`);
     };
 
     // 次の問題へ遷移する関数============================================================

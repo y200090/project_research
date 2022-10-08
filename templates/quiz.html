@@ -12,7 +12,6 @@
 
 {% block body %}
     <div class="quiz-page">
-
         <div class="quiz-header">
             <div class="quiz-title">
                 <span class="quiz-name">{{ rank }} Quiz</span>
@@ -20,24 +19,25 @@
                     <span class="current-number"></span><span class="max-number"></span>
                 </span>
             </div>
-            <div class="quiz-progress"></div>
+            <div class="quiz-progress">
+            </div>
         </div>
         
         <div class="quiz-body">
             <div class="quiz-container">
                 <div class="quiz-content">
                     <p class="statement">適切な日本語訳を選択してください。
-                        <span></span>
+                        <span>
+                        </span>
                     </p>
                     <span class="english-word"></span>
                 </div>
-                <div class="options-content"></div>
+                <div class="options-content">
+                </div>
                 <div class="next-content">
-                    <a href="{{ url_for('quiz_result', rank=rank, score=10)}}"></a>
                 </div>
             </div>
         </div>
-
     </div>
     
     <script>

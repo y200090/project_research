@@ -14,12 +14,13 @@ const clone = [],
       closeIcon = document.querySelector('.close-icon'),
       swiperWrapper = document.querySelector('.swiper-wrapper');
 
-if (score < quizCount) {
-    userScore.innerText = '0' + score;
-}
-else {
+if (score >= 10) {
     userScore.innerText = score;
 }
+else {
+    userScore.innerText = '0' + score;
+}
+maxScore.innerText = '/' + quizCount;
 
 if (quizCount * 0.7 < score && score <= quizCount) {
     resultWord.innerText = 'Congratulations!';
@@ -30,7 +31,7 @@ else if (quizCount * 0.3 < score && score <= quizCount * 0.7) {
     happy();
 }
 else if (score <= quizCount * 0.3) {
-    resultWord.innerText = 'Do Your Best!';
+    resultWord.innerText = 'Hang in There!';
 }
 
 window.addEventListener('load', () => {
@@ -44,10 +45,10 @@ window.addEventListener('resize', () => {
 });
 
 for (let i = 0; i < quizCount; i++) {
-    clone[i] = sessionStorage.getItem(`question.${i + 1}`);
+    clone[i] = sessionStorage.getItem(`quiz-${i + 1}`);
 
     const quizPage = document.createElement('div');
-    quizPage.classList.add('swiper-slide', 'quiz-page', `question.${i + 1}`);
+    quizPage.classList.add('swiper-slide', 'quiz-page', `quiz-${i + 1}`);
     quizPage.insertAdjacentHTML('beforeend', `${clone[i]}`);
     
     swiperWrapper.appendChild(quizPage);
@@ -86,7 +87,7 @@ speakIcons.forEach((speakIcon, index) => {
             alert('このブラウザは音声合成に対応していません。');
         }
     });
-})
+});
 
 function happy() {
     confetti({
@@ -107,25 +108,4 @@ function happy() {
         },
         ticks: 1000,
     });
-};
-
-// APIにPOSTデータを送る関数
-async function postAPI(url, data) {
-    const param = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    };
-    return await fetch(url, param)
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            return data;
-        })
-        .catch(error => {
-            console.error('APIへデータの送信に失敗しました。', error);
-        });
 };

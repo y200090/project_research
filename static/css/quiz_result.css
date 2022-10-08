@@ -85,8 +85,6 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
-    /* row-gap: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem); */
 }
 #result-word {
     /* VIEWPORT: 281px~414px, VALUES: 30px~42px */

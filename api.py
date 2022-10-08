@@ -93,6 +93,7 @@ def quiz_update(rank):
     get_request = request.get_json()
     word_id = get_request['word_id']
     answer_state = get_request['answer_state']
+    response_span = get_request['response_span']
 
     # word_idに合致するwordsテーブルのデータを単一取得
     words_data = Word.query.get(word_id)
@@ -113,14 +114,14 @@ def quiz_update(rank):
 
     Record = record(current_user.id)
     if not current_user.role == 'Student':
-        # word_idと合致するy2000*テーブルのデータを単一取得
-        records = Record.query.filter_by(word_id=word_id).first()
+        # word_idと合致するy2000*テーブルのデータを全取得
+        records = Record.query.filter_by(word_id=word_id).all()
     else:
-        # 現在ログイン中のユーザーIDかつword_idと合致するstudentsテーブルのデータを単一取得
-        records = Record.query.filter_by(user_id=current_user.id, word_id=word_id).first()
-
+        # 現在ログイン中のユーザーIDかつword_idと合致するstudentsテーブルのデータを全取得
+        records = Record.query.filter_by(user_id=current_user.id, word_id=word_id).all()
+    
     # 解答した英単語が既出の場合
-    if records:
+    if not records == []:
         print('\033[31m' + ' >> 既出です。' + '\033[0m')      # 確認用
 
         if not current_user.role == 'Student':
@@ -138,21 +139,21 @@ def quiz_update(rank):
         if answer_state == 'correct':
             # “学習待ち”から“テスト待ち”へ更新
             word_state = 'test_state'
-            # “クイズでの正解数の累計”を更新
-            quiz_correct = records_data.quiz_correct + 1
+            # “クイズでの解答結果”を格納
+            quiz_response = 1
+
         # クイズ不正解時の場合
         elif answer_state == 'incorrect':
             # “学習待ち”状態を継承
             word_state = 'quiz_state'
-            # “クイズでの正解数の累計”を継承
-            quiz_correct = records_data.quiz_correct
+            # “クイズでの解答結果”を格納
+            quiz_response = 0
 
-        # “クイズでの解答数の累計”を更新
-        quiz_response = records_data.quiz_response + 1
         # 初期値継承
         test_response = records_data.test_response
-        test_correct = records_data.test_correct
+        constant_test_correct = records_data.constant_test_correct
         test_challenge_index = records_data.test_challenge_index
+
     # 解答した英単語が初出の場合
     else:
         print('\033[31m' + ' >> 初出です。' + '\033[0m')      # 確認用
@@ -161,20 +162,19 @@ def quiz_update(rank):
         if answer_state == 'correct':
             # “テスト待ち”として登録
             word_state = 'test_state'
-            # “クイズにおける正解数の累計”の初期値を登録
-            quiz_correct = 1
+            # “クイズでの解答結果”を格納
+            quiz_response = 1
+
         # クイズ不正解時の場合
         elif answer_state == 'incorrect':
             # “学習待ち”として登録
             word_state = 'quiz_state'
-            # “クイズにおける正解数の累計”の初期値を登録
-            quiz_correct = 0
-        
-        # “クイズでの解答数の累計”の初期値を登録
-        quiz_response = 1
+            # “クイズでの解答結果”を格納
+            quiz_response = 0
+
         # 初期値設定
         test_response = 0
-        test_correct = 0
+        constant_test_correct = 0
         test_challenge_index = 0
     
     if not current_user.role == 'Student':
@@ -183,11 +183,11 @@ def quiz_update(rank):
             word_id=word_id, 
             rank=rank, 
             quiz_response=quiz_response, 
-            quiz_correct=quiz_correct, 
             test_response=test_response, 
-            test_correct=test_correct, 
+            constant_test_correct=constant_test_correct, 
             word_state=word_state, 
             response_date=datetime.now(pytz.timezone('Asia/Tokyo')), 
+            response_span=response_span,
             quiz_challenge_index=users_data.quiz_challenge_number, 
             test_challenge_index=test_challenge_index
         )
@@ -198,11 +198,11 @@ def quiz_update(rank):
             word_id=word_id, 
             rank=rank, 
             quiz_response=quiz_response, 
-            quiz_correct=quiz_correct, 
             test_response=test_response, 
-            test_correct=test_correct, 
+            constant_test_correct=constant_test_correct, 
             word_state=word_state, 
             response_date=datetime.now(pytz.timezone('Asia/Tokyo')), 
+            response_span=response_span,
             quiz_challenge_index=users_data.quiz_challenge_number, 
             test_challenge_index=test_challenge_index
         )
@@ -211,7 +211,7 @@ def quiz_update(rank):
     db.session.add(set_db)
     # データベースを更新
     db.session.commit()
-    return jsonify('finish')
+    return jsonify('更新完了')
 
 # テスト更新API
 @api.route('/test-update/<rank>', methods=['POST'])
@@ -221,6 +221,7 @@ def test_update(rank):
     get_request = request.get_json()
     word_id = get_request['word_id']
     answer_state = get_request['answer_state']
+    response_span = get_request['response_span']
     
     # word_idに合致するwordsテーブルのデータを単一取得
     words_data = Word.query.get(word_id)
@@ -243,25 +244,29 @@ def test_update(rank):
     words_data.response += 1
     # “テストの解答数の累計”を更新
     users_data.total_test_response += 1
-    # “テストでの解答数の累計”を更新
-    test_response = records_data.test_response + 1
     
     # テスト正解時の場合
     if answer_state == 'correct':
         # “正解された累計”を更新
         words_data.correct += 1
-        # “テスト待ち”から“復習待ち”へ更新
-        word_state = 'review_state'
-        # “テストにおける連続正解数”を更新
-        test_correct = records_data.test_correct + 1
         # “覚えた判定を出した累計”を更新
         users_data.total_remembered += 1
+
+        # “テスト待ち”から“復習待ち”へ更新
+        word_state = 'review_state'
+        # “テストでの解答結果”を格納
+        test_response = 1
+        # “テストにおける連続正解数”を更新
+        constant_test_correct = records_data.constant_test_correct + 1
+
     # テスト不正解時の場合
     elif answer_state == 'incorrect':
         # “テスト待ち”から“学習待ち”へ更新
         word_state = 'quiz_state'
+        # “テストでの解答結果”を格納
+        test_response = 0
         # “テストにおける連続正解数”をリセット
-        test_correct = 0
+        constant_test_correct = 0
 
     if not current_user.role == 'Student':
         # 上記のデータをy2000*テーブルに新規登録
@@ -269,11 +274,11 @@ def test_update(rank):
             word_id=word_id, 
             rank=rank, 
             quiz_response=records_data.quiz_response, 
-            quiz_correct=records_data.quiz_correct, 
             test_response=test_response, 
-            test_correct=test_correct, 
+            constant_test_correct=constant_test_correct, 
             word_state=word_state, 
             response_date=datetime.now(pytz.timezone('Asia/Tokyo')), 
+            response_span=response_span,
             quiz_challenge_index=records_data.quiz_challenge_index, 
             test_challenge_index=users_data.test_challenge_number
         )
@@ -284,11 +289,11 @@ def test_update(rank):
             word_id=word_id, 
             rank=rank, 
             quiz_response=records_data.quiz_response, 
-            quiz_correct=records_data.quiz_correct, 
             test_response=test_response, 
-            test_correct=test_correct, 
+            constant_test_correct=constant_test_correct, 
             word_state=word_state, 
             response_date=datetime.now(pytz.timezone('Asia/Tokyo')), 
+            response_span=response_span,
             quiz_challenge_index=records_data.quiz_challenge_index, 
             test_challenge_index=users_data.test_challenge_number
         )

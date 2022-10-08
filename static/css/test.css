@@ -22,11 +22,6 @@
 }
 body {
     position: relative;
-    /* VIEWPORT: 376px~414px, VALUES: 80px~90px */
-    height: calc(100vh - clamp(5rem, -1.184rem + 26.32vw, 5.625rem));
-    width: 100vw;
-    /* VIEWPORT: 376px~414px, VALUES: 80px~90px */
-    margin-top: clamp(5rem, -1.184rem + 26.32vw, 5.625rem);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -37,9 +32,20 @@ body {
     --text: #fff;
     --contents: #202528;
 }
-/* ========================================================= */
+
+.test-page {
+    position: relative;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    width: 90%;
+    max-width: 415px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .test-header {
-    position: fixed;
+    position: absolute;
     top: 0;
     /* VIEWPORT: 376px~414px, VALUES: 80px~90px */
     height: clamp(5rem, -1.184rem + 26.32vw, 5.625rem);
@@ -52,7 +58,7 @@ body {
 }
 .test-title {
     height: calc(100% - 3px);
-    width: 90%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -84,7 +90,7 @@ body {
 }
 .test-progress {
     height: 3px;
-    width: 90%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -98,21 +104,27 @@ body {
 .line.current {
     background-color: #fff;
 }
-/* ========================================================= */
-.test {
-    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
-    height: calc(100% - clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem));
+
+.test-body {
+    position: relative;
+    /* VIEWPORT: 376px~414px, VALUES: 80px~90px */
+    height: calc(100% - clamp(5rem, -1.184rem + 26.32vw, 5.625rem));
     width: 100%;
-    max-width: 415px;
-    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
-    margin-top: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
+    /* VIEWPORT: 376px~414px, VALUES: 80px~90px */
+    margin-top: clamp(5rem, -1.184rem + 26.32vw, 5.625rem);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 .test-container {
-    height: 100%;
-    width: 90%;
+    position: relative;
+    /* VIEWPORT: 376px~414px, VALUES: 10px~20px */
+    height: calc(100% - clamp(0.625rem, -5.559rem + 26.32vw, 1.25rem));
+    width: 100%;
+    /* VIEWPORT: 376px~414px, VALUES: 10px~20px */
+    margin-top: clamp(0.625rem, -5.559rem + 26.32vw, 1.25rem);
+    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
+    padding-bottom: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -120,14 +132,14 @@ body {
 }
 .test-content {
     width: 100%;
-    /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
-    margin-bottom: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
+    /* VIEWPORT: 376px~414px, VALUES: 30px~40px */
+    margin-bottom: clamp(1.875rem, -4.309rem + 26.32vw, 2.5rem);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
-    row-gap: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
+    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
+    row-gap: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
     color: var(--text);
 }
 .statement {
@@ -137,40 +149,50 @@ body {
     font-size: clamp(0.875rem, 0.347rem + 3.01vw, 1.125rem);
 }
 .statement span {
+    display: block;
     /* VIEWPORT: 376px~414px, VALUES: 14px~16px */
     font-size: clamp(0.875rem, -0.362rem + 5.26vw, 1rem);
     color: var(--secondary);
 }
-#test-word {
+.english-word {
     position: relative;
+    width: 100%;
+    display: block;
+    text-align: center;
     /* VIEWPORT: 281px~414px, VALUES: 30px~36px */
     font-size: clamp(1.875rem, 1.083rem + 4.51vw, 2.25rem);
-    font-weight: 700;
+    font-weight: 800;
 }
 .speak-icon {
     position: absolute;
     top: 50%;
-    left: 140%;
+    right: 10px;
     transform: translateY(-50%);
     /* VIEWPORT: 281px~414px, VALUES: 26px~30px */
     font-size: clamp(1.625rem, 1.097rem + 3.01vw, 1.875rem);
-    color: var(--text);
+    color: var(--secondary);
     z-index: 99;
     cursor: pointer;
 }
-#options {
+.options-content {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
-    row-gap: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
+    /* VIEWPORT: 376px~414px, VALUES: 30px~40px */
+    row-gap: clamp(1.875rem, -4.309rem + 26.32vw, 2.5rem);
 }
-#options input {
-    /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
-    height: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
+.japanese-word {
+    position: relative;
+    /* VIEWPORT: 281px~375px, VALUES: 40px~50px */
+    height: clamp(2.5rem, 0.651rem + 10.53vw, 3.125rem);
     width: 100%;
+}
+.japanese-word input {
+    height: 100%;
+    width: 100%;
+    text-align: center;
     border: none;
     outline: none;
     background-color: var(--contents);
@@ -180,24 +202,31 @@ body {
     color: var(--text);
     cursor: pointer;
 }
-#options.none-events input {
+.options-content.none-events .japanese-word input {
     pointer-events: none;
 }
-.next-form {
+.answer-image.result {
     display: none;
-    position: relative;
-    /* VIEWPORT: 376px~414px, VALUES: 40px~50px */
-    height: clamp(2.5rem, -3.684rem + 26.32vw, 3.125rem);
-    width: 100%;
-    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
-    margin-top: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
 }
-.next-form.active {
+.next-content {
+    position: relative;
+    /* VIEWPORT: 281px~375px, VALUES: 40px~50px */
+    height: clamp(2.5rem, 0.651rem + 10.53vw, 3.125rem);
+    width: 100%;
+    /* VIEWPORT: 376px~414px, VALUES: 30px~40px */
+    margin-top: clamp(1.875rem, -4.309rem + 26.32vw, 2.5rem);
+    display: none;
+}
+.next-content.active {
     display: block;
 }
-#next-button {
+.next-button {
+    display: block;
     height: 100%;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     outline: none;
     background-color: var(--accent);

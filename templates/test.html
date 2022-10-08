@@ -11,31 +11,33 @@
 {% endblock %}
 
 {% block body %}
-    <div class="test-header">
-        <div class="test-title">
-            <span class="test-name">{{ rank }} Test</span>
-            <span class="test-number">Question
-                <span id="current-number"></span><span id="max-number"></span>
-            </span>
-        </div>
-        <div class="test-progress">
-        </div>
-    </div>
-    <!-- ============================================================= -->
-    <div class="test">
-        <div class="test-container">
-            <div class="test-content">
-                <p class="statement">
-                    適切な日本語訳を選択してください。<br>
-                    <span></span>
-                </p>
-                <h1 id="test-word"></h1>
+    <div class="test-page">
+        <div class="test-header">
+            <div class="test-title">
+                <span class="test-name">{{ rank }} Test</span>
+                <span class="test-number">Question
+                    <span class="current-number"></span><span class="max-number"></span>
+                </span>
             </div>
-            <div id="options">
+            <div class="test-progress">
             </div>
-            <form action="" method="" class="next-form" name="resultForm">
-                <input type="submit" value="終了する" id="next-button">
-            </form>
+        </div>
+
+        <div class="test-body">
+            <div class="test-container">
+                <div class="test-content">
+                    <p class="statement">適切な日本語訳を選択してください。
+                        <span>
+                        </span>
+                    </p>
+                    <span class="english-word"></span>
+                </div>
+                <div class="options-content">
+                </div>
+                <div class="next-content">
+                    <a href="" class="next-button">終了する</a>
+                </div>
+            </div>
         </div>
     </div>
 

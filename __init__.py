@@ -101,12 +101,12 @@ class Student(db.Model):
     user_id = db.Column(db.Integer)                    # ユーザー固有のID
     word_id = db.Column(db.Integer)                    # 英単語固有のID
     rank = db.Column(db.String(10))                    # A1, A2, B1, B2
-    quiz_response = db.Column(db.Integer)              # クイズでの解答数の累計
-    quiz_correct = db.Column(db.Integer)               # クイズでの正解数の累計
-    test_response = db.Column(db.Integer)              # テストでの解答数の累計
-    test_correct = db.Column(db.Integer)               # テストでの連続正解数（一度でも間違えれば0に）
+    quiz_response = db.Column(db.Integer)              # クイズでの解答結果（1=正解, 0=不正解）
+    test_response = db.Column(db.Integer)              # テストでの解答結果（1=正解, 0=不正解）
+    constant_test_correct = db.Column(db.Integer)      # テストでの連続正解数（一度でも間違えれば0に）
     word_state = db.Column(db.String(20))              # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
-    response_date = db.Column(db.DateTime)             # 解答した日時
+    response_date = db.Column(db.DateTime)             # 解答時刻
+    response_span = db.Column(db.String(100))          # 解答時間（ミリ秒）
     quiz_challenge_index = db.Column(db.Integer)       # ユーザーが解答したクイズのタイミング
     test_challenge_index = db.Column(db.Integer)       # ユーザーが解答したテストのタイミング
 
@@ -117,11 +117,11 @@ class Student(db.Model):
             'word_id': self.word_id,
             'rank': self.rank,
             'quiz_response': self.quiz_response,
-            'quiz_correct': self.quiz_correct,
             'test_response': self.test_response,
-            'test_correct': self.test_correct,
+            'constant_test_correct': self.constant_test_correct,
             'word_state': self.word_state,
             'response_date': self.response_date,
+            'response_span': self.response_span,
             'quiz_challenge_index': self.quiz_challenge_index,
             'test_challenge_index': self.test_challenge_index
         }
@@ -132,12 +132,12 @@ class Y200004(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
     rank = db.Column(db.String(10))                    # A1, A2, B1, B2
-    quiz_response = db.Column(db.Integer)              # クイズでの解答数の累計
-    quiz_correct = db.Column(db.Integer)               # クイズでの正解数の累計
-    test_response = db.Column(db.Integer)              # テストでの解答数の累計
-    test_correct = db.Column(db.Integer)               # テストでの連続正解数（一度でも間違えれば0に）
+    quiz_response = db.Column(db.Integer)              # クイズでの解答結果（1=正解, 0=不正解）
+    test_response = db.Column(db.Integer)              # テストでの解答結果（1=正解, 0=不正解）
+    constant_test_correct = db.Column(db.Integer)      # テストでの連続正解数（一度でも間違えれば0に）
     word_state = db.Column(db.String(20))              # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
-    response_date = db.Column(db.DateTime)             # 解答した日時
+    response_date = db.Column(db.DateTime)             # 解答時刻
+    response_span = db.Column(db.String(100))          # 解答時間（ミリ秒）
     quiz_challenge_index = db.Column(db.Integer)       # ユーザーが解答したクイズのタイミング
     test_challenge_index = db.Column(db.Integer)       # ユーザーが解答したテストのタイミング
 
@@ -147,11 +147,11 @@ class Y200004(db.Model):
             'word_id': self.word_id,
             'rank': self.rank,
             'quiz_response': self.quiz_response,
-            'quiz_correct': self.quiz_correct,
             'test_response': self.test_response,
-            'test_correct': self.test_correct,
+            'constant_test_correct': self.constant_test_correct,
             'word_state': self.word_state,
             'response_date': self.response_date,
+            'response_span': self.response_span,
             'quiz_challenge_index': self.quiz_challenge_index,
             'test_challenge_index': self.test_challenge_index
         }
@@ -162,12 +162,12 @@ class Y200042(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
     rank = db.Column(db.String(10))                    # A1, A2, B1, B2
-    quiz_response = db.Column(db.Integer)              # クイズでの解答数の累計
-    quiz_correct = db.Column(db.Integer)               # クイズでの正解数の累計
-    test_response = db.Column(db.Integer)              # テストでの解答数の累計
-    test_correct = db.Column(db.Integer)               # テストでの連続正解数（一度でも間違えれば0に）
+    quiz_response = db.Column(db.Integer)              # クイズでの解答結果（1=正解, 0=不正解）
+    test_response = db.Column(db.Integer)              # テストでの解答結果（1=正解, 0=不正解）
+    constant_test_correct = db.Column(db.Integer)      # テストでの連続正解数（一度でも間違えれば0に）
     word_state = db.Column(db.String(20))              # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
-    response_date = db.Column(db.DateTime)             # 解答した日時
+    response_date = db.Column(db.DateTime)             # 解答時刻
+    response_span = db.Column(db.String(100))          # 解答時間（ミリ秒）
     quiz_challenge_index = db.Column(db.Integer)       # ユーザーが解答したクイズのタイミング
     test_challenge_index = db.Column(db.Integer)       # ユーザーが解答したテストのタイミング
 
@@ -177,11 +177,11 @@ class Y200042(db.Model):
             'word_id': self.word_id,
             'rank': self.rank,
             'quiz_response': self.quiz_response,
-            'quiz_correct': self.quiz_correct,
             'test_response': self.test_response,
-            'test_correct': self.test_correct,
+            'constant_test_correct': self.constant_test_correct,
             'word_state': self.word_state,
             'response_date': self.response_date,
+            'response_span': self.response_span,
             'quiz_challenge_index': self.quiz_challenge_index,
             'test_challenge_index': self.test_challenge_index
         }
@@ -192,12 +192,12 @@ class Y200051(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
     rank = db.Column(db.String(10))                    # A1, A2, B1, B2
-    quiz_response = db.Column(db.Integer)              # クイズでの解答数の累計
-    quiz_correct = db.Column(db.Integer)               # クイズでの正解数の累計
-    test_response = db.Column(db.Integer)              # テストでの解答数の累計
-    test_correct = db.Column(db.Integer)               # テストでの連続正解数（一度でも間違えれば0に）
+    quiz_response = db.Column(db.Integer)              # クイズでの解答結果（1=正解, 0=不正解）
+    test_response = db.Column(db.Integer)              # テストでの解答結果（1=正解, 0=不正解）
+    constant_test_correct = db.Column(db.Integer)      # テストでの連続正解数（一度でも間違えれば0に）
     word_state = db.Column(db.String(20))              # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
-    response_date = db.Column(db.DateTime)             # 解答した日時
+    response_date = db.Column(db.DateTime)             # 解答時刻
+    response_span = db.Column(db.String(100))          # 解答時間（ミリ秒）
     quiz_challenge_index = db.Column(db.Integer)       # ユーザーが解答したクイズのタイミング
     test_challenge_index = db.Column(db.Integer)       # ユーザーが解答したテストのタイミング
 
@@ -207,11 +207,11 @@ class Y200051(db.Model):
             'word_id': self.word_id,
             'rank': self.rank,
             'quiz_response': self.quiz_response,
-            'quiz_correct': self.quiz_correct,
             'test_response': self.test_response,
-            'test_correct': self.test_correct,
+            'constant_test_correct': self.constant_test_correct,
             'word_state': self.word_state,
             'response_date': self.response_date,
+            'response_span': self.response_span,
             'quiz_challenge_index': self.quiz_challenge_index,
             'test_challenge_index': self.test_challenge_index
         }
@@ -222,12 +222,12 @@ class Y200062(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
     rank = db.Column(db.String(10))                    # A1, A2, B1, B2
-    quiz_response = db.Column(db.Integer)              # クイズでの解答数の累計
-    quiz_correct = db.Column(db.Integer)               # クイズでの正解数の累計
-    test_response = db.Column(db.Integer)              # テストでの解答数の累計
-    test_correct = db.Column(db.Integer)               # テストでの連続正解数（一度でも間違えれば0に）
+    quiz_response = db.Column(db.Integer)              # クイズでの解答結果（1=正解, 0=不正解）
+    test_response = db.Column(db.Integer)              # テストでの解答結果（1=正解, 0=不正解）
+    constant_test_correct = db.Column(db.Integer)      # テストでの連続正解数（一度でも間違えれば0に）
     word_state = db.Column(db.String(20))              # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
-    response_date = db.Column(db.DateTime)             # 解答した日時
+    response_date = db.Column(db.DateTime)             # 解答時刻
+    response_span = db.Column(db.String(100))          # 解答時間（ミリ秒）
     quiz_challenge_index = db.Column(db.Integer)       # ユーザーが解答したクイズのタイミング
     test_challenge_index = db.Column(db.Integer)       # ユーザーが解答したテストのタイミング
 
@@ -237,11 +237,11 @@ class Y200062(db.Model):
             'word_id': self.word_id,
             'rank': self.rank,
             'quiz_response': self.quiz_response,
-            'quiz_correct': self.quiz_correct,
             'test_response': self.test_response,
-            'test_correct': self.test_correct,
+            'constant_test_correct': self.constant_test_correct,
             'word_state': self.word_state,
             'response_date': self.response_date,
+            'response_span': self.response_span,
             'quiz_challenge_index': self.quiz_challenge_index,
             'test_challenge_index': self.test_challenge_index
         }
@@ -252,12 +252,12 @@ class Y200065(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
     rank = db.Column(db.String(10))                    # A1, A2, B1, B2
-    quiz_response = db.Column(db.Integer)              # クイズでの解答数の累計
-    quiz_correct = db.Column(db.Integer)               # クイズでの正解数の累計
-    test_response = db.Column(db.Integer)              # テストでの解答数の累計
-    test_correct = db.Column(db.Integer)               # テストでの連続正解数（一度でも間違えれば0に）
+    quiz_response = db.Column(db.Integer)              # クイズでの解答結果（1=正解, 0=不正解）
+    test_response = db.Column(db.Integer)              # テストでの解答結果（1=正解, 0=不正解）
+    constant_test_correct = db.Column(db.Integer)      # テストでの連続正解数（一度でも間違えれば0に）
     word_state = db.Column(db.String(20))              # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
-    response_date = db.Column(db.DateTime)             # 解答した日時
+    response_date = db.Column(db.DateTime)             # 解答時刻
+    response_span = db.Column(db.String(100))          # 解答時間（ミリ秒）
     quiz_challenge_index = db.Column(db.Integer)       # ユーザーが解答したクイズのタイミング
     test_challenge_index = db.Column(db.Integer)       # ユーザーが解答したテストのタイミング
 
@@ -267,11 +267,11 @@ class Y200065(db.Model):
             'word_id': self.word_id,
             'rank': self.rank,
             'quiz_response': self.quiz_response,
-            'quiz_correct': self.quiz_correct,
             'test_response': self.test_response,
-            'test_correct': self.test_correct,
+            'constant_test_correct': self.constant_test_correct,
             'word_state': self.word_state,
             'response_date': self.response_date,
+            'response_span': self.response_span,
             'quiz_challenge_index': self.quiz_challenge_index,
             'test_challenge_index': self.test_challenge_index
         }
@@ -282,12 +282,12 @@ class Y200078(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
     rank = db.Column(db.String(10))                    # A1, A2, B1, B2
-    quiz_response = db.Column(db.Integer)              # クイズでの解答数の累計
-    quiz_correct = db.Column(db.Integer)               # クイズでの正解数の累計
-    test_response = db.Column(db.Integer)              # テストでの解答数の累計
-    test_correct = db.Column(db.Integer)               # テストでの連続正解数（一度でも間違えれば0に）
+    quiz_response = db.Column(db.Integer)              # クイズでの解答結果（1=正解, 0=不正解）
+    test_response = db.Column(db.Integer)              # テストでの解答結果（1=正解, 0=不正解）
+    constant_test_correct = db.Column(db.Integer)      # テストでの連続正解数（一度でも間違えれば0に）
     word_state = db.Column(db.String(20))              # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
-    response_date = db.Column(db.DateTime)             # 解答した日時
+    response_date = db.Column(db.DateTime)             # 解答時刻
+    response_span = db.Column(db.String(100))          # 解答時間（ミリ秒）
     quiz_challenge_index = db.Column(db.Integer)       # ユーザーが解答したクイズのタイミング
     test_challenge_index = db.Column(db.Integer)       # ユーザーが解答したテストのタイミング
 
@@ -297,11 +297,11 @@ class Y200078(db.Model):
             'word_id': self.word_id,
             'rank': self.rank,
             'quiz_response': self.quiz_response,
-            'quiz_correct': self.quiz_correct,
             'test_response': self.test_response,
-            'test_correct': self.test_correct,
+            'constant_test_correct': self.constant_test_correct,
             'word_state': self.word_state,
             'response_date': self.response_date,
+            'response_span': self.response_span,
             'quiz_challenge_index': self.quiz_challenge_index,
             'test_challenge_index': self.test_challenge_index
         }
@@ -312,12 +312,12 @@ class Y200080(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
     rank = db.Column(db.String(10))                    # A1, A2, B1, B2
-    quiz_response = db.Column(db.Integer)              # クイズでの解答数の累計
-    quiz_correct = db.Column(db.Integer)               # クイズでの正解数の累計
-    test_response = db.Column(db.Integer)              # テストでの解答数の累計
-    test_correct = db.Column(db.Integer)               # テストでの連続正解数（一度でも間違えれば0に）
+    quiz_response = db.Column(db.Integer)              # クイズでの解答結果（1=正解, 0=不正解）
+    test_response = db.Column(db.Integer)              # テストでの解答結果（1=正解, 0=不正解）
+    constant_test_correct = db.Column(db.Integer)      # テストでの連続正解数（一度でも間違えれば0に）
     word_state = db.Column(db.String(20))              # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
-    response_date = db.Column(db.DateTime)             # 解答した日時
+    response_date = db.Column(db.DateTime)             # 解答時刻
+    response_span = db.Column(db.String(100))          # 解答時間（ミリ秒）
     quiz_challenge_index = db.Column(db.Integer)       # ユーザーが解答したクイズのタイミング
     test_challenge_index = db.Column(db.Integer)       # ユーザーが解答したテストのタイミング
 
@@ -327,11 +327,11 @@ class Y200080(db.Model):
             'word_id': self.word_id,
             'rank': self.rank,
             'quiz_response': self.quiz_response,
-            'quiz_correct': self.quiz_correct,
             'test_response': self.test_response,
-            'test_correct': self.test_correct,
+            'constant_test_correct': self.constant_test_correct,
             'word_state': self.word_state,
             'response_date': self.response_date,
+            'response_span': self.response_span,
             'quiz_challenge_index': self.quiz_challenge_index,
             'test_challenge_index': self.test_challenge_index
         }
@@ -342,12 +342,12 @@ class Y200089(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
     rank = db.Column(db.String(10))                    # A1, A2, B1, B2
-    quiz_response = db.Column(db.Integer)              # クイズでの解答数の累計
-    quiz_correct = db.Column(db.Integer)               # クイズでの正解数の累計
-    test_response = db.Column(db.Integer)              # テストでの解答数の累計
-    test_correct = db.Column(db.Integer)               # テストでの連続正解数（一度でも間違えれば0に）
+    quiz_response = db.Column(db.Integer)              # クイズでの解答結果（1=正解, 0=不正解）
+    test_response = db.Column(db.Integer)              # テストでの解答結果（1=正解, 0=不正解）
+    constant_test_correct = db.Column(db.Integer)      # テストでの連続正解数（一度でも間違えれば0に）
     word_state = db.Column(db.String(20))              # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
-    response_date = db.Column(db.DateTime)             # 解答した日時
+    response_date = db.Column(db.DateTime)             # 解答時刻
+    response_span = db.Column(db.String(100))          # 解答時間（ミリ秒）
     quiz_challenge_index = db.Column(db.Integer)       # ユーザーが解答したクイズのタイミング
     test_challenge_index = db.Column(db.Integer)       # ユーザーが解答したテストのタイミング
 
@@ -357,11 +357,11 @@ class Y200089(db.Model):
             'word_id': self.word_id,
             'rank': self.rank,
             'quiz_response': self.quiz_response,
-            'quiz_correct': self.quiz_correct,
             'test_response': self.test_response,
-            'test_correct': self.test_correct,
+            'constant_test_correct': self.constant_test_correct,
             'word_state': self.word_state,
             'response_date': self.response_date,
+            'response_span': self.response_span,
             'quiz_challenge_index': self.quiz_challenge_index,
             'test_challenge_index': self.test_challenge_index
         }
@@ -372,12 +372,12 @@ class Y200090(db.Model):
     order = db.Column(db.Integer, primary_key=True)    # テーブルに追加された順番
     word_id = db.Column(db.Integer)                    # 英単語固有のID
     rank = db.Column(db.String(10))                    # A1, A2, B1, B2
-    quiz_response = db.Column(db.Integer)              # クイズでの解答数の累計
-    quiz_correct = db.Column(db.Integer)               # クイズでの正解数の累計
-    test_response = db.Column(db.Integer)              # テストでの解答数の累計
-    test_correct = db.Column(db.Integer)               # テストでの連続正解数（一度でも間違えれば0に）
+    quiz_response = db.Column(db.Integer)              # クイズでの解答結果（1=正解, 0=不正解）
+    test_response = db.Column(db.Integer)              # テストでの解答結果（1=正解, 0=不正解）
+    constant_test_correct = db.Column(db.Integer)      # テストでの連続正解数（一度でも間違えれば0に）
     word_state = db.Column(db.String(20))              # 英単語の状態（test_state=テスト待ち, quiz_state=学習待ち, review_state=復習待ち）
-    response_date = db.Column(db.DateTime)             # 解答した日時
+    response_date = db.Column(db.DateTime)             # 解答時刻
+    response_span = db.Column(db.String(100))          # 解答時間（ミリ秒）
     quiz_challenge_index = db.Column(db.Integer)       # ユーザーが解答したクイズのタイミング
     test_challenge_index = db.Column(db.Integer)       # ユーザーが解答したテストのタイミング
 
@@ -387,11 +387,11 @@ class Y200090(db.Model):
             'word_id': self.word_id,
             'rank': self.rank,
             'quiz_response': self.quiz_response,
-            'quiz_correct': self.quiz_correct,
             'test_response': self.test_response,
-            'test_correct': self.test_correct,
+            'constant_test_correct': self.constant_test_correct,
             'word_state': self.word_state,
             'response_date': self.response_date,
+            'response_span': self.response_span,
             'quiz_challenge_index': self.quiz_challenge_index,
             'test_challenge_index': self.test_challenge_index
         }

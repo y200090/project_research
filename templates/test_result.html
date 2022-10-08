@@ -6,28 +6,65 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/test_result.css') }}">
-    <script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script defer src="{{ url_for('static', filename='js/test_result.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mypage.js') }}" defer></script>
+    <!-- Swiper.css CDN 導入 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
+    <!-- Canvas Confetti CDN 導入 -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js" defer></script>
+    <script src="{{ url_for('static', filename='js/test_result.js') }}" defer></script>
 {% endblock %}
 
 {% block body %}
-    <div class="result">
-        <img src="" class="result-image">
-        <h1 id="result-comment"></h1>
-        <span class="scoreboard">
-            <span id="user-score">{{ score }}</span><span id="max-score">/20</span>
-        </span>
-        <div class="result-form">
-            <span id="review">Review</span>
-            <a href="{{ url_for('tasks') }}" id="backpage">Back Page</a>
+    <div class="result-page">
+        <div class="result-header">{{ rank }} Test Result</div>
+
+        <div class="result-body">
+            <div class="result-container">
+                <span id="result-word"></span>
+                <img src="{{ url_for('static', filename='images/trophy-icon.svg') }}" alt="trophy" id="trophy-image">
+                <span id="scoreboard">Your Score<br>
+                    <span id="user-score"></span><span id="max-score"></span>
+                </span>
+                <div class="next-content">
+                    <button id="review-button">Review</button>
+                    <a href="{{ url_for('tasks') }}" id="backpage-button">Backpage</a>
+                </div>
+            </div>
         </div>
     </div>
-    <!-- ============================================================= -->
+
+    <div class="review-window">
+        <span class="material-symbols-outlined close-icon">close</span>
+        <div class="swiper">
+            <div class="swiper-wrapper"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
     <script>
-        const userId = '{{ userId|tojson }}',
-              wordId = JSON.parse('{{ wordId|tojson|safe }}'),
-              answerState = JSON.parse('{{ answerState|tojson|safe }}'),
-              score = '{{ score }}';
+        const rank = '{{ rank }}',
+              score = Number('{{ score }}');
+    </script>
+
+    <!-- Swiper.js CDN 導入 -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script>
+        const swiper = new Swiper('.swiper', {
+            // Optional parameters
+            direction: 'horizontal',
+            loop: true,
+            mousewheel: true,
+            grabCursor: true,
+            effect: 'coverflow',
+            coverflowEffect: {
+                slideShadows: false,
+            },
+        
+            // If we need pagination
+            pagination: {
+              el: '.swiper-pagination',
+              clickable: true,
+            },
+        });
     </script>
 {% endblock %}
