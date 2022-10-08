@@ -16,8 +16,8 @@ function browserBack() {
 // メイン関数
 async function main() {
     // テスト作成APIを叩く
-    // const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create-questions/test/${rank}`);
-    const questions = await getAPI(`http://127.0.0.1:5000/feature/create-questions/test/${rank}`);
+    const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create-questions/test/${rank}`);
+    // const questions = await getAPI(`http://127.0.0.1:5000/feature/create-questions/test/${rank}`);
 
     const testProgress = document.querySelector('.test-progress');
     for (let i = 0; i < questions.length; i++) {
@@ -179,8 +179,8 @@ async function main() {
             'response_span': responseSpan[index]
         };
         // テスト更新APIを叩く
-        // await postAPI(`https://project-research.azurewebsites.net/api/test-update/${rank}`, updateData);
-        await postAPI(`http://127.0.0.1:5000/api/test-update/${rank}`, updateData);
+        await postAPI(`https://project-research.azurewebsites.net/api/test-update/${rank}`, updateData);
+        // await postAPI(`http://127.0.0.1:5000/api/test-update/${rank}`, updateData);
 
         // テストの最後の問題を解答した時の処理
         if ((index + 1) == questions.length) {
