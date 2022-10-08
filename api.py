@@ -302,7 +302,6 @@ def test_update(rank):
 @login_required
 def create_backup():
     src = './database.db'
-    return jsonify(os.path.abspath('./database.db'))
     # コピー元ファイルの存在を判定
     if os.path.isfile(src):
         now = datetime.now(pytz.timezone('Asia/Tokyo'))
