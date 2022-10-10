@@ -82,6 +82,7 @@ class User(db.Model, UserMixin):
         params = {
             'ID': self.id,
             'username': self.username,
+            'email': self.email,
             'role': self.role,
             'login_state': self.login_state,
             'signup_date': self.signup_date,
