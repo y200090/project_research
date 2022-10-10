@@ -1,6 +1,3 @@
-from ast import Pass
-from locale import currency
-from turtle import update
 from __init__ import app, db, bcrypt, login_manager, Word, User, Student, Y200004, Y200042, Y200051, Y200062, Y200065, Y200078, Y200080, Y200089, Y200090, roles_required, record
 import re, regex, pytz, random, collections
 from datetime import datetime
@@ -441,4 +438,4 @@ def admin():
     return render_template('admin.html', users=params)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
