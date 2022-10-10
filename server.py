@@ -263,8 +263,9 @@ def quiz(rank):
 @login_required
 def quiz_result(rank):
     # クエリパラメータを取得
-    score = request.args.get('score')        
-    return render_template('quiz_result.html', rank=rank, score=score)
+    score = request.args.get('score')
+    count = request.args.get('count')
+    return render_template('quiz_result.html', rank=rank, score=score, count=count)
 
 # テストコースページ
 @app.route('/mypage/tasks')
@@ -325,7 +326,8 @@ def test(rank):
 def test_result(rank):
     # クエリパラメータを取得
     score = request.args.get('score')
-    return render_template('test_result.html', rank=rank ,score=score)
+    count = request.args.get('count')
+    return render_template('test_result.html', rank=rank ,score=score, count=count)
 
 # 設定ページ
 @app.route('/mypage/settings')

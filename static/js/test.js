@@ -186,7 +186,7 @@ async function main() {
             nextContent.classList.add('active');
 
             const nextButton = document.querySelector('.next-button');
-            nextButton.href = `/mypage/tasks/test/${rank}/result?score=${score}`;
+            nextButton.href = `/mypage/tasks/test/${rank}/result?score=${score}&count=${questions.length}`;
 
             window.removeEventListener('beforeunload', browserReload);
             window.removeEventListener('popstate', browserBack);

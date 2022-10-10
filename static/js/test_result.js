@@ -1,6 +1,3 @@
-// セッションストレージの数を取得
-const testCount = sessionStorage.length;
-
 const resultPage = document.querySelector('.result-page'),
       resultWord = document.querySelector('#result-word'),
       userScore = document.querySelector('#user-score'),
@@ -20,21 +17,21 @@ if (score >= 10) {
 else {
     userScore.innerText = '0' + score;
 }
-maxScore.innerText = '/' + testCount;
+maxScore.innerText = '/' + count;
 
-if (testCount * 0.7 < score && score <= testCount) {
+if (count * 0.7 < score && score <= count) {
     resultWord.innerText = 'Congratulations!';
     happy();
 }
-else if (testCount * 0.3 < score && score <= testCount * 0.7) {
+else if (count * 0.3 < score && score <= count * 0.7) {
     resultWord.innerText = 'Nice Challenge!';
     happy();
 }
-else if (score <= testCount * 0.3) {
+else if (score <= count * 0.3) {
     resultWord.innerText = 'Hang in There!';
 }
 
-for (let i = 0; i < testCount; i++) {
+for (let i = 0; i < count; i++) {
     clone[i] = sessionStorage.getItem(`test-${i + 1}`);
 
     const testPage = document.createElement('div');

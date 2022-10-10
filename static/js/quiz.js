@@ -178,6 +178,11 @@ async function main() {
         optionsContent.classList.add('none-events');
         nextContent.classList.add('active');
 
+        // クイズページのクローンを取得
+        clone[index] = quizPage.cloneNode(true);
+        // セッションストレージにクローンを保存
+        sessionStorage.setItem(`quiz-${index + 1}`, `${clone[index].innerHTML}`);
+
         // クイズ更新APIに送信するPOSTデータを設定
         const updateData = {
             'word_id': wordId[index],
@@ -186,11 +191,6 @@ async function main() {
         };
         // クイズ更新APIを叩く
         await postAPI(`https://project-research.azurewebsites.net/api/quiz-update/${rank}`, updateData);
-
-        // クイズページのクローンを取得
-        clone[index] = quizPage.cloneNode(true);
-        // セッションストレージにクローンを保存
-        sessionStorage.setItem(`quiz-${index + 1}`, `${clone[index].innerHTML}`);
 
         // 前問のボタンを削除
         while (nextContent.firstChild) {
@@ -204,7 +204,7 @@ async function main() {
 
             nextButton = document.createElement('a');
             nextButton.classList.add('next-button');
-            nextButton.href = `/mypage/learnings/quiz/${rank}/result?score=${score}`;
+            nextButton.href = `/mypage/learnings/quiz/${rank}/result?score=${score}&count=${questions.length}`;
             nextButton.innerText = '終了する';
         }
         else {
