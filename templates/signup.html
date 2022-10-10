@@ -18,34 +18,37 @@
 
             <div class="input-field">
                 {{ form.username() }}
-                <i class='bx bx-user'></i><span>Username</span>
+                <i class='bx bx-user'></i><span class="field-title">Username</span>
+                {% for error in form.username.errors %} 
+                    <div class="validate">
+                        <span class="material-symbols-outlined error-icon">warning</span>
+                        <span class="error-text">{{ error }}</span>
+                    </div>
+                {% endfor %}
             </div>
-            {% for error in form.username.errors %} 
-                <div class="validate">
-                    <i class='bx bx-error' ></i>{{ error }}
-                </div>
-            {% endfor %}
 
             <div class="input-field">
                 {{ form.password() }}
-                <i class='bx bx-lock-alt'></i><span>Password</span>
+                <i class='bx bx-lock-alt'></i><span class="field-title">Password</span>
                 <i class='bx bx-hide show-hide'></i>
+                {% for error in form.password.errors %} 
+                    <div class="validate">
+                        <span class="material-symbols-outlined error-icon">warning</span>
+                        <span class="error-text">{{ error }}</span>
+                    </div>
+                {% endfor %}
             </div>
-            {% for error in form.password.errors %} 
-                <div class="validate">
-                    <i class='bx bx-error' ></i>{{ error }}
-                </div>
-            {% endfor %}
 
             <div class="checkbox-field">
                 {{ form.privacypolicy(id="privacy-policy") }}
                 <label for="privacy-policy"><a href="">利用規約</a>に同意する。</label>
+                {% for error in form.privacypolicy.errors %} 
+                    <div class="validate">
+                        <span class="material-symbols-outlined error-icon">warning</span>
+                        <span class="error-text">{{ error }}</span>
+                    </div>
+                {% endfor %}
             </div>
-            {% for error in form.privacypolicy.errors %} 
-                <div class="validate">
-                    <i class='bx bx-error' ></i>{{ error }}
-                </div>
-            {% endfor %}
 
             <div class="button-field">
                 {{ form.submit(id="signup") }}

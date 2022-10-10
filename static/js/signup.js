@@ -3,6 +3,7 @@ const setFillHeight = () => {
     document.documentElement.style.setProperty('--vh', `${vh}px`);
 };
 window.addEventListener('resize', setFillHeight);
+window.addEventListener('load', setFillHeight);
 setFillHeight();
 
 const signupIcon = document.querySelector('.signup-icon');
@@ -44,4 +45,10 @@ if (validate) {
             validate.style.display = 'none';
         });
     });
+    // window.addEventListener('load', () => {
+    //     validate.style.display = 'none';
+    // });
+    // window.addEventListener('resize', () => {
+    //     validate.style.display = 'none';
+    // });
 }

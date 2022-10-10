@@ -3,6 +3,7 @@ const setFillHeight = () => {
     document.documentElement.style.setProperty('--vh', `${vh}px`);
 };
 window.addEventListener('resize', setFillHeight);
+window.addEventListener('load', setFillHeight);
 setFillHeight();
 
 const loginIcon = document.querySelector('.login-icon'),
@@ -53,3 +54,12 @@ if (flash) {
         });
     });
 }
+
+// const perEntries = performance.getEntriesByType('navigation');
+// let type = null;
+// perEntries.forEach(function(perEntrie) {
+//     type = perEntrie.type;
+// });
+// if (type == 'reload') {
+//     alert('alert');
+// }

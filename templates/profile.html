@@ -6,48 +6,79 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
-    <script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
-    <script defer src="{{ url_for('static', filename='js/profile.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mypage.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/profile.js') }}" defer></script>
 {% endblock %}
 
 {% block body %}
-    <header class="root-header">
-        <a href="{{ url_for('settings') }}" class="browser-back">
-            <span class="material-symbols-outlined">keyboard_double_arrow_left</span>
-        </a>
-        <h1 class="header-title">Your Profile</h1>
-    </header>
-    <!-- ============================================================= -->
-    <nav class="profile">
-        <img src="{{ url_for('static', filename='images/undraw_male_avatar_323b.svg') }}" class="user-image">
-        <form method="" class="edit-form">
-            <div class="edit-field unedited">
-                <input type="text" value="{{ user_id }}">
-                <span class="material-symbols-outlined info-icon">pin</span>
-                <span class="info-title">USER ID</span>
-            </div>
-            <div class="edit-field unedited">
-                <input type="text" value="{{ username }}">
-                <span class="material-symbols-outlined info-icon">badge</span>
-                <span class="info-title">USERNAME</span>
-            </div>
-            <div class="edit-field unedited">
-                <input type="text" value="{{ user_role }}">
-                <span class="material-symbols-outlined info-icon">school</span>
-                <span class="info-title">ROLE</span>
-            </div>
-            <div class="edit-field unedited">
-                <input type="text" value="{{ signup_date }}">
-                <span class="material-symbols-outlined info-icon">history</span>
-                <span class="info-title">SIGNUP DATE</span>
-            </div>
-        </form>
-    </nav>
-    <!-- ============================================================= -->
+    <div class="edit-page">
+        <div class="root-header">
+            <a href="{{ url_for('settings') }}" class="back-icon">
+                <span class="material-symbols-outlined">keyboard_double_arrow_left</span>
+            </a>
+            <span class="root-title">Your Profile</span>
+        </div>
+
+        <div class="edit-container">
+            <img src="{{ url_for('static', filename='images/undraw_male_avatar_323b.svg') }}" class="user-icon">
+            <form method="POST" class="edit-form">
+                {{ form.hidden_tag() }}
+
+                <div class="edit-field">
+                    <input type="text" value="{{ ID }}">
+                    <span class="material-symbols-outlined field-icon">pin</span>
+                    <span class="field-title">ユーザーID</span>
+                </div>
+                
+                <div class="edit-field unedited">
+                    {{ form.username(placeholder=username, required=False) }}
+                    <span class="material-symbols-outlined field-icon">account_circle</span>
+                    <i class="fa-regular fa-pen-to-square edit-icon"></i>
+                    <span class="field-title">ユーザー名</span>
+
+                    {% for error in form.username.errors %} 
+                        <div class="validate">
+                            <span class="material-symbols-outlined error-icon">warning</span>
+                            <span class="error-text">{{ error }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="edit-field unedited">
+                    {{ form.email(placeholder=email, required=False) }}
+                    <span class="material-symbols-outlined field-icon">mail</span>
+                    <i class="fa-regular fa-pen-to-square edit-icon"></i>
+                    <span class="field-title">メールアドレス</span>
+
+                    {% for error in form.email.errors %} 
+                        <div class="validate">
+                            <span class="material-symbols-outlined error-icon">warning</span>
+                            <span class="error-text">{{ error }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="edit-field">
+                    <input type="text" value="{{ role }}">
+                    <span class="material-symbols-outlined field-icon">school</span>
+                    <span class="field-title">ユーザーロール</span>
+                </div>
+
+                <div class="edit-field signup-date">
+                    <input type="text" value="{{ signup_date }}">
+                    <span class="material-symbols-outlined field-icon">history</span>
+                    <span class="field-title">アプリ登録日時</span>
+                </div>
+
+                <div class="button-field">
+                    <input type="button" value="Edit Profile" id="edit-button">
+                    {{ form.submit(id="update") }}
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        const userId = '{{ user_id|tojson }}',
-              username = '{{ username|tojson }}',
-              userRole = '{{ user_role|tojson }}',
-              signupDate = '{{ signup_date }}'
+        signupDate = '{{ signup_date }}';
     </script>
 {% endblock %}

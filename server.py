@@ -1,11 +1,14 @@
+from ast import Pass
+from locale import currency
+from turtle import update
 from __init__ import app, db, bcrypt, login_manager, Word, User, Student, Y200004, Y200042, Y200051, Y200062, Y200065, Y200078, Y200080, Y200089, Y200090, roles_required, record
-import os, re, regex, pytz, random, collections, shutil
+import re, regex, pytz, random, collections
 from datetime import datetime
-from flask import render_template, request, url_for, redirect, flash, jsonify
+from flask import render_template, request, url_for, redirect, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, ValidationError
+from wtforms import StringField, EmailField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Email, Optional, Length, EqualTo, ValidationError
 from sqlalchemy import or_, func
 
 # Blueprint（他のPythonファイルのモジュール化）を登録
@@ -71,6 +74,46 @@ class LoginForm(FlaskForm):
     remember = BooleanField()
     submit = SubmitField('LOGIN')
 
+# プロフィール用コントローラーの登録
+class ProfileForm(FlaskForm):
+    username = StringField(validators=[Optional(strip_whitespace=False)])
+    email = EmailField(validators=[Email(), Optional(strip_whitespace=False)])
+    submit = SubmitField('UPDATE')
+
+    # 既存のメールアドレスと同じものが入力されたらエラー判定を出す関数
+    def validate_email(self, email):
+        used_email = User.query.filter_by(email=email.data).first()
+        if used_email:
+            raise ValidationError('このメールアドレスは既に使用されています。')
+
+    # 既存のユーザー名と同じものが入力されたらエラー判定を出す関数
+    # 正規表現以外の文字もエラー対象
+    def validate_username(self, username):
+        used_username = User.query.filter_by(username=username.data).first()
+        if used_username:
+            raise ValidationError('このユーザー名は既に使用されています。')
+            
+        regular_word = regex.compile(r'^[0-9a-zA-Z０-９Ａ-Ｚａ-ｚ\p{Hiragana}\p{Katakana}\p{Han}]+$')
+        if not regular_word.match(username.data):
+            raise ValidationError('使用できない文字が含まれています。')
+
+# パスワード変更用コントローラーの登録
+class ChangePasswordForm(FlaskForm):
+    curpwd = PasswordField(validators=[DataRequired(), Length(min=4, max=50)])
+    chgpwd = PasswordField(validators=[DataRequired(), Length(min=4, max=50), EqualTo('cfmpwd', message='パスワードが一致しません。')])
+    cfmpwd = PasswordField(validators=[DataRequired(message='入力してください。'), Length(min=4, max=50)])
+    submit = SubmitField('CHANGE PASSWORD')
+
+    # パスワードの長さが４よりも少ない場合にエラー判定を出す関数
+    # 正規表現以外の文字もエラー対象
+    def validate_password(self, password):
+        if len(password.data) < 4:
+            raise ValidationError('パスワードは4文字以上で入力してください。')
+
+        regular_word = re.compile('^[0-9a-zA-Z]+$')
+        if not regular_word.match(password.data):
+            raise ValidationError('使用できない文字が含まれています。')
+
 # ホームページ
 @app.route('/')
 def homepage():
@@ -88,7 +131,7 @@ def signup():
             if not user_id == User.query.get(user_id):
                 break
         
-        # foamに入力されたユーザー名を取得
+        # formに入力されたユーザー名を取得
         username = form.username.data
         # フォームに入力されたパスワードをハッシュ化
         hashed_password = bcrypt.generate_password_hash(form.password.data)
@@ -98,6 +141,7 @@ def signup():
             id=user_id, 
             username=username, 
             password=hashed_password, 
+            email='未登録', 
             role="Student", 
             login_state='inactive', 
             signup_date=datetime.now(pytz.timezone('Asia/Tokyo')),
@@ -294,20 +338,70 @@ def settings():
         'settings.html', 
         user_id=current_user.id, 
         username=current_user.username, 
-        user_role=current_user.role
     )
 
 # プロフィールページ
-@app.route('/mypage/settings/profile')
+@app.route('/mypage/settings/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
+    form = ProfileForm()
+    # バリデーションチェック
+    if form.validate_on_submit():
+        # formに入力されたユーザー名を取得
+        if form.username.data == '':
+            same_username = User.query.get(current_user.id).username
+            username = same_username
+        else:
+            username = form.username.data
+
+        # formに入力されたメールアドレスを取得
+        if form.email.data == '':
+            same_email = User.query.get(current_user.id).email
+            email = same_email
+        else :
+            email = form.email.data
+
+        update_user = User.query.get(current_user.id)
+        # 新しいユーザー名・メールアドレスに変更
+        update_user.username = username
+        update_user.email = email
+        # データベースを更新
+        db.session.commit()
+        return redirect(url_for('profile'))
+
     return render_template(
         'profile.html', 
-        user_id=current_user.id, 
-        username=current_user.username, 
-        user_role=current_user.role, 
+        form=form, 
+        ID=current_user.id,
+        username=current_user.username,
+        email=current_user.email,
+        role=current_user.role,
         signup_date=current_user.signup_date
     )
+
+# パスワード変更ページ
+@app.route('/mypage/settings/change-password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+    # バリデーションチェック
+    if form.validate_on_submit():
+        # 現在ログイン中のユーザーのIDと合致するusersテーブルのデータを単一取得
+        update_user = User.query.get(current_user.id)
+        # ハッシュ化された現在のパスワードのチェック
+        if bcrypt.check_password_hash(update_user.password, form.curpwd.data):
+            # フォームに入力された新しいパスワードをハッシュ化
+            hashed_password = bcrypt.generate_password_hash(form.chgpwd.data)
+            # 新しいパスワードに変更
+            update_user.password = hashed_password
+            # データベースを更新
+            db.session.commit()
+            return redirect(url_for('change_password'))
+        # パスワードが合致しなかった場合
+        else :
+            flash('パスワードが間違っています。', 'curpwd')
+
+    return render_template('change_password.html', form=form)
 
 # ログアウト
 @app.route('/logout')

@@ -96,7 +96,7 @@ body {
 .input-field input:focus ~ i {
     color: #1e90ff;
 }
-.input-field span {
+.field-title {
     position: absolute;
     left: 35px;
     bottom: 50%;
@@ -107,8 +107,8 @@ body {
     pointer-events: none;
     transition: all 0.3s ease;
 }
-.input-field input:valid ~ span,
-.input-field input:focus ~ span {
+.input-field input:valid ~ .field-title,
+.input-field input:focus ~ .field-title {
     left: 10px;
     /* VIEWPORT: 375px~414px, VALUES: 34px~44px */
     bottom: clamp(2.125rem, -4.059rem + 26.32vw, 2.75rem);
@@ -185,32 +185,36 @@ body {
     transform: scale(1, 1);
     transform-origin: left top;
 }
-/* ==================================================================== */
+
 .flash {
-    font-size: 14px;
-    transform: translateY(-32px);
+    position: absolute;
+    top: 125%;
+    left: 4px;
+    /* VIEWPORT: 376px~414px, VALUES: 12px~14px */
+    font-size: clamp(0.75rem, -0.487rem + 5.26vw, 0.875rem);
+    color: #ffdb9b;
     z-index: 99;
 }
-.flash, .flash i {
-    color: #ffdb9b;
-}
-.bx-error-alt{
-    margin: 5px 5px 0 0;
+.flash-text {
+    position: absolute;
     top: 50%;
-    transform: translateY(15%);
-    font-size: 18px;
+    transform: translateY(-50%);
+    left: 20px;
+    white-space: nowrap;
+}
+.flash-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    /* VIEWPORT: 376px~414px, VALUES: 16px~18px */
+    font-size: clamp(1rem, -0.237rem + 5.26vw, 1.125rem);
 }
 .unauthorized {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 10px 0 15px 15px;
-    font-size: 14px;
+    position: absolute;
+    top: 20px;
+    left: 5px;
+    /* VIEWPORT: 376px~414px, VALUES: 12px~14px */
+    font-size: clamp(0.75rem, -0.487rem + 5.26vw, 0.875rem);
     color: #e40a2d;
-    font-weight: 600;
-}
-.unauthorized i {
-    font-size: 18px;
-    color: #e40a2d;
+    z-index: 99;
 }

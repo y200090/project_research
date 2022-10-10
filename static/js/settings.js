@@ -1,13 +1,22 @@
-const colorTheme = document.querySelector('.color-theme'),
+const userInfoContent = document.querySelector('.user-info-content'),
+      setting = document.querySelector('.setting'),
+      colorTheme = document.querySelector('.color-theme'),
       switchBars = [...document.querySelectorAll('.switch-bar')],
       colorThemeIcon = document.querySelector('.color-theme-icon'),
       currentTheme = document.querySelector('.current-theme'),
-      languageSwitch = document.querySelector('.language > .switch-bar'),
       colorThemeSwitch = document.querySelector('.color-theme > .switch-bar');
 
-languageSwitch.addEventListener('click', () => {
-    alert('申し訳ありません。この機能は現在使用できません。');
+window.addEventListener('load', () => {
+    height = setting.clientHeight;
+    userInfoContent.style.height = `${height * 2}px`
 });
+
+window.addEventListener('resize', () => {
+    height = setting.clientHeight;
+    userInfoContent.style.height = `${height * 2}px`
+});
+      
+
 
 colorThemeSwitch.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');

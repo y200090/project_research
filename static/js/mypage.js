@@ -10,4 +10,5 @@ const setFillHeight = () => {
     document.documentElement.style.setProperty('--vh', `${vh}px`);
 };
 window.addEventListener('resize', setFillHeight);
+window.addEventListener('load', setFillHeight);
 setFillHeight();

@@ -66,6 +66,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.String(20), primary_key=True)       # ユーザーの固有ID
     username = db.Column(db.String(50), unique=True)      # ユーザー名
     password = db.Column(db.String(100))                  # パスワード
+    email = db.Column(db.String(100))                     # メールアドレス
     role = db.Column(db.String(20))                       # ユーザー権限（Admin=管理者, Tester=テスター, Student=生徒）
     login_state = db.Column(db.String(20))                # ログイン状態（active=ログイン中, inactive=ログアウト中）
     signup_date = db.Column(db.DateTime)                  # サインアップ日時
