@@ -187,6 +187,11 @@ async function main() {
         // クイズ更新APIを叩く
         await postAPI(`https://project-research.azurewebsites.net/api/quiz-update/${rank}`, updateData);
 
+        // クイズページのクローンを取得
+        clone[index] = quizPage.cloneNode(true);
+        // セッションストレージにクローンを保存
+        sessionStorage.setItem(`quiz-${index + 1}`, `${clone[index].innerHTML}`);
+
         // 前問のボタンを削除
         while (nextContent.firstChild) {
             nextContent.removeChild(nextContent.firstChild);
@@ -209,11 +214,6 @@ async function main() {
             nextButton.addEventListener('click', () => nextQuiz());
         }
         nextContent.appendChild(nextButton);
-
-        // クイズページのクローンを取得
-        clone[index] = quizPage.cloneNode(true);
-        // セッションストレージにクローンを保存
-        sessionStorage.setItem(`quiz-${index + 1}`, `${clone[index].innerHTML}`);
     };
 
     // 次の問題へ遷移する関数============================================================
