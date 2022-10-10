@@ -51,8 +51,6 @@ def check_movepoint(Record):
                 # “復習待ち”から“テスト待ち”へ更新
                 records_data.word_state = 'test_state'
         
-                print('\033[32m' + f'{records_data.word_id} : 復習待ち -> テスト待ち | 更新完了' + '\033[0m')      # ログ確認用
-
         # データベースを更新する
         db.session.commit()
 
