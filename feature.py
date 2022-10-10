@@ -47,7 +47,7 @@ def check_movepoint(Record):
 
             # max_orderと合致するy2000* or studentsテーブルのデータを単一取得
             records_data = Record.query.get(max_order)
-            if records_data.test_correct >= (users_data.total_remembered + 50 * records_data.test_correct ** 2):
+            if records_data.constant_test_correct >= (users_data.total_remembered + 50 * records_data.constant_test_correct ** 2):
                 # “復習待ち”から“テスト待ち”へ更新
                 records_data.word_state = 'test_state'
         

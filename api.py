@@ -173,7 +173,7 @@ def quiz_update(rank):
             quiz_response = 0
 
         # 初期値設定
-        test_response = 0
+        test_response = 0.5
         constant_test_correct = 0
         test_challenge_index = 0
     
@@ -264,7 +264,7 @@ def test_update(rank):
         # “テスト待ち”から“学習待ち”へ更新
         word_state = 'quiz_state'
         # “テストでの解答結果”を格納
-        test_response = 0
+        test_response = -1
         # “テストにおける連続正解数”をリセット
         constant_test_correct = 0
 
