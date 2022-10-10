@@ -85,7 +85,7 @@ body {
     margin-top: clamp(3.75rem, -8.618rem + 52.63vw, 5rem);
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: column;
     row-gap: 30px;
 }
