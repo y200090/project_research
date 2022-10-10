@@ -239,7 +239,7 @@ def learnings():
             records_data = Record.query.filter_by(order=max_order).filter(or_(Record.word_state=='test_state', Record.word_state=='review_state')).first()
             if records_data is None:
                 continue
-            records_datas.append(max_order)
+            records_datas.append(records_data)
 
         diff = round((len(records_datas) * 100 / words_length), 1)    # クイズの達成度（四捨五入したパーセンテージ）を計算
         params.append(diff)
@@ -263,7 +263,7 @@ def quiz(rank):
 @login_required
 def quiz_result(rank):
     # クエリパラメータを取得
-    score = request.args.get('score')
+    score = request.args.get('score')        
     count = request.args.get('count')
     return render_template('quiz_result.html', rank=rank, score=score, count=count)
 
@@ -297,10 +297,11 @@ def tasks():
                 # 現在ログイン中のユーザーIDかつidと合致するstudentsテーブルの最新のorderを取得
                 max_order = db.session.query(func.max(Record.order)).filter(Record.user_id==current_user.id, Record.word_id==id).scalar()
 
-            # max_orderと合致するy2000* or studentsテーブルのデータを単一取得
+            # max_orderかつ“テスト待ち”と合致するy2000* or studentsテーブルのデータを単一取得
             records_data = Record.query.filter_by(order=max_order, word_state='test_state').first()
             if records_data is None:
                 continue
+        
             records_datas.append(records_data)
         
         task = len(records_datas) // 20     # テストを受験できる回数を計算
@@ -427,18 +428,57 @@ def admin():
         params.append({
             'ID': datas[i].id,
             'username': datas[i].username,
+            'email': datas[i].email,
             'role': datas[i].role,
             'login_state': datas[i].login_state,
             'signup_date': str(datas[i].signup_date),
-            'login_date': str(datas[i].login_date),
-            'total_quiz_response': datas[i].total_quiz_response,
-            'total_quiz_correct': datas[i].total_quiz_correct,
-            'total_test_response': datas[i].total_test_response,
-            'total_remembered': datas[i].total_remembered,
-            'quiz_challenge_number': datas[i].quiz_challenge_number,
-            'test_challenge_number': datas[i].test_challenge_number
+            'login_date': str(datas[i].login_date)
         })
     return render_template('admin.html', users=params)
+
+@app.route('/admin/database/<id>')
+@login_required
+@roles_required
+def database(id):
+    Record = record(id)
+    # y2000*テーブルのデータを全取得
+    records_datas = Record.query.all()
+    
+    records_params = []
+    for i in range(len(records_datas)):
+        records_params.append({
+            'order': records_datas[i].order,
+            'word_id': records_datas[i].word_id,
+            'rank': records_datas[i].rank,
+            'quiz_response': records_datas[i].quiz_response,
+            'test_response': records_datas[i].test_response,
+            'constant_test_correct': records_datas[i].constant_test_correct,
+            'word_state': records_datas[i].word_state,
+            'response_date': records_datas[i].response_date,
+            'response_span': records_datas[i].response_span,
+            'quiz_challenge_index': records_datas[i].quiz_challenge_index,
+            'test_challenge_index': records_datas[i].test_challenge_index
+        })
+    
+    users_data = User.query.get(id)
+    
+    users_param = {
+        'ID': users_data.id,
+        'username': users_data.username,
+        'email': users_data.email,
+        'role': users_data.role,
+        'login_state': users_data.login_state,
+        'signup_date': str(users_data.signup_date),
+        'login_date': str(users_data.login_date),
+        'total_quiz_response': users_data.total_quiz_response,
+        'total_quiz_correct': users_data.total_quiz_correct,
+        'total_test_response': users_data.total_test_response,
+        'total_remembered': users_data.total_remembered,
+        'quiz_challenge_number': users_data.quiz_challenge_number,
+        'test_challenge_number': users_data.test_challenge_number
+    }
+
+    return render_template('database.html', records=records_params, users=users_param)
 
 if __name__ == '__main__':
     app.run()

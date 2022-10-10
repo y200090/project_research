@@ -2,7 +2,7 @@ import mimetypes
 from __init__ import db, Word, User, Student, Y200004, Y200042, Y200051, Y200062, Y200065, Y200078, Y200080, Y200089, Y200090, roles_required, record
 import pytz, json, collections, os, shutil
 from datetime import datetime
-from flask import Blueprint, jsonify, request, send_file
+from flask import Blueprint, jsonify, request, send_file, redirect, url_for
 from flask_login import login_required, current_user
 from sqlalchemy import or_, func
 
@@ -121,7 +121,7 @@ def quiz_update(rank):
         records = Record.query.filter_by(user_id=current_user.id, word_id=word_id).all()
     
     # 解答した英単語が既出の場合
-    if not records == []:
+    if records:
         print('\033[31m' + ' >> 既出です。' + '\033[0m')      # 確認用
 
         if not current_user.role == 'Student':
@@ -315,9 +315,19 @@ def create_backup():
         dst = f'./backup/{filename}'
         # ファイルをコピー
         shutil.copy(src, dst)
-
-        print('\033[31m' + f'{filename} の作成が完了しました。\nデータベースのバックアップに成功しました。' + '\033[0m')      # 確認用
-
         return send_file(dst)
     else:
         return jsonify('Failure')
+
+@api.route('/database/delete/<id>')
+@login_required
+@roles_required
+def delete(id):
+    # 削除するユーザーのIDを取得
+    delete_user = User.query.get(id)
+    # データベースを削除
+    db.session.delete(delete_user)
+    # データベースを更新
+    db.session.commit()
+    return redirect(url_for('admin'))
+

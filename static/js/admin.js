@@ -1,85 +1,42 @@
-const loginStates = [...document.querySelectorAll('.user-login-state')],
-      signupDates = [...document.querySelectorAll('.user-signup-date')],
-      loginDates = [...document.querySelectorAll('.user-login-date')];
+const loginState = [...document.querySelectorAll('.login-state')],
+      signupDate = [...document.querySelectorAll('.signup-date')],
+      loginDate = [...document.querySelectorAll('.login-date')];
 
-
+let dateFormat;
 
 users.forEach((user, index) => {
     if (user.login_state == 'active') {
-        loginStates[index].innerText = 'ログイン中';
-        loginStates[index].style.color = 'red';
-
-    } else {
-        loginStates[index].innerText = 'ログアウト中';
+        loginState[index].innerText = 'Login';
+        loginState[index].classList.add('login');
     }
-    signupDates[index].innerText = user.signup_date.slice(0, -7);
-    loginDates[index].innerText = user.login_date.slice(0, -7);
+    else {
+        loginState[index].innerText = 'Logout';
+        loginState[index].classList.add('logout');
+    }
+
+    dateFormat = user.signup_date.replace(/-/g, '/');
+    dateFormat = dateFormat.substr(0, dateFormat.indexOf('.'));
+    signupDate[index].innerText = dateFormat;
+
+    dateFormat = user.login_date.replace(/-/g, '/');
+    dateFormat = dateFormat.substr(0, dateFormat.indexOf('.'));
+    loginDate[index].innerText = dateFormat;
 });
 
-const usersTable = document.querySelector('.users'),
-      usergradeSapns = [...document.querySelectorAll('.user-grade > span')],
-      recordsTable = document.querySelector('.records'),
-      closeIcon = document.querySelector('.close-icon'),
-      recordsTableTbody = document.querySelector('.records > table > tbody');
+const deleteSpans = [...document.querySelectorAll('.delete > span')],
+      modalWindow = document.querySelector('.modal-window'),
+      modalUsername = document.querySelector('.modal-username'),
+      modalButton = document.querySelector('.modal-button > button'),
+      modalDelete = document.querySelector('.modal-button > a');
 
-usergradeSapns.forEach((usergradeSapn, index) => {
-    usergradeSapn.addEventListener('click', () => {
-        usersTable.classList.toggle('inactive');
-        recordsTable.classList.toggle('active');
-
-        fetch(`https://project-research.azurewebsites.net/api/user-id-search/${users[index].user_id}`)
-            .then(response => {
-                return response.json();
-            })
-            .then(datas => main(datas, users[index].total_remembered))
-            .catch(error => console.error('APIの取得に失敗しました。', error));
-    });
-
-    closeIcon.addEventListener('click', () => {
-        usersTable.classList.toggle('inactive');
-        recordsTable.classList.toggle('active');
+deleteSpans.forEach((deleteSpan, index) => {
+    deleteSpan.addEventListener('click', () => {
+        modalWindow.classList.add('active');
+        modalUsername.innerText = `ユーザー名 : ${users[index].username}`;
+        modalDelete.href = `/api/database/delete/${users[index].ID}`;
     });
 });
 
-function main(datas, total_remembered) {
-    records(datas, total_remembered);
-};
-
-function records(records, total_remembered) {
-    records.forEach(record => {
-        const recordTr = document.createElement('tr');
-        recordTr.classList.add('record-info');
-
-        const wordId = document.createElement('td');
-        wordId.classList.add('word-id');
-        wordId.innerText = record.word_id;
-
-        recordTr.appendChild(wordId);
-
-        const rank = document.createElement('td');
-        rank.classList.add('rank');
-        rank.innerText = record.rank;
-
-        recordTr.appendChild(rank);
-
-        const testCorrect = document.createElement('td');
-        testCorrect.classList.add('test-correct');
-        testCorrect.innerText = record.test_correct;
-
-        recordTr.appendChild(testCorrect);
-
-        const testState = document.createElement('td');
-        testState.classList.add('test-state');
-        testState.innerText = record.test_state;
-
-        recordTr.appendChild(testState);
-
-        const totalRemembered = document.createElement('td');
-        totalRemembered.classList.add('total-remembered');
-        totalRemembered.innerText = total_remembered;
-
-        recordTr.appendChild(totalRemembered);
-
-        recordsTableTbody.appendChild(recordTr);
-    });
-};
+modalButton.addEventListener('click', () => {
+    modalWindow.classList.remove('active');
+});
