@@ -15,8 +15,6 @@ window.addEventListener('resize', () => {
     height = setting.clientHeight;
     userInfoContent.style.height = `${height * 2}px`
 });
-      
-
 
 colorThemeSwitch.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');

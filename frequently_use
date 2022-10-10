@@ -7,4 +7,7 @@ delete from テーブル名 where 条件式;
 drop table テーブル名;
 .exit
 
+pip install -r requirements.txt
+pip freeze > requirements.txt
+
 print('\033[32m' + f'{}' + '\033[0m')     # 確認用

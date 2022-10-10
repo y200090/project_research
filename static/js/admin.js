@@ -28,7 +28,6 @@ usergradeSapns.forEach((usergradeSapn, index) => {
         recordsTable.classList.toggle('active');
 
         fetch(`https://project-research.azurewebsites.net/api/user-id-search/${users[index].user_id}`)
-        // fetch(`http://127.0.0.1:5000/api/user-id-search/${users[index].user_id}`)
             .then(response => {
                 return response.json();
             })
