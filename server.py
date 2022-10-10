@@ -335,6 +335,7 @@ def settings():
         'settings.html', 
         user_id=current_user.id, 
         username=current_user.username, 
+        user_role=current_user.role
     )
 
 # プロフィールページ
