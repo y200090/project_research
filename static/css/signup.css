@@ -118,8 +118,12 @@ body {
     font-size: clamp(0.625rem, 0.097rem + 3.01vw, 0.875rem);
 }
 .checkbox-field {
+    position: relative;
+    /* VIEWPORT: 376px~414px, VALUES: 20px~30px */
+    height: clamp(1.25rem, -4.934rem + 26.32vw, 1.875rem);
     width: 100%;
     margin-bottom: 30px;
+    padding-left: 6px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -128,6 +132,10 @@ body {
     font-size: clamp(0.875rem, 0.347rem + 3.01vw, 1.125rem);
 }
 .checkbox-field input {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     accent-color: #1e90ff;
     cursor: pointer;
 }

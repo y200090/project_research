@@ -173,9 +173,9 @@ def quiz_update(rank):
             quiz_response = 0
 
         # 初期値設定
-        test_response = 0.5
+        test_response = -1
         constant_test_correct = 0
-        test_challenge_index = 0
+        test_challenge_index = -1
     
     if not current_user.role == 'Student':
         # 上記のデータをy2000*テーブルに新規登録
@@ -249,8 +249,8 @@ def test_update(rank):
     if answer_state == 'correct':
         # “正解された累計”を更新
         words_data.correct += 1
-        # “覚えた判定を出した累計”を更新
-        users_data.total_remembered += 1
+        # “テストの正解数の累計”を更新
+        users_data.total_test_correct += 1
 
         # “テスト待ち”から“復習待ち”へ更新
         word_state = 'review_state'
@@ -264,7 +264,7 @@ def test_update(rank):
         # “テスト待ち”から“学習待ち”へ更新
         word_state = 'quiz_state'
         # “テストでの解答結果”を格納
-        test_response = -1
+        test_response = 0
         # “テストにおける連続正解数”をリセット
         constant_test_correct = 0
 
@@ -306,6 +306,7 @@ def test_update(rank):
 
 @api.route('/database/create_backup')
 @login_required
+@roles_required
 def create_backup():
     src = './database.db'
     # コピー元ファイルの存在を判定
@@ -330,4 +331,3 @@ def delete(id):
     # データベースを更新
     db.session.commit()
     return redirect(url_for('admin'))
-

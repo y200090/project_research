@@ -34,8 +34,8 @@ def unauthorized():
 # サインアップ用コントローラーの登録
 class SignupForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
-    password = PasswordField('password', validators=[DataRequired(), Length(min=4, max=50)])
-    privacypolicy = BooleanField()
+    password = PasswordField('password', validators=[DataRequired()])
+    tos = BooleanField()
     submit = SubmitField('SIGNUP')
 
     # 既存のユーザー名と同じものが入力されたらエラー判定を出す関数
@@ -60,8 +60,8 @@ class SignupForm(FlaskForm):
             raise ValidationError('使用できない文字が含まれています。')
 
     # 利用規約に同意しない場合にエラー判定を出す関数
-    def validate_privacypolicy(self, privacypolicy):
-        if privacypolicy.data == False:
+    def validate_tos(self, tos):
+        if tos.data == False:
             raise ValidationError('利用規約に同意してください。')
 
 # ログイン用コントローラーの登録
@@ -96,9 +96,9 @@ class ProfileForm(FlaskForm):
 
 # パスワード変更用コントローラーの登録
 class ChangePasswordForm(FlaskForm):
-    curpwd = PasswordField(validators=[DataRequired(), Length(min=4, max=50)])
-    chgpwd = PasswordField(validators=[DataRequired(), Length(min=4, max=50), EqualTo('cfmpwd', message='パスワードが一致しません。')])
-    cfmpwd = PasswordField(validators=[DataRequired(message='入力してください。'), Length(min=4, max=50)])
+    curpwd = PasswordField(validators=[DataRequired()])
+    chgpwd = PasswordField(validators=[DataRequired(), EqualTo('cfmpwd', message='パスワードが一致しません。')])
+    cfmpwd = PasswordField(validators=[DataRequired(message='入力してください。')])
     submit = SubmitField('CHANGE PASSWORD')
 
     # パスワードの長さが４よりも少ない場合にエラー判定を出す関数
@@ -145,9 +145,10 @@ def signup():
             total_quiz_response = 0,
             total_quiz_correct = 0,
             total_test_response = 0,
-            total_remembered = 0,
+            total_test_correct = 0,
             quiz_challenge_number = 0,
-            test_challenge_number = 0
+            test_challenge_number = 0,
+            remembering = 0
         )
         # データベースに追加
         db.session.add(new_user)
@@ -473,12 +474,13 @@ def database(id):
         'total_quiz_response': users_data.total_quiz_response,
         'total_quiz_correct': users_data.total_quiz_correct,
         'total_test_response': users_data.total_test_response,
-        'total_remembered': users_data.total_remembered,
+        'total_test_correct': users_data.total_test_correct,
         'quiz_challenge_number': users_data.quiz_challenge_number,
-        'test_challenge_number': users_data.test_challenge_number
+        'test_challenge_number': users_data.test_challenge_number,
+        'remembering': users_data.remembering
     }
 
     return render_template('database.html', records=records_params, users=users_param)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, port=8000)

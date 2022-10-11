@@ -1,5 +1,6 @@
 from __init__ import db, Word, User, Student, Y200004, Y200042, Y200051, Y200062, Y200065, Y200078, Y200080, Y200089, Y200090, record
-import random, collections
+import random, collections, pytz
+from datetime import datetime
 from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy import or_, func
@@ -26,17 +27,18 @@ def check_movepoint(Record):
     users_data = User.query.filter_by(id=current_user.id).first()
 
     if not current_user.role == 'Student':
-        # “復習待ち”と合致するy2000*テーブルのデータを全取得
-        records = Record.query.filter_by(word_state='review_state').all()
+        # y2000*テーブルのデータを全取得
+        records = Record.query.all()
     else:
-        # 現在ログイン中のユーザーIDかつ“復習待ち”と合致するstudentsテーブルのデータを全取得
-        records = Record.query.filter_by(user_id=current_user.id, word_state='review_state').all()
+        # 現在ログイン中のユーザーIDと合致するstudentsテーブルのデータを全取得
+        records = Record.query.filter_by(user_id=current_user.id).all()
 
-    if not records == []:
+    if records:
         # 重複しないy2000*テーブルの英単語IDを取得
         word_id_list = list(map(lambda x: x.word_id, records))
         dedupe_keys = list(collections.Counter(word_id_list).keys())
 
+        remembering_data = []
         for id in dedupe_keys:
             if not current_user.role == 'Student':
                 # 同一の英単語IDを持つ複数のレコードの中から、idと合致するy2000*テーブルの最新のorderを取得
@@ -45,12 +47,52 @@ def check_movepoint(Record):
                 # 同一の英単語IDを持つ複数のレコードの中から、現在ログイン中のユーザーIDかつidと合致するstudentsテーブルの最新のorderを取得
                 max_order = db.session.query(func.max(Record.order)).filter(Record.user_id==current_user.id, Record.word_id==id).scalar()
 
-            # max_orderと合致するy2000* or studentsテーブルのデータを単一取得
-            records_data = Record.query.get(max_order)
-            if records_data.constant_test_correct >= (users_data.total_remembered + 50 * records_data.constant_test_correct ** 2):
+            # max_orderかつ“復習待ち”と合致するy2000* or studentsテーブルのデータを単一取得
+            records_data = Record.query.filter_by(order=max_order, word_state='review_state').first()
+            if records_data is None:
+                continue
+
+            remembering_data.append(records_data)
+
+            if records_data.constant_test_correct >= (users_data.total_test_correct + 50 * records_data.constant_test_correct ** 2):
                 # “復習待ち”から“テスト待ち”へ更新
-                records_data.word_state = 'test_state'
-        
+                word_state = 'test_state'
+                
+                if not current_user.role == 'Student':
+                    # 上記のデータをy2000*テーブルに新規登録
+                    set_db = Record(
+                        word_id=records_data.word_id,
+                        rank=records_data.rank,
+                        quiz_response=-1,
+                        test_response=-1,
+                        constant_test_correct=records_data.constant_test_correct,
+                        word_state=word_state,
+                        response_date=datetime.now(pytz.timezone('Asia/Tokyo')),
+                        response_span=-1,
+                        quiz_challenge_index=-1,
+                        test_challenge_index=-1
+                    )
+                else:
+                    set_db = Record(
+                        user_id=current_user.id,
+                        word_id=records_data.word_id,
+                        rank=records_data.rank,
+                        quiz_response=-1,
+                        test_response=-1,
+                        constant_test_correct=records_data.constant_test_correct,
+                        word_state=word_state,
+                        response_date=datetime.now(pytz.timezone('Asia/Tokyo')),
+                        response_span=-1,
+                        quiz_challenge_index=-1,
+                        test_challenge_index=-1
+                    )
+
+                # データベースに追加
+                db.session.add(set_db)
+
+        # 覚えている英単語の総数
+        users_data.remembering = len(remembering_data)
+
         # データベースを更新する
         db.session.commit()
 
@@ -135,7 +177,7 @@ def test_candidate(rank, Record):
         records_data = Record.query.filter_by(order=max_order, word_state='test_state').first()
         if records_data is None:
             continue
-        
+                
         # 上で取得した英単語IDと合致するwordsテーブルのデータを単一取得
         words_data = Word.query.filter_by(id=records_data.word_id).first()
 

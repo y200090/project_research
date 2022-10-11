@@ -40,9 +40,9 @@
             </div>
 
             <div class="checkbox-field">
-                {{ form.privacypolicy(id="privacy-policy") }}
-                <label for="privacy-policy"><a href="">利用規約</a>に同意する。</label>
-                {% for error in form.privacypolicy.errors %} 
+                {{ form.tos(id="tos") }}
+                <label for="tos">I agree to the <a href="">Terms of Service</a>.</label>
+                {% for error in form.tos.errors %} 
                     <div class="validate">
                         <span class="material-symbols-outlined error-icon">warning</span>
                         <span class="error-text">{{ error }}</span>
