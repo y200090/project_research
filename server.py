@@ -1,7 +1,7 @@
 from __init__ import app, db, bcrypt, login_manager, Word, User, Student, Y200004, Y200042, Y200051, Y200062, Y200065, Y200078, Y200080, Y200089, Y200090, roles_required, record
 import re, regex, pytz, random, collections
 from datetime import datetime
-from flask import render_template, request, url_for, redirect, flash
+from flask import render_template, request, url_for, redirect, flash, session
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, PasswordField, SubmitField, BooleanField
@@ -414,6 +414,7 @@ def logout():
     # データベースを更新
     db.session.commit()
     logout_user()
+    session.clear()
     return redirect(url_for('homepage'))
 
 # 管理者ページ
@@ -426,6 +427,11 @@ def admin():
 
     params = []
     for i in range(len(datas)):
+        if datas[i].is_authenticated:
+            datas[i].login_state = 'active'
+        else:
+            datas[i].login_state = 'inactive'
+        
         params.append({
             'ID': datas[i].id,
             'username': datas[i].username,
@@ -437,50 +443,5 @@ def admin():
         })
     return render_template('admin.html', users=params)
 
-@app.route('/admin/database/<id>')
-@login_required
-@roles_required
-def database(id):
-    Record = record(id)
-    # y2000*テーブルのデータを全取得
-    records_datas = Record.query.all()
-    
-    records_params = []
-    for i in range(len(records_datas)):
-        records_params.append({
-            'order': records_datas[i].order,
-            'word_id': records_datas[i].word_id,
-            'rank': records_datas[i].rank,
-            'quiz_response': records_datas[i].quiz_response,
-            'test_response': records_datas[i].test_response,
-            'constant_test_correct': records_datas[i].constant_test_correct,
-            'word_state': records_datas[i].word_state,
-            'response_date': records_datas[i].response_date,
-            'response_span': records_datas[i].response_span,
-            'quiz_challenge_index': records_datas[i].quiz_challenge_index,
-            'test_challenge_index': records_datas[i].test_challenge_index
-        })
-    
-    users_data = User.query.get(id)
-    
-    users_param = {
-        'ID': users_data.id,
-        'username': users_data.username,
-        'email': users_data.email,
-        'role': users_data.role,
-        'login_state': users_data.login_state,
-        'signup_date': str(users_data.signup_date),
-        'login_date': str(users_data.login_date),
-        'total_quiz_response': users_data.total_quiz_response,
-        'total_quiz_correct': users_data.total_quiz_correct,
-        'total_test_response': users_data.total_test_response,
-        'total_test_correct': users_data.total_test_correct,
-        'quiz_challenge_number': users_data.quiz_challenge_number,
-        'test_challenge_number': users_data.test_challenge_number,
-        'remembering': users_data.remembering
-    }
-
-    return render_template('database.html', records=records_params, users=users_param)
-
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)
+    app.run()

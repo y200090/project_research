@@ -30,7 +30,6 @@
                         <th>Email Address</th>
                         <th>User Role</th>
                         <th>Login / Logout</th>
-                        <th>Signup Date</th>
                         <th>Login Date</th>
                         <th>User Grade</th>
                         <th>Delete</th>
@@ -44,9 +43,8 @@
                             <td class="email">{{ user.email }}</td>
                             <td class="user-role">{{ user.role }}</td>
                             <td class="login-state">{{ user.login_state }}</td>
-                            <td class="signup-date">{{ user.signup_date }}</td>
                             <td class="login-date">{{ user.login_date }}</td>
-                            <td class="user-grade"><a href="{{ url_for('database', id=user.ID) }}">Confirm</a></td>
+                            <td class="user-grade"><a href="">Confirm</a></td>
                             <td class="delete {{ user.username }}"><span>Delete</span></td>
                         </tr>
                     {% endfor %}

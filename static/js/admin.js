@@ -1,7 +1,5 @@
 const loginState = [...document.querySelectorAll('.login-state')],
-      signupDate = [...document.querySelectorAll('.signup-date')],
       loginDate = [...document.querySelectorAll('.login-date')];
-
 let dateFormat;
 
 users.forEach((user, index) => {
@@ -13,10 +11,6 @@ users.forEach((user, index) => {
         loginState[index].innerText = 'Logout';
         loginState[index].classList.add('logout');
     }
-
-    dateFormat = user.signup_date.replace(/-/g, '/');
-    dateFormat = dateFormat.substr(0, dateFormat.indexOf('.'));
-    signupDate[index].innerText = dateFormat;
 
     dateFormat = user.login_date.replace(/-/g, '/');
     dateFormat = dateFormat.substr(0, dateFormat.indexOf('.'));

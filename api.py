@@ -1,10 +1,9 @@
-import mimetypes
 from __init__ import db, Word, User, Student, Y200004, Y200042, Y200051, Y200062, Y200065, Y200078, Y200080, Y200089, Y200090, roles_required, record
-import pytz, json, collections, os, shutil
+import pytz, os, shutil
 from datetime import datetime
 from flask import Blueprint, jsonify, request, send_file, redirect, url_for
 from flask_login import login_required, current_user
-from sqlalchemy import or_, func
+import pandas as pd
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
@@ -313,12 +312,47 @@ def create_backup():
     if os.path.isfile(src):
         now = datetime.now(pytz.timezone('Asia/Tokyo'))
         filename = now.strftime('%Y%m%d_%H%M%S') + '.db'
+        os.makedirs('./backup', exist_ok=True)
         dst = f'./backup/{filename}'
         # ファイルをコピー
         shutil.copy(src, dst)
         return send_file(dst)
     else:
         return jsonify('Failure')
+
+@api.route('/database/create_csv/<user_id>/<rank>')
+@login_required
+@roles_required
+def create_csv(user_id, rank):
+    users_data = User.query.filter_by(id=user_id).first()
+    words_datas = Word.query.filter_by(rank=rank).all()
+
+    Record = record(user_id)
+    csv_data = []
+    data_index = []
+    for i in range(len(words_datas)):
+        data_line = {}
+        for j in range(users_data.test_challenge_number):
+            if not users_data.role == 'Student':
+                records_data = Record.query.filter_by(word_id=words_datas[i].id, test_challenge_index=(j+1)).first()
+            else:
+                records_data = Record.query.filter_by(user_id=user_id, word_id=words_datas[i].id, test_challenge_index=(j+1)).first()
+                        
+            if records_data is None:
+                data_line[f'テスト{j + 1}'] = -1
+            else:
+                data_line[f'テスト{j + 1}'] = records_data.test_response
+
+        csv_data.append(data_line)
+        data_index.append(words_datas[i].word)
+
+    # データフレーム作成
+    df = pd.DataFrame(data=csv_data, index=data_index)
+    os.makedirs('./export', exist_ok=True)
+    output = f'./export/{user_id}_{rank}_record.csv'
+    # CSVファイルをエクスポート
+    df.to_csv(f'{output}', encoding='shift-jis')
+    return send_file(output)
 
 @api.route('/database/delete/<id>')
 @login_required
