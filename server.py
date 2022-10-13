@@ -421,17 +421,12 @@ def logout():
 @app.route('/admin')
 @login_required
 @roles_required
-def admin():
+def admin():    
     # usersテーブルのデータを全取得
     datas = User.query.all()
 
     params = []
-    for i in range(len(datas)):
-        if datas[i].is_authenticated:
-            datas[i].login_state = 'active'
-        else:
-            datas[i].login_state = 'inactive'
-        
+    for i in range(len(datas)):        
         params.append({
             'ID': datas[i].id,
             'username': datas[i].username,

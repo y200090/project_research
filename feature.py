@@ -38,7 +38,6 @@ def check_movepoint(Record):
         word_id_list = list(map(lambda x: x.word_id, records))
         dedupe_keys = list(collections.Counter(word_id_list).keys())
 
-        remembering_data = []
         for id in dedupe_keys:
             if not current_user.role == 'Student':
                 # 同一の英単語IDを持つ複数のレコードの中から、idと合致するy2000*テーブルの最新のorderを取得
@@ -52,9 +51,10 @@ def check_movepoint(Record):
             if records_data is None:
                 continue
 
-            remembering_data.append(records_data)
+            keep_data = Record.query.filter(Record.order>max_order, Record.test_response==1).count()
+            x = users_data.total_test_correct - keep_data
 
-            if records_data.constant_test_correct >= (users_data.total_test_correct + 50 * records_data.constant_test_correct ** 2):
+            if users_data.total_test_correct >= (x + 50 * records_data.constant_test_correct ** 2):
                 # “復習待ち”から“テスト待ち”へ更新
                 word_state = 'test_state'
                 
@@ -89,10 +89,7 @@ def check_movepoint(Record):
 
                 # データベースに追加
                 db.session.add(set_db)
-
-        # 覚えている英単語の総数
-        users_data.remembering = len(remembering_data)
-
+                
         # データベースを更新する
         db.session.commit()
 
