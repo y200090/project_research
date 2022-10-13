@@ -329,6 +329,44 @@ def test_result(rank):
     # クエリパラメータを取得
     score = request.args.get('score')
     count = request.args.get('count')
+
+    # 現在ログイン中のユーザーのIDと合致するusersテーブルのデータを単一取得
+    users_data = User.query.filter_by(id=current_user.id).first()
+
+    Record = record(current_user.id)
+    if not current_user.role == 'Student':
+        # y2000*テーブルのデータを全取得
+        records = Record.query.all()
+    else:
+        # 現在ログイン中のユーザーIDと合致するstudentsテーブルのデータを全取得
+        records = Record.query.filter_by(user_id=current_user.id).all()
+
+    if records:
+        # 重複しないy2000*テーブルの英単語IDを取得
+        word_id_list = list(map(lambda x: x.word_id, records))
+        dedupe_keys = list(collections.Counter(word_id_list).keys())
+
+        remembering_data = []
+        for id in dedupe_keys:
+            if not current_user.role == 'Student':
+                # 同一の英単語IDを持つ複数のレコードの中から、idと合致するy2000*テーブルの最新のorderを取得
+                max_order = db.session.query(func.max(Record.order)).filter(Record.word_id==id).scalar()
+            else:
+                # 同一の英単語IDを持つ複数のレコードの中から、現在ログイン中のユーザーIDかつidと合致するstudentsテーブルの最新のorderを取得
+                max_order = db.session.query(func.max(Record.order)).filter(Record.user_id==current_user.id, Record.word_id==id).scalar()
+
+            # max_orderかつ“復習待ち”と合致するy2000* or studentsテーブルのデータを単一取得
+            records_data = Record.query.filter_by(order=max_order, word_state='review_state').first()
+            if records_data is None:
+                continue
+
+            remembering_data.append(records_data)
+        
+        # 覚えている英単語の総数
+        users_data.remembering = len(remembering_data)
+        # データベースを更新する
+        db.session.commit()
+    
     return render_template('test_result.html', rank=rank ,score=score, count=count)
 
 # 設定ページ
