@@ -344,13 +344,13 @@ def create_csv(type, user_id, rank):
                 if type == 'record':
                     data_line[f'テスト{j + 1}'] = -1
 
-                elif type == 'datetime':
+                if type == 'datetime':
                     data_line[f'テスト{j + 1}'] = '1999-1-1 12:12:12'
             else:
                 if type == 'record':
                     data_line[f'テスト{j + 1}'] = records_data.test_response
                 
-                elif type == 'datetime':
+                if type == 'datetime':
                     data_line[f'テスト{j + 1}'] = records_data.response_date
 
         csv_data.append(data_line)
