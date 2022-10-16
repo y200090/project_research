@@ -31,7 +31,7 @@
             </a>
             <a href="" class="nav-link faqs">
                 <img src="{{ url_for('static', filename='images/undraw_questions_re_1fy7.svg') }}" class="nav-image">
-                <span class="nav-title">FAQs</span>
+                <span class="nav-title">ＦＡＱ</span>
                 <span id="unimplemented">未実装</span>
             </a>
             <a href="{{ url_for('settings') }}" class="nav-link settings">
@@ -40,4 +40,11 @@
             </a>
         </nav>
     </div>
+
+    <!-- <script>
+        const mediaQuery = window.matchMedia('(min-width: 768px');
+        if (mediaQuery.matches) {
+            location.href = '/mypage/learnings';
+        }
+    </script> -->
 {% endblock %}

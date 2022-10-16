@@ -16,7 +16,7 @@ function browserBack() {
 // メイン関数
 async function main() {
     // クイズ作成APIを叩く
-    const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create-questions/quiz/${rank}`);
+    const questions = await getAPI(`https://project-research.azurewebsites.net/api/create-questions/quiz/${rank}`);
 
     const quizProgress = document.querySelector('.quiz-progress');
     for (let i = 0; i < questions.length; i++) {

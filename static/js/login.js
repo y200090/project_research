@@ -45,14 +45,9 @@ showHide.forEach(eyeIcon => {
     });
 });
 
-const inputFields = [...document.querySelectorAll('.input-field')],
-      flash = document.querySelector('.flash');
+const flash = document.querySelector('.flash-field');
 if (flash) {
-    inputFields.forEach(inputField => {
-        inputField.addEventListener('input', () => {
-            flash.style.display = 'none';
-        });
-    });
+    flash.parentElement.classList.add('inflash');
 }
 
 // const perEntries = performance.getEntriesByType('navigation');

@@ -37,18 +37,7 @@ ShowHide.forEach(eyeIcon => {
     });
 });
 
-const inputFields = [...document.querySelectorAll('.input-field')],
-      validate = document.querySelector('.validate');
+const validate = document.querySelector('.validate-field');
 if (validate) {
-    inputFields.forEach(inputField => {
-        inputField.addEventListener('input', () => {
-            validate.style.display = 'none';
-        });
-    });
-    // window.addEventListener('load', () => {
-    //     validate.style.display = 'none';
-    // });
-    // window.addEventListener('resize', () => {
-    //     validate.style.display = 'none';
-    // });
+    validate.parentElement.classList.add('invalidate');
 }

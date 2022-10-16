@@ -5,10 +5,10 @@ from flask import Blueprint, jsonify, request, send_file, redirect, url_for
 from flask_login import login_required, current_user
 import pandas as pd
 
-api = Blueprint('api', __name__, url_prefix='/api')
+api_operator = Blueprint('operate_database', __name__, url_prefix='/api')
 
 # 英単語全検索API
-@api.route('/word-all-search')
+@api_operator.route('/word-all-search')
 @login_required
 def word_all_search():
     # wordsテーブルのデータを全取得
@@ -30,7 +30,7 @@ def word_all_search():
     return jsonify(params)
 
 # 英単語ID検索API
-@api.route('/word-id-search/<word_id>', methods=['GET', 'POST'])
+@api_operator.route('/word-id-search/<word_id>', methods=['GET', 'POST'])
 @login_required
 def word_id_search(word_id):
     if request.method == 'GET':
@@ -63,7 +63,7 @@ def word_id_search(word_id):
         return jsonify('finish')
 
 # 英単語ランク検索API
-@api.route('/word-rank-search/<rank>')
+@api_operator.route('/word-rank-search/<rank>')
 @login_required
 def word_rank_search(rank):    
     # rankと合致するwordsテーブルのデータを全取得
@@ -85,7 +85,7 @@ def word_rank_search(rank):
     return jsonify(params)
 
 # クイズ解答時更新API
-@api.route('/quiz-update/<rank>', methods=['POST'])
+@api_operator.route('/quiz-update/<rank>', methods=['POST'])
 @login_required
 def quiz_update(rank):
     # POSTリクエストでJSONを取得
@@ -213,7 +213,7 @@ def quiz_update(rank):
     return jsonify('更新完了')
 
 # テスト更新API
-@api.route('/test-update/<rank>', methods=['POST'])
+@api_operator.route('/test-update/<rank>', methods=['POST'])
 @login_required
 def test_update(rank):
     # POSTリクエストを受け取る
@@ -303,7 +303,8 @@ def test_update(rank):
     db.session.commit()    
     return jsonify('finish')
 
-@api.route('/database/create_backup')
+# バックアップ作成API
+@api_operator.route('/database/create_backup')
 @login_required
 @roles_required
 def create_backup():
@@ -320,14 +321,15 @@ def create_backup():
     else:
         return jsonify('Failure')
 
-@api.route('/database/create_csv/<user_id>/<rank>')
+# テストデータCSV出力API
+@api_operator.route('/database/create_csv/<type>/<user_id>/<rank>')
 @login_required
 @roles_required
-def create_csv(user_id, rank):
+def create_csv(type, user_id, rank):
     users_data = User.query.filter_by(id=user_id).first()
     words_datas = Word.query.filter_by(rank=rank).all()
-
     Record = record(user_id)
+
     csv_data = []
     data_index = []
     for i in range(len(words_datas)):
@@ -339,22 +341,40 @@ def create_csv(user_id, rank):
                 records_data = Record.query.filter_by(user_id=user_id, word_id=words_datas[i].id, test_challenge_index=(j+1)).first()
                         
             if records_data is None:
-                data_line[f'テスト{j + 1}'] = -1
+                if type == 'record':
+                    data_line[f'テスト{j + 1}'] = -1
+
+                elif type == 'datetime':
+                    data_line[f'テスト{j + 1}'] = '1999-1-1 12:12:12'
             else:
-                data_line[f'テスト{j + 1}'] = records_data.test_response
+                if type == 'record':
+                    data_line[f'テスト{j + 1}'] = records_data.test_response
+                
+                elif type == 'datetime':
+                    data_line[f'テスト{j + 1}'] = records_data.response_date
 
         csv_data.append(data_line)
         data_index.append(words_datas[i].word)
 
     # データフレーム作成
     df = pd.DataFrame(data=csv_data, index=data_index)
+    if type == 'datetime':
+        for i in range(len(df.columns)):
+            df[f'テスト{i + 1}'] = pd.to_datetime(df[f'テスト{i + 1}'])
+
     os.makedirs('./export', exist_ok=True)
-    output = f'./export/{user_id}_{rank}_record.csv'
+    if type == 'record':
+        output = f'./export/{user_id}_{rank}_record.csv'
+
+    elif type == 'datetime':
+        output = f'./export/{user_id}_{rank}_datetime.csv'
+
     # CSVファイルをエクスポート
     df.to_csv(f'{output}', encoding='shift-jis')
     return send_file(output)
 
-@api.route('/database/delete/<id>')
+# ユーザー削除API
+@api_operator.route('/database/delete/<id>')
 @login_required
 @roles_required
 def delete(id):

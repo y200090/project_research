@@ -9,10 +9,10 @@ from wtforms.validators import DataRequired, Email, Optional, Length, EqualTo, V
 from sqlalchemy import or_, func
 
 # Blueprint（他のPythonファイルのモジュール化）を登録
-from feature import feature
-from api import api
-app.register_blueprint(feature)
-app.register_blueprint(api)
+from create_questions import api_creator
+from operate_database import api_operator
+app.register_blueprint(api_creator)
+app.register_blueprint(api_operator)
 
 # Flaskアプリと紐づけ
 login_manager.init_app(app)
@@ -35,7 +35,6 @@ def unauthorized():
 class SignupForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
-    tos = BooleanField()
     submit = SubmitField('SIGNUP')
 
     # 既存のユーザー名と同じものが入力されたらエラー判定を出す関数
@@ -59,16 +58,10 @@ class SignupForm(FlaskForm):
         if not regular_word.match(password.data):
             raise ValidationError('使用できない文字が含まれています。')
 
-    # 利用規約に同意しない場合にエラー判定を出す関数
-    def validate_tos(self, tos):
-        if tos.data == False:
-            raise ValidationError('利用規約に同意してください。')
-
 # ログイン用コントローラーの登録
 class LoginForm(FlaskForm):
     username = StringField(validators=[DataRequired()])
     password = PasswordField(validators=[DataRequired(), Length(min=4, max=50)])
-    remember = BooleanField()
     submit = SubmitField('LOGIN')
 
 # プロフィール用コントローラーの登録
@@ -174,7 +167,7 @@ def login():
             # ハッシュ化されたパスワードのチェック
             if bcrypt.check_password_hash(now_user.password, form.password.data):
                 # 第二引数にremember=Trueを渡すことで、Cookieにセッション情報を残している
-                login_user(now_user, remember=form.remember.data)
+                login_user(now_user, remember=True)
                 # ユーザーのログイン状態をアクティブに更新
                 now_user.login_state = 'active'
                 # ログイン日時を更新
@@ -201,20 +194,19 @@ def home():
 @app.route('/mypage/home/library')
 @login_required
 def library():
-    return render_template('library.html')
+    return render_template('library.html', user_role=current_user.role)
 
 # クイズコースページ
 @app.route('/mypage/learnings')
 @login_required
 def learnings():
     params = []
+    counts = []
     ranks = ['A1', 'A2', 'B1', 'B2']
     Record = record(current_user.id)
+    users_data = User.query.filter_by(id=current_user.id).first()
 
     for rank in ranks:
-        # wordsテーブルのレコード数を取得
-        words_length = Word.query.filter_by(rank=rank).count()
-
         if not current_user.role == 'Student':
             # rankと合致するy2000*テーブルのデータを全取得
             records = Record.query.filter_by(rank=rank).all()
@@ -242,10 +234,30 @@ def learnings():
                 continue
             records_datas.append(records_data)
 
+        # wordsテーブルのレコード数を取得
+        words_length = Word.query.filter_by(rank=rank).count()
+
         diff = round((len(records_datas) * 100 / words_length), 1)    # クイズの達成度（四捨五入したパーセンテージ）を計算
         params.append(diff)
-    
-    return render_template('learnings.html', params=params)
+
+        count = 0
+        for i in range(users_data.quiz_challenge_number):
+            if not current_user.role == 'Student':
+                records = Record.query.filter_by(rank=rank, quiz_challenge_index=(i+1)).first()
+            else:
+                records = Record.query.filter_by(user_id=current_user.id, rank=rank, quiz_challenge_index=(i+1)).first()
+
+            if records:
+                count += 1
+        
+        counts.append(count)
+
+    return render_template(
+        'learnings.html', 
+        params=params, 
+        counts=counts,
+        user_role=current_user.role
+    )
 
 # クイズページ
 @app.route('/mypage/learnings/quiz/<rank>')
@@ -273,8 +285,10 @@ def quiz_result(rank):
 @login_required
 def tasks():
     params = []
+    counts = []
     ranks = ['A1', 'A2', 'B1', 'B2']
     Record = record(current_user.id)
+    users_data = User.query.filter_by(id=current_user.id).first()
 
     for rank in ranks:
         if not current_user.role == 'Student':
@@ -307,8 +321,25 @@ def tasks():
         
         task = len(records_datas) // 20     # テストを受験できる回数を計算
         params.append(task)
+
+        count = 0
+        for i in range(users_data.test_challenge_number):
+            if not current_user.role == 'Student':
+                records = Record.query.filter_by(rank=rank, test_challenge_index=(i+1)).first()
+            else:
+                records = Record.query.filter_by(user_id=current_user.id, rank=rank, test_challenge_index=(i+1)).first()
+
+            if records:
+                count += 1
         
-    return render_template('tasks.html', tasks=params)
+        counts.append(count)
+        
+    return render_template(
+        'tasks.html', 
+        tasks=params, 
+        counts=counts,
+        user_role=current_user.role
+    )
 
 # テストページ
 @app.route('/mypage/tasks/test/<rank>')
@@ -464,7 +495,7 @@ def admin():
     datas = User.query.all()
 
     params = []
-    for i in range(len(datas)):        
+    for i in range(len(datas)):
         params.append({
             'ID': datas[i].id,
             'username': datas[i].username,

@@ -5,7 +5,7 @@ from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
 from sqlalchemy import or_, func
 
-feature = Blueprint('create_quiz', __name__, url_prefix='/feature')
+api_creator = Blueprint('create_questions', __name__, url_prefix='/api')
 
 partToJP ={'verb':"動詞",'noun':"名詞",'adjective':"形容詞",'adverb':"副詞",'preposition':"前置詞",'conjunction':"接続詞",'determiner':"限定詞",'pronoun':"代名詞",'be-verb':"be動詞",'modal auxiliary':"修飾助動詞",'interjection':"間投詞",'do-verb':"do動詞",'number':"数",'have-verb':"have動詞",'infinitive-to':"不定詞to"}
 # rankdict = {'A1':"1", 'A2':"2", 'B1':"3", 'B2':"4"}
@@ -89,7 +89,7 @@ def check_movepoint(Record):
 
                 # データベースに追加
                 db.session.add(set_db)
-                
+
         # データベースを更新する
         db.session.commit()
 
@@ -212,7 +212,7 @@ def all_words():
     return params
 
 # Create Questions API
-@feature.route('/create-questions/<category>/<rank>')
+@api_creator.route('/create-questions/<category>/<rank>')
 @login_required
 def create_questions(category, rank):
     # 問題として出題する英単語IDを格納する配列
@@ -229,11 +229,20 @@ def create_questions(category, rank):
         Qcount = 10    # 問題数
         j = 0
         while True:
+            flag = 0
             l = random.randrange(len(fp))
             i = random.randrange(1,1500)
             x = int(fp[l]["freq_rank"])
             threshold = 1000 * (0.5) ** (x / 1000) + 500    # 重み付け部分
             if threshold >= i:
+                #learninglistに登録した単語を検索、追加しようとしている単語と一致したらフラグを立てる
+                for k in range(len(learningList)):
+                    if fp[l]['ID'] == learningList[k]:
+                        flag = 1
+                        break
+                if flag == 1:
+                    continue
+                
                 # クイズに出題する英単語IDの配列番号（行数）を記憶
                 learningList.append(l)
                 j+=1
@@ -274,6 +283,7 @@ def create_questions(category, rank):
 
         i = 0
         while i < 3:
+            impflag = 0
             a = random.randrange(1, linecount)
             # fp(辞書)のa要素目の値をリストとして取得
             imp = list(op[a].values())
@@ -282,6 +292,15 @@ def create_questions(category, rank):
             if partcompare(imp[3], ansline[3]) == 0:
                 if random.randrange(1,100) <= 60:
                     continue
+
+            if imp[2] == ansline[2]:
+                continue
+
+            for  k in range(i):
+                if imp[2] == wrongline[k][2]:
+                    impflag = 1
+            if impflag == 1:
+                continue
 
             #impに読み込んだデータをwronglineにアペンド
             wrongline.append(imp)
