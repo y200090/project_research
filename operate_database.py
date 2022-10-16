@@ -366,7 +366,7 @@ def create_csv(type, user_id, rank):
     if type == 'record':
         output = f'./export/{user_id}_{rank}_record.csv'
 
-    elif type == 'datetime':
+    if type == 'datetime':
         output = f'./export/{user_id}_{rank}_datetime.csv'
 
     # CSVファイルをエクスポート
