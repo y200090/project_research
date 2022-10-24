@@ -6,15 +6,15 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-    <script defer src="{{ url_for('static', filename='js/login.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/login.js') }}" defer></script>
 {% endblock %}
 
 {% block body %}
     <div class="login-container">
         {% for flash in get_flashed_messages(category_filter=['unauthorized']) %}
-            <div class="unauthorized">
+            <div class="unauthorized-field">
                 <span class="material-symbols-outlined flash-icon">report</span>
-                <span class="flash-text">{{ flash }}</span>
+                <span class="flash-message">{{ flash }}</span>
             </div>
         {% endfor %}
         <img src="" class="login-icon">
@@ -22,32 +22,27 @@
         <form method="POST" class="login-form">
             {{ form.hidden_tag() }}
 
-            <div class="input-field">
+            <div class="input-field username-field">
                 {{ form.username() }}
-                <i class='bx bx-user'></i><span class="field-title">Username</span>
+                <i class='bx bx-user'></i><span class="input-title">Username</span>
                 {% for flash in get_flashed_messages(category_filter=['username']) %}
-                    <div class="flash">
+                    <div class="flash-field">
                         <span class="material-symbols-outlined flash-icon">report</span>
-                        <span class="flash-text">{{ flash }}</span>
+                        <span class="flash-message">{{ flash }}</span>
                     </div>
                 {% endfor %}
             </div>
 
-            <div class="input-field">
+            <div class="input-field password-field">
                 {{ form.password() }}
-                <i class='bx bx-lock-alt'></i><span class="field-title">Password</span>
+                <i class='bx bx-lock-alt'></i><span class="input-title">Password</span>
                 <i class='bx bx-hide show-hide'></i>
                 {% for flash in get_flashed_messages(category_filter=['password']) %}
-                    <div class="flash">
+                    <div class="flash-field">
                         <span class="material-symbols-outlined flash-icon">report</span>
-                        <span class="flash-text">{{ flash }}</span>
+                        <span class="flash-message">{{ flash }}</span>
                     </div>
                 {% endfor %}
-            </div>
-
-            <div class="checkbox-field">
-                {{ form.remember(id="remember-me") }}
-                <label for="remember-me">Remember me</label>
             </div>
 
             <div class="button-field">

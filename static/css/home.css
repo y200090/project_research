@@ -38,7 +38,6 @@ body {
     height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
     width: 100%;
-    max-width: 415px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -52,12 +51,6 @@ body {
     grid-template-columns: repeat(2, 1fr);
     align-items: center;
     justify-items: center;
-}
-@media screen and (min-width: 1200px) {
-    .root-navigator {
-        grid-template-rows: repeat(2, 1fr);
-        grid-template-columns: repeat(3, 1fr);
-    }
 }
 .nav-link {
     position: relative;
@@ -85,10 +78,10 @@ body {
     font-weight: 600;
     color: var(--text);
 }
-.dashboard, .faqs {
+.faqs {
     pointer-events: none;
 }
-.dashboard::before, .faqs::before {
+.faqs::before {
     content: "";
     position: absolute;
     height: 100%;

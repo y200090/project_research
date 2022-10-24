@@ -5,73 +5,160 @@
 {% endblock %}
 
 {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mypage.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/learnings.css') }}">
-    <script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
-    <script defer src="{{ url_for('static', filename='js/learnings.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mypage.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/learnings.js') }}" defer></script>
 {% endblock %}
 
 {% block body %}
-    <div class="learnings-page">
+    <div class="app-root-page learnings-page">
         <div class="root-header">
             <a href="{{ url_for('home') }}" class="back-icon">
                 <span class="material-symbols-outlined">keyboard_double_arrow_left</span>
             </a>
-            <span class="root-title">Your Course</span>
+            <span class="root-title">Your Courses</span>
         </div>
+
+        <nav class="root-navigator">
+            <div class="app-logo">
+                <span class="material-symbols-outlined app-icon">logo_dev</span>
+                <span class="app-title">Project Research</span>
+            </div>
+            <a href="" class="nav-link dashboard">
+                <span class="material-symbols-outlined nav-icon">dashboard</span>
+                <span class="nav-title">ダッシュボード</span>
+            </a>
+            <a href="{{ url_for('library') }}" class="nav-link library">
+                <span class="material-symbols-outlined nav-icon">local_library</span>
+                <span class="nav-title">ライブラリ</span>
+            </a>
+            <a href="{{ url_for('learnings') }}" class="nav-link learnings current">
+                <span class="material-symbols-outlined nav-icon">history_edu</span>
+                <span class="nav-title">学習</span>
+            </a>
+            <a href="{{ url_for('tasks') }}" class="nav-link tasks">
+                <span class="material-symbols-outlined nav-icon">layers</span>
+                <span class="nav-title">確認テスト</span>
+            </a>
+            <a href="" class="nav-link faqs">
+                <span class="material-symbols-outlined nav-icon">help_center</span>
+                <span class="nav-title">ＦＡＱ</span>
+            </a>
+            <a href="{{ url_for('settings') }}" class="nav-link settings">
+                <span class="material-symbols-outlined nav-icon">settings</span>
+                <span class="nav-title">設定</span>
+            </a>
+            {% if user_role == 'Admin' %}
+                <a href="{{ url_for('admin') }}" class="nav-link admin">
+                    <span class="material-symbols-outlined nav-icon">admin_panel_settings</span>
+                    <span class="nav-title">管理画面</span>
+                </a>
+            {% endif %}
+        </nav>
 
         <nav class="course-navigator">
             <a href="{{ url_for('quiz', rank='A1') }}" class="learning" style="--c:#FFCA03;">
-                <div class="detail">
-                    <span class="rank">A1</span>
-                    <span class="information">
-                        1099単語を収録<br>
-                        英検3級相当の難易度
-                    </span>
+                <div class="left-content">
+                    <div class="top">
+                        <span class="material-symbols-outlined top-icon">smartphone</span>
+                        <span class="rank">A1クイズ</span>
+                    </div>
+                    <div class="bottom">
+                        <span class="percentage">達成度 : 60%</span>
+                        <div class="progress-bar" style="--bg:#e9bc1b;">
+                            <span class="bar-parameter"></span>
+                        </div>
+                    </div>
+                    <div class="bottom-second">
+                        <div class="progress-circle" style="--bg:#e9bc1b;">
+                            <span class="circle-parameter">0%</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="progress-circular" style="--bg:#e9bc1b;">
-                    <span class="parameter">0%</span>
+
+                <div class="right-content">
+                    <span class="call">挑戦回数</span>
+                    <div class="challenge-number">0</div>                    
                 </div>
             </a>
+
             <a href="{{ url_for('quiz', rank='A2') }}" class="learning" style="--c:#01daa3;">
-                <div class="detail">
-                    <span class="rank">A2</span>
-                    <span class="information">
-                        1312単語を収録<br>
-                        英検準2級相当の難易度
-                    </span>
+                <div class="left-content">
+                    <div class="top">
+                        <span class="material-symbols-outlined top-icon">smartphone</span>
+                        <span class="rank">A2クイズ</span>
+                    </div>
+                    <div class="bottom">
+                        <span class="percentage">達成度 : 60%</span>
+                        <div class="progress-bar" style="--bg:#1fc99e;">
+                            <span class="bar-parameter"></span>
+                        </div>
+                    </div>
+
+                    <div class="progress-circle" style="--bg:#1fc99e;">
+                        <span class="circle-parameter">0%</span>
+                    </div>
                 </div>
-                <div class="progress-circular" style="--bg:#1fc99e;">
-                    <span class="parameter">0%</span>
+
+                <div class="right-content">
+                    <span class="call">挑戦回数</span>
+                    <div class="challenge-number">0</div>
                 </div>
             </a>
+
             <a href="{{ url_for('quiz', rank='B1') }}" class="learning" style="--c:#f94144;">
-                <div class="detail">
-                    <span class="rank">B1</span>
-                    <span class="information">
-                        2292単語を収録<br>
-                        英検2級相当の難易度
-                    </span>
+                <div class="left-content">
+                    <div class="top">
+                        <span class="material-symbols-outlined top-icon">smartphone</span>
+                        <span class="rank">B1クイズ</span>
+                    </div>
+                    <div class="bottom">
+                        <span class="percentage">達成度 : 60%</span>
+                        <div class="progress-bar" style="--bg:#e03538;">
+                            <span class="bar-parameter"></span>
+                        </div>
+                    </div>
+
+                    <div class="progress-circle" style="--bg:#e03538;">
+                        <span class="circle-parameter">0%</span>
+                    </div>
                 </div>
-                <div class="progress-circular" style="--bg:#e03538;">
-                    <span class="parameter">0%</span>
+
+                <div class="right-content">
+                    <span class="call">挑戦回数</span>
+                    <div class="challenge-number">0</div>                   
                 </div>
             </a>
+
             <a href="{{ url_for('quiz', rank='B2') }}" class="learning" style="--c:#033FFF;">
-                <div class="detail">
-                    <span class="rank">B2</span>
-                    <span class="information">
-                        2517単語を収録<br>
-                        英検準1級相当の難易度
-                    </span>
+                <div class="left-content">
+                    <div class="top">
+                        <span class="material-symbols-outlined top-icon">smartphone</span>
+                        <span class="rank">B2クイズ</span>
+                    </div>
+                    <div class="bottom">
+                        <span class="percentage">達成度 : 60%</span>
+                        <div class="progress-bar" style="--bg:#0c3ad3;">
+                            <span class="bar-parameter"></span>
+                        </div>
+                    </div>
+
+                    <div class="progress-circle" style="--bg:#0c3ad3;">
+                        <span class="circle-parameter">0%</span>
+                    </div>
                 </div>
-                <div class="progress-circular" style="--bg:#0c3ad3;">
-                    <span class="parameter">0%</span>
+                
+                <div class="right-content">
+                    <span class="call">挑戦回数</span>
+                    <div class="challenge-number">0</div>                    
                 </div>
             </a>
         </nav>
     </div>
     
     <script>
-        const params = JSON.parse('{{ params|tojson|safe }}');
+        const params = JSON.parse('{{ params|tojson|safe }}'),
+              counts = JSON.parse('{{ counts|tojson|safe }}');
     </script>
 {% endblock %}

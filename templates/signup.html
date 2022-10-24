@@ -6,7 +6,7 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
-    <script defer src="{{ url_for('static', filename='js/signup.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/signup.js') }}" defer></script>
 {% endblock %}
 
 {% block body %}
@@ -16,36 +16,25 @@
         <form method="POST" class="signup-form">
             {{ form.hidden_tag() }}
 
-            <div class="input-field">
+            <div class="input-field username-field">
                 {{ form.username() }}
-                <i class='bx bx-user'></i><span class="field-title">Username</span>
+                <i class='bx bx-user'></i><span class="input-title">Username</span>
                 {% for error in form.username.errors %} 
-                    <div class="validate">
+                    <div class="validate-field">
                         <span class="material-symbols-outlined error-icon">warning</span>
-                        <span class="error-text">{{ error }}</span>
+                        <span class="error-message">{{ error }}</span>
                     </div>
                 {% endfor %}
             </div>
 
-            <div class="input-field">
+            <div class="input-field password-field">
                 {{ form.password() }}
-                <i class='bx bx-lock-alt'></i><span class="field-title">Password</span>
+                <i class='bx bx-lock-alt'></i><span class="input-title">Password</span>
                 <i class='bx bx-hide show-hide'></i>
                 {% for error in form.password.errors %} 
-                    <div class="validate">
+                    <div class="validate-field">
                         <span class="material-symbols-outlined error-icon">warning</span>
-                        <span class="error-text">{{ error }}</span>
-                    </div>
-                {% endfor %}
-            </div>
-
-            <div class="checkbox-field">
-                {{ form.tos(id="tos") }}
-                <label for="tos">I agree to the <a href="">Terms of Service</a>.</label>
-                {% for error in form.tos.errors %} 
-                    <div class="validate">
-                        <span class="material-symbols-outlined error-icon">warning</span>
-                        <span class="error-text">{{ error }}</span>
+                        <span class="error-message">{{ error }}</span>
                     </div>
                 {% endfor %}
             </div>

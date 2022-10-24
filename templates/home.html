@@ -6,38 +6,49 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-    <script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mypage.js') }}" defer></script>
 {% endblock %}
 
 {% block body %}
     <div class="home-container">
         <nav class="root-navigator">
-            <a href="" class="nav-link dashboard">
+            <a href="{{ url_for('dashboard') }}" class="nav-link dashboard">
                 <img src="{{ url_for('static', filename='images/undraw_data_trends_re_2cdy.svg') }}" class="nav-image">
                 <span class="nav-title">ダッシュボード</span>
-                <span id="unimplemented">未実装</span>
             </a>
+
             <a href="{{ url_for('library') }}" class="nav-link library">
                 <img src="{{ url_for('static', filename='images/undraw_bibliophile_re_xarc.svg') }}" class="nav-image">
                 <span class="nav-title">ライブラリ</span>
             </a>
+
             <a href="{{ url_for('learnings') }}" class="nav-link learnings">
                 <img src="{{ url_for('static', filename='images/undraw_exams_re_4ios.svg') }}" class="nav-image">
                 <span class="nav-title">学習</span>
             </a>
+
             <a href="{{ url_for('tasks') }}" class="nav-link tasks">
                 <img src="{{ url_for('static', filename='images/undraw_next_tasks_re_5eyy.svg') }}" class="nav-image">
                 <span class="nav-title">確認テスト</span>
             </a>
+
             <a href="" class="nav-link faqs">
                 <img src="{{ url_for('static', filename='images/undraw_questions_re_1fy7.svg') }}" class="nav-image">
-                <span class="nav-title">FAQs</span>
+                <span class="nav-title">ＦＡＱ</span>
                 <span id="unimplemented">未実装</span>
             </a>
+
             <a href="{{ url_for('settings') }}" class="nav-link settings">
                 <img src="{{ url_for('static', filename='images/undraw_personal_settings_re_i6w4.svg') }}" class="nav-image">
                 <span class="nav-title">設定</span>
             </a>
         </nav>
     </div>
+
+    <script>
+        const mediaQuery = window.matchMedia('(min-width: 768px');
+        if (mediaQuery.matches) {
+            location.href = '/mypage/learnings';
+        }
+    </script>
 {% endblock %}

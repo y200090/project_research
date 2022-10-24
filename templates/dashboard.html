@@ -1,0 +1,167 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>My Page -Dashboard-</title>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mypage.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <script src="{{ url_for('static', filename='js/mypage.js') }}" defer></script>
+    <!-- Chart.js CDN 導入 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js" defer></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
+{% endblock %}
+
+{% block body %}
+    <div class="app-root-page">
+        <div class="root-header">
+            <a href="{{ url_for('home') }}" class="back-icon">
+                <span class="material-symbols-outlined">keyboard_double_arrow_left</span>
+            </a>
+            <span class="root-title">ダッシュボード</span>
+        </div>
+
+        <div class="dashboard-container">
+            <div class="first-line-block">
+                <div class="quiz-content A1" style="--c:#FFCA03;">
+                    <div class="main">
+                        <svg class="quiz-circle">
+                            <circle cx="50%" cy="50%" r="0" class="track"></circle>
+                            <circle cx="50%" cy="50%" r="0" class="progress"></circle>
+                            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="percentage"></text>
+                        </svg>
+                        <div class="quiz-info">
+                            <div class="achieve-rate">
+                                <i class='bx bxs-square-rounded'></i>
+                                <span class="title">A1クイズの達成率</span>
+                            </div>
+                            <div class="challenge-count">
+                                <span class="title">挑戦回数</span>
+                                <span class="current-challenge">98</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="quiz-content A2" style="--c:#01daa3;">
+                    <div class="main">
+                        <svg class="quiz-circle">
+                            <circle cx="50%" cy="50%" r="0" class="track"></circle>
+                            <circle cx="50%" cy="50%" r="0" class="progress"></circle>
+                            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="percentage"></text>
+                        </svg>
+                        <div class="quiz-info">
+                            <div class="achieve-rate">
+                                <i class='bx bxs-square-rounded'></i>
+                                <span class="title">A2クイズの達成率</span>
+                            </div>
+                            <div class="challenge-count">
+                                <span class="title">挑戦回数</span>
+                                <span class="current-challenge">98</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="quiz-content B1" style="--c:#f94144;">
+                    <div class="main">
+                        <svg class="quiz-circle">
+                            <circle cx="50%" cy="50%" r="0" class="track"></circle>
+                            <circle cx="50%" cy="50%" r="0" class="progress"></circle>
+                            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="percentage"></text>
+                        </svg>
+                        <div class="quiz-info">
+                            <div class="achieve-rate">
+                                <i class='bx bxs-square-rounded'></i>
+                                <span class="title">B1クイズの達成率</span>
+                            </div>
+                            <div class="challenge-count">
+                                <span class="title">挑戦回数</span>
+                                <span class="current-challenge">98</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="quiz-content B2" style="--c:#033FFF;">
+                    <div class="main">
+                        <svg class="quiz-circle">
+                            <circle cx="50%" cy="50%" r="0" class="track"></circle>
+                            <circle cx="50%" cy="50%" r="0" class="progress"></circle>
+                            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="percentage"></text>
+                        </svg>
+                        <div class="quiz-info">
+                            <div class="achieve-rate">
+                                <i class='bx bxs-square-rounded'></i>
+                                <span class="title">B2クイズの達成率</span>
+                            </div>
+                            <div class="challenge-count">
+                                <span class="title">挑戦回数</span>
+                                <span class="current-challenge">98</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="second-line-block">
+                <div class="remembered-content A1" style="--c:#FFCA03;">
+                    <div class="top-image">
+                        <span class="rank-icon">A1</span>
+                    </div>
+                    <div class="main">
+                        <span class="title">覚えた英単語</span>
+                        <div class="remembered-count">
+                            <span class="current-remembered">999</span><span class="max-remembered">1099</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="remembered-content A2" style="--c:#01daa3;">
+                    <div class="top-image">
+                        <span class="rank-icon">A2</span>
+                    </div>
+                    <div class="main">
+                        <span class="title">覚えた英単語</span>
+                        <div class="remembered-count">
+                            <span class="current-remembered">12</span><span class="max-remembered">1312</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="remembered-content B1" style="--c:#f94144;">
+                    <div class="top-image">
+                        <span class="rank-icon">B1</span>
+                    </div>
+                    <div class="main">
+                        <span class="title">覚えた英単語</span>
+                        <div class="remembered-count">
+                            <span class="current-remembered">123</span><span class="max-remembered">2292</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="remembered-content B2" style="--c:#033FFF;">
+                    <div class="top-image">
+                        <span class="rank-icon">B2</span>
+                    </div>
+                    <div class="main">
+                        <span class="title">覚えた英単語</span>
+                        <div class="remembered-count">
+                            <span class="current-remembered">2000</span><span class="max-remembered">2517</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="third-line-block">
+                <canvas id="quiz-answer-chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const params = JSON.parse('{{ params|tojson|safe }}'),
+              counts = JSON.parse('{{ counts|tojson|safe }}'),
+              remembereds = JSON.parse('{{ remembereds|tojson|safe }}'),
+              answereds = JSON.parse('{{ answereds|tojson|safe }}');
+
+        console.log(remembereds)
+        console.log(answereds)
+    </script>
+{% endblock %}

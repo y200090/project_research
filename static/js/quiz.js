@@ -16,7 +16,7 @@ function browserBack() {
 // メイン関数
 async function main() {
     // クイズ作成APIを叩く
-    const questions = await getAPI(`https://project-research.azurewebsites.net/feature/create-questions/quiz/${rank}`);
+    const questions = await getAPI(`https://project-research.azurewebsites.net/api/create-questions/quiz/${rank}`);
 
     const quizProgress = document.querySelector('.quiz-progress');
     for (let i = 0; i < questions.length; i++) {
@@ -178,11 +178,6 @@ async function main() {
         optionsContent.classList.add('none-events');
         nextContent.classList.add('active');
 
-        // クイズページのクローンを取得
-        clone[index] = quizPage.cloneNode(true);
-        // セッションストレージにクローンを保存
-        sessionStorage.setItem(`quiz-${index + 1}`, `${clone[index].innerHTML}`);
-
         // クイズ更新APIに送信するPOSTデータを設定
         const updateData = {
             'word_id': wordId[index],
@@ -214,6 +209,11 @@ async function main() {
             nextButton.addEventListener('click', () => nextQuiz());
         }
         nextContent.appendChild(nextButton);
+
+        // クイズページのクローンを取得
+        clone[index] = quizPage.cloneNode(true);
+        // セッションストレージにクローンを保存
+        sessionStorage.setItem(`quiz-${index + 1}`, `${clone[index].innerHTML}`);
     };
 
     // 次の問題へ遷移する関数============================================================
