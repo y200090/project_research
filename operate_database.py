@@ -317,12 +317,9 @@ def create_backup():
         dst = f'./backup/{filename}'
         # ファイルをコピー
         shutil.copy(src, dst)
-<<<<<<< HEAD
 
         print('\033[31m' + f'{filename} の作成が完了しました。\nデータベースのバックアップに成功しました。' + '\033[0m')      # 確認用
 
-=======
->>>>>>> c5bc740594fe2ff02c60bff2eaa94b485c12ee6e
         return send_file(dst)
     else:
         return jsonify('Failure')
@@ -367,16 +364,11 @@ def create_csv(type, user_id, rank):
     if type == 'datetime':
         for i in range(len(df.columns)):
             df[f'テスト{i + 1}'] = pd.to_datetime(df[f'テスト{i + 1}'])
-<<<<<<< HEAD
             
-=======
-
->>>>>>> c5bc740594fe2ff02c60bff2eaa94b485c12ee6e
     os.makedirs('./export', exist_ok=True)
     if type == 'record':
         output = f'./export/{user_id}_{rank}_record.csv'
 
-<<<<<<< HEAD
     elif type == 'datetime':
         output = f'./export/{user_id}_{rank}_datetime.csv'
     # CSVファイルをエクスポート
@@ -386,15 +378,6 @@ def create_csv(type, user_id, rank):
 
     return send_file(output)
     
-=======
-    if type == 'datetime':
-        output = f'./export/{user_id}_{rank}_datetime.csv'
-
-    # CSVファイルをエクスポート
-    df.to_csv(f'{output}', encoding='shift-jis')
-    return send_file(output)
-
->>>>>>> c5bc740594fe2ff02c60bff2eaa94b485c12ee6e
 # ユーザー削除API
 @api_operator.route('/database/delete/<id>')
 @login_required

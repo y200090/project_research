@@ -38,10 +38,6 @@ body {
     height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
     width: 100%;
-<<<<<<< HEAD
-=======
-    max-width: 414px;
->>>>>>> c5bc740594fe2ff02c60bff2eaa94b485c12ee6e
     display: flex;
     align-items: center;
     justify-content: center;
