@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 const topIcons = [...document.querySelectorAll('.top-icon')],
       barParameter = [...document.querySelectorAll('.bar-parameter')],
-=======
-const barParameter = [...document.querySelectorAll('.bar-parameter')],
->>>>>>> c5bc740594fe2ff02c60bff2eaa94b485c12ee6e
       percentage = [...document.querySelectorAll('.percentage')],
       progressCircle= [...document.querySelectorAll('.progress-circle')],
       circleParameter = [...document.querySelectorAll('.circle-parameter')],
@@ -31,7 +27,6 @@ params.forEach((param, index) => {
         }
     }, speed);
 });
-<<<<<<< HEAD
 
 counts.forEach((count, index) => {
     challengeNumber[index].innerText = `${count}`;
@@ -39,12 +34,6 @@ counts.forEach((count, index) => {
 
 const mediaQueryTablet = window.matchMedia('(min-width: 768px'),
       mediaQueryDesktop = window.matchMedia('(min-width: 1024px');
-=======
-
-counts.forEach((count, index) => {
-    challengeNumber[index].innerText = `${count}`;
-});
->>>>>>> c5bc740594fe2ff02c60bff2eaa94b485c12ee6e
 
 window.addEventListener('load', () => {
     challengeNumber.forEach(number => {
