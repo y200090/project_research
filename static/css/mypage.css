@@ -5,11 +5,8 @@
     --contents: #fff;
     --under-layer: #e9ecf1;
     --information: #a0a9c0;
-    --light: #fff;
-    --dark: #0f0f0f;
     --pale: #8c96b0;
-    
-    --text: #171717;
+    --text: #0f0f0f;
     --primary: #4070f4;
     --secondary: #979dac;
     --danger: #ef233c;
@@ -38,8 +35,6 @@ body {
     --contents: #22252b;
     --under-layer: #313641;
     --information: #727c94;
-    --light: #0f0f0f;
-    --dark: #fefeff;
     --pale: #a0a9c0;
     --text: #fefeff;
 }
@@ -57,8 +52,8 @@ body {
 .root-header {
     position: fixed;
     top: 0;
-    /* VIEWPORT: 376px~414px, VALUES: 60px~80px */
-    height: clamp(3.75rem, -8.618rem + 52.63vw, 5rem);
+    /* VIEWPORT: 376px~414px, VALUES: 80px~100px */
+    height: clamp(5rem, -7.368rem + 52.63vw, 6.25rem);
     width: 100%;
     padding: 0 20px 0 15px;
     display: flex;

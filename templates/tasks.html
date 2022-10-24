@@ -5,68 +5,72 @@
 {% endblock %}
 
 {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mypage.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tasks.css') }}">
-    <script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
-    <script defer src="{{ url_for('static', filename='js/tasks.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mypage.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/tasks.js') }}" defer></script>
 {% endblock %}
 
 {% block body %}
-    <header class="root-header">
-        <a href="{{ url_for('home') }}" class="browser-back">
-            <span class="material-symbols-outlined">keyboard_double_arrow_left</span>
-        </a>
-        <h1 class="header-title">Your Test</h1>
-    </header>
-    <!-- ============================================================================ -->
-    <nav class="root-container">
-        <h1 id="empty">You have no tests.</h1>
-        <div class="tasks A1" style="--h: calc(110px + ({{ tasks[0] }} * 10px));">
-            {% for i in range(tasks[0]) %}
-                <a href="{{ url_for('test', rank='A1') }}" class="task" style="--c: #FFCA03; --t: calc({{ i }} * 10px); --z: calc(1000 - {{ i }});">
-                    <span class="material-symbols-outlined emblem">token</span>
-                    <div class="detail">
-                        <p class="title">A1 Test</p>
-                        <p class="text">20単語を収録</p>
-                    </div>
-                </a>
-            {% endfor %}
+    <div class="app-root-page tasks-page">
+        <div class="root-header">
+            <a href="{{ url_for('home') }}" class="back-icon">
+                <span class="material-symbols-outlined">keyboard_double_arrow_left</span>
+            </a>
+            <span class="root-title">テストページ</span>
         </div>
-        <div class="tasks A2" style="--h: calc(110px + ({{ tasks[1] }} * 10px));">
-            {% for i in range(tasks[1]) %}
-                <a href="{{ url_for('test', rank='A2') }}" class="task" style="--c:#01daa3; --t: calc({{ i }} * 10px); --z: calc(1000 - {{ i }});">
-                    <span class="material-symbols-outlined emblem">token</span>
-                    <div class="detail">
-                        <p class="title">A2 Test</p>
-                        <p class="text">20単語を収録</p>
-                    </div>
-                </a>
-            {% endfor %}
-        </div>
-        <div class="tasks B1" style="--h: calc(110px + ({{ tasks[2] }} * 10px));">
-            {% for i in range(tasks[2]) %}
-                <a href="{{ url_for('test', rank='B1') }}" class="task" style="--c:#f94144; --t: calc({{ i }} * 10px); --z: calc(1000 - {{ i }});">
-                    <span class="material-symbols-outlined emblem">token</span>
-                    <div class="detail">
-                        <p class="title">B1 Test</p>
-                        <p class="text">20単語を収録</p>
-                    </div>
-                </a>
-            {% endfor %}
-        </div>
-        <div class="tasks B2" style="--h: calc(110px + ({{ tasks[3] }} * 10px));">
-            {% for i in range(tasks[3]) %}
-                <a href="{{ url_for('test', rank='B2') }}" class="task" style="--c:#033FFF; --t: calc({{ i }} * 10px); --z: calc(1000 - {{ i }});">
-                    <span class="material-symbols-outlined emblem">token</span>
-                    <div class="detail">
-                        <p class="title">B2 Test</p>
-                        <p class="text">20単語を収録</p>
-                    </div>
-                </a>
-            {% endfor %}
-        </div>
-    </nav>
-    <!-- ============================================================================ -->
+
+        <nav class="course-navigator">
+            <span class="if-empty">受験可能なテストはありません。</span>
+
+            <a href="{{ url_for('test', rank='A1') }}" class="task" style="--c:#FFCA03;">
+                <div class="top-image">
+                    <span class="rank-icon">A1</span>
+                </div>
+                <span class="task-title">確認テスト</span>
+                <span class="material-symbols-outlined task-icon">touch_app</span>
+
+                <div class="stack-icon">
+                    <span class="stack-number">{{ stacks[0] }}</span>
+                </div>
+            </a>
+            <a href="{{ url_for('test', rank='A2') }}" class="task" style="--c:#01daa3;">
+                <div class="top-image">
+                    <span class="rank-icon">A2</span>
+                </div>
+                <span class="task-title">確認テスト</span>
+                <span class="material-symbols-outlined task-icon">touch_app</span>
+
+                <div class="stack-icon">
+                    <span class="stack-number">{{ stacks[1] }}</span>
+                </div>
+            </a>
+            <a href="{{ url_for('test', rank='B1') }}" class="task" style="--c:#f94144;">
+                <div class="top-image">
+                    <span class="rank-icon">B1</span>
+                </div>
+                <span class="task-title">確認テスト</span>
+                <span class="material-symbols-outlined task-icon">touch_app</span>
+
+                <div class="stack-icon">
+                    <span class="stack-number">{{ stacks[2] }}</span>
+                </div>
+            </a>
+            <a href="{{ url_for('test', rank='B2') }}" class="task" style="--c:#033FFF;">
+                <div class="top-image">
+                    <span class="rank-icon">B2</span>
+                </div>
+                <span class="task-title">確認テスト</span>
+                <span class="material-symbols-outlined task-icon">touch_app</span>
+
+                <div class="stack-icon">
+                    <span class="stack-number">{{ stacks[3] }}</span>
+                </div>
+            </a>
+        </nav>
+    </div>
+
     <script>
-        const tasks = JSON.parse('{{ tasks|tojson|safe }}');
+        const stacks = JSON.parse('{{ stacks|tojson|safe }}');
     </script>
 {% endblock %}

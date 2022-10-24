@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mypage.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/quiz.css') }}">
     <script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
     <script defer src="{{ url_for('static', filename='js/quiz.js') }}"></script>

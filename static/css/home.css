@@ -1,9 +1,12 @@
 /* Google Fonts for Roboto */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 :root {
-    --background: #e1eaf7;
-    --text: #171717;
+    --background: #f1f5f9;
     --contents: #fff;
+    --under-layer: #e9ecf1;
+    --information: #a0a9c0;
+    --pale: #8c96b0;
+    --text: #0f0f0f;
     --primary: #4070f4;
     --secondary: #979dac;
     --danger: #ef233c;
@@ -23,14 +26,17 @@
 body {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     background-color: var(--background);
 }
 .dark-mode {
-    --background: #181a1e;
-    --text: #fff;
-    --contents: #202528;
+    --background: #1a1a1d;
+    --contents: #22252b;
+    --under-layer: #313641;
+    --information: #727c94;
+    --pale: #a0a9c0;
+    --text: #fefeff;
 }
 
 .home-container {
@@ -38,13 +44,31 @@ body {
     height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
     width: 100%;
+    padding: 10px 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+}
+
+.home-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
+    color: var(--text);
+}
+.home-icon {
+    font-size: 32px;
+}
+.home-title {
+    font-size: 28px;
+    font-weight: 600;
 }
 
 .root-navigator {
-    height: 95%;
+    height: 100%;
     width: 95%;
     display: grid;
     grid-template-rows: repeat(3, 1fr);
@@ -65,6 +89,9 @@ body {
     border-radius: 20px;
     transition: all 0.3s;
 }
+.nav-link.presence {
+    border: 2px solid var(--danger);
+}
 .nav-link:hover {
     transform: translateY(-2px);
 }
@@ -75,6 +102,26 @@ body {
 .nav-title {
     /* VIEWPORT: 281px~414px, VALUES: 16px~20px */
     font-size: clamp(0.875rem, 0.347rem + 3.01vw, 1.125rem);
+    font-weight: 600;
+    color: var(--text);
+}
+.notice {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 5px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--danger);
+}
+.notice.presence {
+    display: flex;
+}
+.notice span {
+    /* VIEWPORT: 281px~414px, VALUES: 16px~20px */
+    font-size: clamp(1rem, 0.472rem + 3.01vw, 1.25rem);
     font-weight: 600;
     color: var(--text);
 }

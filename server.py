@@ -303,64 +303,7 @@ def library():
 @app.route('/mypage/learnings')
 @login_required
 def learnings():
-    params = []
-    counts = []
-    ranks = ['A1', 'A2', 'B1', 'B2']
-    Record = record(current_user.id)
-    users_data = User.query.filter_by(id=current_user.id).first()
-
-    for rank in ranks:
-        if not current_user.role == 'Student':
-            # rankと合致するy2000*テーブルのデータを全取得
-            records = Record.query.filter_by(rank=rank).all()
-        else:
-            # 現在ログイン中のユーザーIDかつrankと合致するstudentsテーブルのデータを全取得
-            records = Record.query.filter_by(user_id=current_user.id, rank=rank).all()
-
-        # 重複しないy2000*テーブルの英単語IDを取得
-        word_id_list = list(map(lambda x: x.word_id, records))
-        dedupe_keys = list(collections.Counter(word_id_list).keys())
-
-        records_datas = []
-        # 同一の英単語IDを持つ複数のレコードの中から最新のデータを取得
-        for id in dedupe_keys:
-            if not current_user.role == 'Student':
-                # idと合致するy2000*テーブルの最新のorderを取得
-                max_order = db.session.query(func.max(Record.order)).filter(Record.word_id==id).scalar()
-            else:
-                # 現在ログイン中のユーザーIDかつidと合致するstudentsテーブルの最新のorderを取得
-                max_order = db.session.query(func.max(Record.order)).filter(Record.user_id==current_user.id, Record.word_id==id).scalar()
-
-            # max_orderかつ“テスト待ち”または“復習待ち”と合致するy2000*テーブルのデータを単一取得
-            records_data = Record.query.filter_by(order=max_order).filter(or_(Record.word_state=='test_state', Record.word_state=='review_state')).first()
-            if records_data is None:
-                continue
-            records_datas.append(records_data)
-
-        # wordsテーブルのレコード数を取得
-        words_length = Word.query.filter_by(rank=rank).count()
-
-        diff = round((len(records_datas) * 100 / words_length), 1)    # クイズの達成度（四捨五入したパーセンテージ）を計算
-        params.append(diff)
-
-        count = 0
-        for i in range(users_data.quiz_challenge_number):
-            if not current_user.role == 'Student':
-                records = Record.query.filter_by(rank=rank, quiz_challenge_index=(i+1)).first()
-            else:
-                records = Record.query.filter_by(user_id=current_user.id, rank=rank, quiz_challenge_index=(i+1)).first()
-
-            if records:
-                count += 1
-        
-        counts.append(count)
-
-    return render_template(
-        'learnings.html', 
-        params=params, 
-        counts=counts,
-        user_role=current_user.role
-    )
+    return render_template('learnings.html')
 
 # クイズページ
 @app.route('/mypage/learnings/quiz/<rank>')
@@ -439,7 +382,7 @@ def tasks():
         
     return render_template(
         'tasks.html', 
-        tasks=params, 
+        stacks=params, 
         counts=counts,
         user_role=current_user.role
     )

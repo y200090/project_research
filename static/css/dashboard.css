@@ -1,11 +1,11 @@
 .dashboard-container {
     position: absolute;
     top: 0;
-    /* VIEWPORT: 376px~414px, VALUES: 60px~80px */
-    min-height: calc(100% - clamp(3.75rem, -8.618rem + 52.63vw, 5rem));
+    /* VIEWPORT: 376px~414px, VALUES: 80px~100px */
+    min-height: calc(100% - clamp(5rem, -7.368rem + 52.63vw, 6.25rem));
     width: 90%;
-    /* VIEWPORT: 376px~414px, VALUES: 60px~80px */
-    margin-top: clamp(3.75rem, -8.618rem + 52.63vw, 5rem);
+    /* VIEWPORT: 376px~414px, VALUES: 80px~100px */
+    margin-top: clamp(5rem, -7.368rem + 52.63vw, 6.25rem);
     padding: 20px 0;
     display: flex;
     align-items: center;
@@ -178,7 +178,7 @@
     /* VIEWPORT: 281px~414px, VALUES: 28px~48px */
     font-size: clamp(1.75rem, -0.891rem + 15.04vw, 3rem);
     font-weight: 500;
-    color: var(--dark);
+    color: var(--text);
 }
 .max-remembered {
     position: relative;
