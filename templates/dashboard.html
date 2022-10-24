@@ -38,7 +38,7 @@
                             </div>
                             <div class="challenge-count">
                                 <span class="title">挑戦回数</span>
-                                <span class="current-challenge">98</span>
+                                <span class="current-challenge">{{ counts[0] }}</span>
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                             </div>
                             <div class="challenge-count">
                                 <span class="title">挑戦回数</span>
-                                <span class="current-challenge">98</span>
+                                <span class="current-challenge">{{ counts[1] }}</span>
                             </div>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                             </div>
                             <div class="challenge-count">
                                 <span class="title">挑戦回数</span>
-                                <span class="current-challenge">98</span>
+                                <span class="current-challenge">{{ counts[2] }}</span>
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                             </div>
                             <div class="challenge-count">
                                 <span class="title">挑戦回数</span>
-                                <span class="current-challenge">98</span>
+                                <span class="current-challenge">{{ counts[3] }}</span>
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                     <div class="main">
                         <span class="title">覚えた英単語</span>
                         <div class="remembered-count">
-                            <span class="current-remembered">999</span><span class="max-remembered">1099</span>
+                            <span class="current-remembered">{{ remembereds[0] }}</span><span class="max-remembered">1099</span>
                         </div>
                     </div>
                 </div>
@@ -121,7 +121,7 @@
                     <div class="main">
                         <span class="title">覚えた英単語</span>
                         <div class="remembered-count">
-                            <span class="current-remembered">12</span><span class="max-remembered">1312</span>
+                            <span class="current-remembered">{{ remembereds[1] }}</span><span class="max-remembered">1312</span>
                         </div>
                     </div>
                 </div>
@@ -132,7 +132,7 @@
                     <div class="main">
                         <span class="title">覚えた英単語</span>
                         <div class="remembered-count">
-                            <span class="current-remembered">123</span><span class="max-remembered">2292</span>
+                            <span class="current-remembered">{{ remembereds[2] }}</span><span class="max-remembered">2292</span>
                         </div>
                     </div>
                 </div>
@@ -143,7 +143,7 @@
                     <div class="main">
                         <span class="title">覚えた英単語</span>
                         <div class="remembered-count">
-                            <span class="current-remembered">2000</span><span class="max-remembered">2517</span>
+                            <span class="current-remembered">{{ remembereds[3] }}</span><span class="max-remembered">2517</span>
                         </div>
                     </div>
                 </div>
@@ -160,8 +160,5 @@
               counts = JSON.parse('{{ counts|tojson|safe }}'),
               remembereds = JSON.parse('{{ remembereds|tojson|safe }}'),
               answereds = JSON.parse('{{ answereds|tojson|safe }}');
-
-        console.log(remembereds)
-        console.log(answereds)
     </script>
 {% endblock %}

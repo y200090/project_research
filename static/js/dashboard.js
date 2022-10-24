@@ -31,7 +31,7 @@ window.addEventListener('resize', () => {
         height = image.clientHeight;
         rankIcon[index].style.height = `${height * 50 / 100}px`;
         rankIcon[index].style.width = `${height * 50 / 100}px`;
-    })
+    });
     
     quizMain.forEach((main, index) => {
         height = main.clientHeight;
@@ -74,7 +74,13 @@ function setProgress() {
 };
 
 const ctx = document.querySelector('#quiz-answer-chart');
-const datas = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 0],[2, 3, 4, 2, 6, 5, 7, 2 ,9, 1], [4, 6, 2, 7, 5, 4, 8, 8, 9, 6], [6, 4, 2, 4, 8, 7, 9, 8, 10, 9]];
+let color;
+if (localStorage.getItem('color-theme') === 'dark-mode') {
+    color = '#fff';
+}
+else if (localStorage.getItem('color-theme') === 'light-mode') {
+    color = '#000';
+}
 const quizAnswerChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -82,7 +88,7 @@ const quizAnswerChart = new Chart(ctx, {
         datasets: [
             {
                 label: 'A1',
-                data: datas[0],
+                data: answereds[0],
                 borderColor: '#FFCA03',
                 fill: false,
                 borderWidth: 2,
@@ -92,7 +98,7 @@ const quizAnswerChart = new Chart(ctx, {
             },
             {
                 label: 'A2',
-                data: datas[1],
+                data: answereds[1],
                 borderColor: '#01daa3',
                 fill: false,
                 borderWidth: 2,
@@ -102,7 +108,7 @@ const quizAnswerChart = new Chart(ctx, {
             },
             {
                 label: 'B1',
-                data: datas[2],
+                data: answereds[2],
                 borderColor: '#f94144',
                 fill: false,
                 borderWidth: 2,
@@ -112,7 +118,7 @@ const quizAnswerChart = new Chart(ctx, {
             },
             {
                 label: 'B2',
-                data: datas[3],
+                data: answereds[3],
                 borderColor: '#033FFF',
                 fill: false,
                 borderWidth: 2,
@@ -128,7 +134,7 @@ const quizAnswerChart = new Chart(ctx, {
             display: true,
             text: '直近10回のクイズの正答数',
             fontSize: 14,
-            fontColor: '#fff'
+            fontColor: `${color}`
         },
         scales: {
             yAxes: [{
@@ -136,7 +142,7 @@ const quizAnswerChart = new Chart(ctx, {
                     suggestedMax: 10,
                     suggestedMin: 0,
                     stepSize: 1,
-                    fontColor: '#fff',
+                    fontColor: `${color}`,
                     fontSize: 14,
                     callback: function(value, index, values) {
                         return value;
@@ -151,7 +157,7 @@ const quizAnswerChart = new Chart(ctx, {
                     display: false
                 },
                 ticks: {
-                    fontColor: '#fff',
+                    fontColor: `${color}`,
                     fontSize: 14
                 }
             }]
@@ -160,7 +166,7 @@ const quizAnswerChart = new Chart(ctx, {
             labels: {
                 usePointStyle: true,
                 fontSize: 14,
-                fontColor: '#fff'
+                fontColor: `${color}`
             }
         }
     }
