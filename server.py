@@ -599,11 +599,14 @@ def admin():
 
     params = []
     for i in range(len(datas)):
+<<<<<<< HEAD
         # if datas[i].is_authenticated:
         #     datas[i].login_state = 'active'
         # else:
         #     datas[i].login_state = 'inactive'
         
+=======
+>>>>>>> c5bc740594fe2ff02c60bff2eaa94b485c12ee6e
         params.append({
             'ID': datas[i].id,
             'username': datas[i].username,

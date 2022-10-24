@@ -54,6 +54,7 @@ def check_movepoint(Record):
             keep_data = Record.query.filter(Record.order>max_order, Record.test_response==1).count()
             x = users_data.total_test_correct - keep_data
 
+<<<<<<< HEAD
             print('\033[35m' + f'{records_data.word_id}: {max_order}' + '\033[0m')      # ログ確認用
             print('\033[35m' + f'{users_data.total_test_correct}' + '\033[0m')      # ログ確認用
             print('\033[35m' + f'{keep_data}' + '\033[0m')      # ログ確認用
@@ -65,6 +66,12 @@ def check_movepoint(Record):
         
                 print('\033[35m' + f'{records_data.word_id} : 復習待ち -> テスト待ち | 更新完了' + '\033[0m')      # ログ確認用
         
+=======
+            if users_data.total_test_correct >= (x + 50 * records_data.constant_test_correct ** 2):
+                # “復習待ち”から“テスト待ち”へ更新
+                word_state = 'test_state'
+                
+>>>>>>> c5bc740594fe2ff02c60bff2eaa94b485c12ee6e
                 if not current_user.role == 'Student':
                     # 上記のデータをy2000*テーブルに新規登録
                     set_db = Record(
@@ -108,7 +115,11 @@ def quiz_candidate(rank, Record):
         # rankと合致するy2000*テーブルのデータを全取得
         records = Record.query.filter_by(rank=rank).all()
     else:
+<<<<<<< HEAD
         # 現在ログイン中のユーザーIDかつranと合致するstudentsテーブルのデータを全取得
+=======
+        # 現在ログイン中のユーザーIDかつrankと合致するstudentsテーブルのデータを全取得
+>>>>>>> c5bc740594fe2ff02c60bff2eaa94b485c12ee6e
         records = Record.query.filter_by(user_id=current_user.id, rank=rank).all()
 
     # 重複しないy2000* or studentsテーブルの英単語IDを取得
