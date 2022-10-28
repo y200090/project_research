@@ -188,7 +188,43 @@ def login():
 @app.route('/mypage/home')
 @login_required
 def home():
-    return render_template('home.html')
+    params = []
+    ranks = ['A1', 'A2', 'B1', 'B2']
+    Record = record(current_user.id)
+
+    for rank in ranks:
+        if not current_user.role == 'Student':
+            # rankと合致するy2000*のテーブルのデータを全取得
+            records = Record.query.filter_by(rank=rank).all()
+        else:
+            # 現在ログイン中のユーザーIDかつrankと合致するstudentsテーブルのデータを全取得
+            records = Record.query.filter_by(user_id=current_user.id, rank=rank).all()
+
+        # 重複しないy2000*テーブルの英単語IDを取得
+        word_id_list = list(map(lambda x: x.word_id, records))
+        dedupe_keys = list(collections.Counter(word_id_list).keys())
+
+        records_datas = []
+        # 同一の英単語IDを持つ複数のレコードの中から最新のデータを取得
+        for id in dedupe_keys:
+            if not current_user.role == 'Student':
+                # idと合致するy2000*テーブルの最新のorderを取得
+                max_order = db.session.query(func.max(Record.order)).filter(Record.word_id==id).scalar()
+            else:
+                # 現在ログイン中のユーザーIDかつidと合致するstudentsテーブルの最新のorderを取得
+                max_order = db.session.query(func.max(Record.order)).filter(Record.user_id==current_user.id, Record.word_id==id).scalar()
+
+            # max_orderかつ“テスト待ち”と合致するy2000* or studentsテーブルのデータを単一取得
+            records_data = Record.query.filter_by(order=max_order, word_state='test_state').first()
+            if records_data is None:
+                continue
+        
+            records_datas.append(records_data)
+        
+        task = len(records_datas) // 20     # テストを受験できる回数を計算
+        params.append(task)
+    
+    return render_template('home.html', stacks=params)
 
 # ダッシュボードページ
 @app.route('/mypage/dashboard')

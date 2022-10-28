@@ -53,4 +53,8 @@
             </a>
         </nav>
     </div>
+
+    <script>
+        const stacks = JSON.parse('{{ stacks|tojson|safe }}');
+    </script>
 {% endblock %}
