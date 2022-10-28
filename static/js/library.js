@@ -70,7 +70,7 @@ function createLibrary(words) {
         speakIcon.addEventListener('click', () => {
             if ('speechSynthesis' in window) {
                 const uttr = new SpeechSynthesisUtterance();
-                uttr.text = word[index];
+                uttr.text = word.word;
                 uttr.lang = 'en-US';
                 uttr.rate = 0.8;
                 const voices = speechSynthesis.getVoices();
