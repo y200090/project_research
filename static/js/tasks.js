@@ -28,8 +28,8 @@ let height;
 window.addEventListener('load', () => {
     topImage.forEach((image, index) => {
         height = image.clientHeight;
-        rankIcon[index].style.height = `${height * 50 / 100}px`;
-        rankIcon[index].style.width = `${height * 50 / 100}px`;
+        rankIcon[index].style.height = `${height * 0.7}px`;
+        rankIcon[index].style.width = `${height * 0.7}px`;
     });
 
     stackicon.forEach(icon => {
@@ -42,8 +42,8 @@ window.addEventListener('load', () => {
 window.addEventListener('resize', () => {
     topImage.forEach((image, index) => {
         height = image.clientHeight;
-        rankIcon[index].style.height = `${height * 50 / 100}px`;
-        rankIcon[index].style.width = `${height * 50 / 100}px`;
+        rankIcon[index].style.height = `${height * 0.7}px`;
+        rankIcon[index].style.width = `${height * 0.7}px`;
     });
 
     stackicon.forEach(icon => {

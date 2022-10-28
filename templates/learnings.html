@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/mypage.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/learnings.css') }}">
     <script src="{{ url_for('static', filename='js/mypage.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/learnings.js') }}" defer></script>
 {% endblock %}
 
 {% block body %}
@@ -19,43 +18,6 @@
             </a>
             <span class="root-title">学習コース</span>
         </div>
-
-        <nav class="root-navigator">
-            <div class="app-logo">
-                <span class="material-symbols-outlined app-icon">logo_dev</span>
-                <span class="app-title">Project Research</span>
-            </div>
-            <a href="" class="nav-link dashboard">
-                <span class="material-symbols-outlined nav-icon">dashboard</span>
-                <span class="nav-title">ダッシュボード</span>
-            </a>
-            <a href="{{ url_for('library') }}" class="nav-link library">
-                <span class="material-symbols-outlined nav-icon">local_library</span>
-                <span class="nav-title">ライブラリ</span>
-            </a>
-            <a href="{{ url_for('learnings') }}" class="nav-link learnings current">
-                <span class="material-symbols-outlined nav-icon">history_edu</span>
-                <span class="nav-title">学習</span>
-            </a>
-            <a href="{{ url_for('tasks') }}" class="nav-link tasks">
-                <span class="material-symbols-outlined nav-icon">layers</span>
-                <span class="nav-title">確認テスト</span>
-            </a>
-            <a href="" class="nav-link faqs">
-                <span class="material-symbols-outlined nav-icon">help_center</span>
-                <span class="nav-title">ＦＡＱ</span>
-            </a>
-            <a href="{{ url_for('settings') }}" class="nav-link settings">
-                <span class="material-symbols-outlined nav-icon">settings</span>
-                <span class="nav-title">設定</span>
-            </a>
-            {% if user_role == 'Admin' %}
-                <a href="{{ url_for('admin') }}" class="nav-link admin">
-                    <span class="material-symbols-outlined nav-icon">admin_panel_settings</span>
-                    <span class="nav-title">管理画面</span>
-                </a>
-            {% endif %}
-        </nav>
 
         <nav class="course-navigator">
             <a href="{{ url_for('quiz', rank='A1') }}" class="learning" style="--c:#FFCA03;">

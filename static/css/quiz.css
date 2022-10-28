@@ -1,9 +1,12 @@
 /* Google Fonts for Roboto */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 :root {
-    --background: #e1eaf7;
-    --text: #171717;
+    --background: #f1f5f9;
     --contents: #fff;
+    --under-layer: #e9ecf1;
+    --information: #a0a9c0;
+    --pale: #8c96b0;
+    --text: #0f0f0f;
     --primary: #4070f4;
     --secondary: #979dac;
     --danger: #ef233c;
@@ -23,14 +26,17 @@
 body {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     background-color: var(--background);
 }
 .dark-mode {
-    --background: #181a1e;
-    --text: #fff;
-    --contents: #202528;
+    --background: #1a1a1d;
+    --contents: #22252b;
+    --under-layer: #313641;
+    --information: #727c94;
+    --pale: #a0a9c0;
+    --text: #fefeff;
 }
 
 .quiz-page {

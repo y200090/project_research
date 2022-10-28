@@ -16,6 +16,7 @@
             <span class="material-symbols-outlined home-icon">home_app_logo</span>
             <span class="home-title">ホーム</span>
         </div>
+        
         <nav class="root-navigator">
             <a href="{{ url_for('dashboard') }}" class="nav-link dashboard">
                 <img src="{{ url_for('static', filename='images/undraw_data_trends_re_2cdy.svg') }}" class="nav-image">
@@ -41,10 +42,9 @@
                 </div>
             </a>
 
-            <a href="" class="nav-link faqs">
+            <a href="{{ url_for('faq') }}" class="nav-link faqs">
                 <img src="{{ url_for('static', filename='images/undraw_questions_re_1fy7.svg') }}" class="nav-image">
                 <span class="nav-title">ＦＡＱ</span>
-                <span id="unimplemented">未実装</span>
             </a>
 
             <a href="{{ url_for('settings') }}" class="nav-link settings">
@@ -53,11 +53,4 @@
             </a>
         </nav>
     </div>
-
-    <!-- <script>
-        const mediaQuery = window.matchMedia('(min-width: 768px');
-        if (mediaQuery.matches) {
-            location.href = '/mypage/learnings';
-        }
-    </script> -->
 {% endblock %}

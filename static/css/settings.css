@@ -1,88 +1,10 @@
-/* Google Fonts for Roboto */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
-:root {
-    --background: #e1eaf7;
-    --text: #171717;
-    --contents: #fff;
-    --primary: #4070f4;
-    --secondary: #979dac;
-    --danger: #ef233c;
-    --accent: #1e90ff;
-    --correct: #00c851;
-    --incorrect: #ff4444;
-}
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
-    text-decoration: none;
-    list-style: none;
-    min-height: 0vw;
-}
-body {
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    background-color: var(--background);
-}
-.dark-mode {
-    --background: #181a1e;
-    --text: #fff;
-    --contents: #202528;
-}
-
-.settings-page {
-    position: relative;
-    height: 100vh;
-    height: calc(var(--vh, 1vh) * 100);
-    width: 90%;
-    max-width: 415px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.root-header {
-    position: absolute;
-    top: 0;
-    /* VIEWPORT: 376px~414px, VALUES: 60px~80px */
-    height: clamp(3.75rem, -8.618rem + 52.63vw, 5rem);
-    width: 100%;
-    max-width: 415px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-.back-icon {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.back-icon span {
-    /* VIEWPORT: 281px~414px, VALUES: 32px~40px */
-    font-size: clamp(2rem, 0.944rem + 6.02vw, 2.5rem);
-    font-weight: 600;
-    color: var(--text);
-}
-.root-title {
-    /* VIEWPORT: 281px~414px, VALUES: 22px~26px */
-    font-size: clamp(1.375rem, 0.847rem + 3.01vw, 1.625rem);
-    font-weight: 800;
-    letter-spacing: 2px;
-    color: var(--text);
-}
-
 .settings-body {
     position: relative;
-    /* VIEWPORT: 376px~414px, VALUES: 60px~80px */
-    height: calc(100% - clamp(3.75rem, -8.618rem + 52.63vw, 5rem));
-    width: 100%;
-    max-width: 415px;
-    /* VIEWPORT: 376px~414px, VALUES: 60px~80px */
-    margin-top: clamp(3.75rem, -8.618rem + 52.63vw, 5rem);
+    /* VIEWPORT: 376px~414px, VALUES: 80px~100px */
+    height: calc(100% - clamp(5rem, -7.368rem + 52.63vw, 6.25rem));
+    width: 90%;
+    /* VIEWPORT: 376px~414px, VALUES: 80px~100px */
+    margin-top: clamp(5rem, -7.368rem + 52.63vw, 6.25rem);
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -91,16 +13,17 @@ body {
 }
 .user-info-content {
     position: relative;
-    height: 140px;
+    /* VIEWPORT: 376px~414px, VALUES: 50px~55px */
+    height: calc(clamp(3.125rem, 0.033rem + 13.16vw, 3.438rem) * 2.2);
     width: 100%;
-    margin: 10px 0 25px 0;
+    margin: 10px 0 25px;
     padding-left: 20px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     column-gap: 20px;
     background-color: var(--contents);
-    border-radius: 6px;
+    border-radius: 8px;
 }
 .user-icon {
     height: 55%;
@@ -123,10 +46,23 @@ body {
     font-size: clamp(0.875rem, 0.347rem + 3.01vw, 1.125rem);
     color: var(--text);
 }
+.medal {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    /* VIEWPORT: 376px~414px, VALUES: 50px~55px */
+    height: calc(clamp(3.125rem, 0.033rem + 13.16vw, 3.438rem) * 2.2 * 0.55 / 1.5);
+}
+.medal.inactive {
+    display: none;
+}
 .setting {
     position: relative;
+    /* VIEWPORT: 376px~414px, VALUES: 50px~55px */
+    height: clamp(3.125rem, 0.033rem + 13.16vw, 3.438rem);
     width: 100%;
-    padding: 10px 10px 10px 20px;
+    /* VIEWPORT: 281px~414px, VALUES: 15px~20px */
+    padding: 10px 10px 10px clamp(0.938rem, 0.003rem + 5.32vw, 1.25rem);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -176,4 +112,33 @@ body {
 .dark-mode .color-theme .switch {
     /* VIEWPORT: 376px~414px, VALUES: 24px~28px */
     left: calc(100% - clamp(1.5rem, -0.974rem + 10.53vw, 1.75rem) - 4px);
+}
+
+@media screen and (min-width: 768px) and (orientation: portrait) {
+    .settings-body {
+        row-gap: 16px;
+    }
+
+    .user-info-content {
+        position: relative;
+        /* VIEWPORT: 376px~414px, VALUES: 50px~55px */
+        height: calc(clamp(3.125rem, 0.033rem + 13.16vw, 3.438rem) * 2.2);
+        margin: 20px 0 45px;
+        padding-left: 20px;
+        column-gap: 20px;
+    }
+    #user-info {
+        row-gap: 5px;
+        /* VIEWPORT: 281px~414px, VALUES: 12px~16px */
+        font-size: clamp(0.75rem, 0.222rem + 3.01vw, 1rem);
+    }
+    #username {
+        /* VIEWPORT: 281px~414px, VALUES: 14px~18px */
+        font-size: clamp(0.875rem, 0.347rem + 3.01vw, 1.125rem);
+    }
+    .medal {
+        right: 10px;
+        /* VIEWPORT: 376px~414px, VALUES: 50px~55px */
+        height: calc(clamp(3.125rem, 0.033rem + 13.16vw, 3.438rem) * 2.2 * 0.55 / 1.5);
+    }
 }

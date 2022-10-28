@@ -204,3 +204,59 @@
     background-color: var(--contents);
     border-radius: 18px;
 }
+
+@media screen and (min-width: 768px) and (orientation: portrait) {
+    .first-line-block,
+    .second-line-block {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        justify-items: center;
+        gap: 20px;
+    }
+
+    .quiz-content {
+        /* VIEWPORT: 768px~912px, VALUES: 140px~160px */
+        height: clamp(8.75rem, 2.083rem + 13.89vw, 10rem);
+    }
+    .track {
+        /* VIEWPORT: 768px~912px, VALUES: 10px~12px */
+        stroke-width: clamp(0.625rem, -0.042rem + 1.39vw, 0.75rem);
+    }
+    .progress {
+        /* VIEWPORT: 768px~912px, VALUES: 10px~12px */
+        stroke-width: clamp(0.625rem, -0.042rem + 1.39vw, 0.75rem);
+    }
+    .percentage {
+        font-size: 22px;
+    }
+    .achieve-rate i {
+        /* VIEWPORT: 768px~912px, VALUES: 20px~24px */
+        font-size: clamp(1.25rem, -0.083rem + 2.78vw, 1.5rem);
+    }
+    .achieve-rate .title,
+    .challenge-count .title {
+        /* VIEWPORT: 768px~912px, VALUES: 18px~22px */
+        font-size: clamp(1.125rem, -0.208rem + 2.78vw, 1.375rem);
+    }
+    .challenge-count {
+        column-gap: 20px;
+    }
+    .current-challenge {
+        /* VIEWPORT: 768px~912px, VALUES: 46px~50px */
+        font-size: clamp(2.875rem, 1.542rem + 2.78vw, 3.125rem);
+    }
+
+    .remembered-content {
+        /* VIEWPORT: 281px~375px, VLAUES: 80px~100px */
+        height: 120px;
+    }
+    .remembered-content .main .title {
+        /* VIEWPORT: 768px~912px, VALUES: 18px~20px */
+        font-size: clamp(1.125rem, 0.458rem + 1.39vw, 1.25rem);
+    }
+
+    #quiz-answer-chart {
+        padding: 30px;
+    }
+}

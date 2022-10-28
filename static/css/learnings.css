@@ -1,8 +1,3 @@
-.root-navigator {
-    position: relative;
-    display: none;
-}
-
 .course-navigator {
     /* VIEWPORT: 376px~414px, VALUES: 80px~100px */
     height: calc(100% - clamp(5rem, -7.368rem + 52.63vw, 6.25rem));
@@ -27,16 +22,23 @@
     justify-items: center;
     background-color: var(--contents);
     border-radius: 12px;
+    transition: all 0.5s;
+}
+.learning:hover {
+    background-color: var(--c);
 }
 .quiz-icon {
     /* VIEWPORT: 281px~414px, VALUES: 36px~42px */
     font-size: clamp(2.25rem, 1.458rem + 4.51vw, 2.625rem);
     color: var(--c);
+    transition: all 0.5s;
 }
 .quiz-title {
     /* VIEWPORT: 281px~414px, VALUES: 20px~28px */
     font-size: clamp(1.25rem, 0.194rem + 6.02vw, 1.75rem);
-    color: var(--text);
+    font-weight: 600;
+    color: var(--c);
+    transition: all 0.5s;
 }
 .challenge-content {
     height: 100%;
@@ -49,239 +51,40 @@
     /* VIEWPORT: 281px~414px, VALUES: 32px~38px */
     font-size: clamp(2rem, 1.208rem + 4.51vw, 2.375rem);
     color: var(--c);
+    transition: all 0.5s;
 }
 .challenge-text {
     /* VIEWPORT: 281px~414px, VALUES: 10px~14px */
     font-size: clamp(0.625rem, 0.097rem + 3.01vw, 0.875rem);
-    color: var(--text);
+    color: var(--c);
+    transition: all 0.5s;
+}
+.learning:hover .quiz-icon,
+.learning:hover .quiz-title,
+.learning:hover .challenge-icon, 
+.learning:hover .challenge-text {
+    color: #fff;
 }
 
-
-@media screen and (min-width: 541px) {    
-    .learnings-page {
-        width: 100%;
+@media screen and (min-width: 768px) and (orientation: portrait) {
+    .learning {
+        padding: 20px 30px;
     }
-
-    .root-header {
-        display: none;
-    }
-
-    .root-navigator {
-        height: 100%;
-        width: 140px;
-        margin-left: 20px;
-        padding: 20px 20px 20px 0;
-        display: flex;
-        align-items: flex-start;
-        justify-content: flex-start;
-        flex-direction: column;
-        row-gap: 10px;
-    }
-
-    .course-navigator {
-        height: 100%;
-        width: 100%;
-        margin-top: 0;
-        padding: 20px;
-    }
-}
-
-@media screen and (min-width: 768px) {
-    .learnings-page {
-        display: grid;
-        grid-template-columns: 40% 60%;
-        align-items: unset;
-        justify-content: unset;
-    }
-
-    .root-navigator {
-        height: 100%;
-        width: calc(100% - 20px);
-        margin-left: 20px;
-        padding: 20px 20px 20px 0;
-        display: flex;
-        align-items: flex-start;
-        justify-content: flex-start;
-        flex-direction: column;
-        row-gap: 10px;
-    }
-    .app-logo {
-        position: relative;
-        width: 100%;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        column-gap: 5px;
-    }
-    .app-icon {
-        font-size: 44px;
+    .quiz-icon {
+        /* VIEWPORT: 768px~912px, VALUES: 70px~80px */
+        font-size: clamp(4.375rem, 1.042rem + 6.94vw, 5rem);
         font-weight: 600;
-        color: var(--danger);
     }
-    .app-title {
-        font-size: 22px;
-        font-weight: 700;
-        color: var(--text);
+    .quiz-title {
+        /* VIEWPORT: 768px~912px, VALUES: 48px~52px */
+        font-size: clamp(3rem, 1.667rem + 2.78vw, 3.25rem);
     }
-    .nav-link {
-        position: relative;
-        height: 50px;
-        width: 100%;
-        padding-left: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        column-gap: 20px;
-        transition: all 0.3s;
+    .challenge-icon {
+        /* VIEWPORT: 768px~912px, VALUES: 65px~75px */
+        font-size: clamp(4.063rem, 0.729rem + 6.94vw, 4.688rem);
     }
-    .nav-link:hover {
-        padding-left: 30px;
-    }
-    .nav-link.current {
-        padding-left: 30px;
-        background-color: #ccd1ff;
-    }
-    .nav-link.current .nav-icon,
-    .nav-link.current .nav-title {
-        color: #5c68db;
-    }
-    .nav-link.current::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        height: 100%;
-        width: 8px;
-        background-color: #5c68db;
-    }
-    .nav-icon {
-        font-size: 28px;
-        font-weight: 600;
-        color: var(--text);
-    }
-    .nav-title {
-        font-size: 18px;
-        color: var(--text);
-    }
-
-    .learning {
-        grid-template-columns: auto auto;
-    }
-    .percentage {
-        font-size: 20px;
-    }
-    .progress-bar {
-        height: 12px;
-        width: 95%;
-    }
-    .call {
-        font-size: 20px;
-    }
-}
-
-@media screen and (min-height: 1025px) and (orientation: portrait) {
-    .root-navigator {
-        padding: 30px 20px 30px 0;
-        row-gap: 20px;
-    }
-    .app-logo {
-        column-gap: 10px;
-    }
-    .app-icon {
-        font-size: 50px;
-    }
-    .app-title {
-        font-size: 26px;
-    }
-    .nav-link {
-        height: 60px;
-    }
-    .nav-icon {
-        font-size: 36px;
-    }
-    .nav-title {
-        font-size: 22px;
-    }
-    
-    .learning {
-        width: 95%;
-        padding: 30px 20px;
-    }
-    .left-content {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        row-gap: unset;
-    }
-    .top {
-        height: 70%;
-        justify-content: center;
-    }
-    .bottom {
-        display: none;
-    }
-    .bottom-second {
-        height: 100%;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .progress-circle {
-        position: relative;
-        height: 100%;
-        width: 0;
-        border-radius: 50%;
-        background: conic-gradient(#fff 0deg, var(--bg) 0deg);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .progress-circle::before {
-        content: "";
-        position: absolute;
-        height: 80%;
-        width: 80%;
-        border-radius: 50%;
-        background-color: var(--c);
-    }
-    .circle-parameter {
-        font-size: 26px;
-        font-weight: 800;
-        color:#fff;
-        z-index: 99;
-    }
-    .right-content {
-        row-gap: 10px;
-    }
-    .call {
-        font-size: 26px;
-    }
-    .challenge-number {
-        font-size: 40px;
-    }
-}
-
-@media screen and (min-width: 1024px) {    
-    .course-navigator {
-        height: 100%;
-        margin-top: 0;
-        padding: 20px;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
-        justify-items: center;
-    }
-    .learning {
-        width: 85%;
-        padding: 10px;
-        grid-template-columns: unset;
-        grid-template-rows: 50% 50%;
-    }
-    .detail {
-        align-items: center;
-    }
-    .information {
-        text-align: center;
+    .challenge-text {
+        /* VIEWPORT: 768px~912px, VALUES: 24px~28px */
+        font-size: clamp(1.5rem, 0.167rem + 2.78vw, 1.75rem);
     }
 }

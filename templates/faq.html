@@ -1,0 +1,109 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+<title>My Page</title>
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mypage.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/faq.css') }}">
+<script defer src="{{ url_for('static', filename='js/mypage.js') }}"></script>
+<script defer src="{{ url_for('static', filename='js/faq.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="app-root-page faq-page">
+        <div class="root-header">
+            <a href="{{ url_for('home') }}" class="back-icon">
+                <span class="material-symbols-outlined">keyboard_double_arrow_left</span>
+            </a>
+            <span class="root-title">ＦＡＱ</span>
+        </div>
+
+        <div class="faq-container">
+            <div class="faq">
+                <div class="acc-top-block">
+                    <p class="question">アプリの進め方を教えてください。</p>
+                    <div class="acc-open-block">
+                        <span class="open-icon"></span>
+                    </div>
+                </div>
+                <div class="acc-bottom-block">
+                    <p class="answer">まずは挑戦したいランクの「クイズ」に取り組み、適宜「テスト」で実力を測ってみてください。</p>
+                </div>
+            </div>
+
+            <div class="faq">
+                <div class="acc-top-block">
+                    <p class="question">無料ですか？</p>
+                    <div class="acc-open-block">
+                        <span class="open-icon"></span>
+                    </div>
+                </div>
+                <div class="acc-bottom-block">
+                    <p class="answer">完全無料です。</p>
+                </div>
+            </div>
+
+            <div class="faq">
+                <div class="acc-top-block">
+                    <p class="question">ユーザー名、パスワードは変えられますか？</p>
+                    <div class="acc-open-block">
+                        <span class="open-icon"></span>
+                    </div>
+                </div>
+                <div class="acc-bottom-block">
+                    <p class="answer">ホームの「設定」ページから変更することができます。</p>
+                </div>
+            </div>
+
+            <div class="faq">
+                <div class="acc-top-block">
+                    <p class="question">各ランクの難易度の目安はどのくらいですか？</p>
+                    <div class="acc-open-block">
+                        <span class="open-icon"></span>
+                    </div>
+                </div>
+                <div class="acc-bottom-block">
+                    <p class="answer">A1が英検3級相当、A2が英検準2級相当、B1が英検2級相当、B2英検準1級相当です。</p>
+                </div>
+            </div>
+
+            <div class="faq">
+                <div class="acc-top-block">
+                    <p class="question">テストを受験してもテストが消えません。</p>
+                    <div class="acc-open-block">
+                        <span class="open-icon"></span>
+                    </div>
+                </div>
+                <div class="acc-bottom-block">
+                    <p class="answer">一定数テストで正解すると、前に覚えた単語が復習として出題されることがあるので、テストの数が減らない場合もあります。</p>
+                </div>
+            </div>
+
+            <div class="faq">
+                <div class="acc-top-block">
+                    <p class="question">テストがありません。どうすれば出てきますか？</p>
+                    <div class="acc-open-block">
+                        <span class="open-icon"></span>
+                    </div>
+                </div>
+                <div class="acc-bottom-block">
+                    <p class="answer">クイズに一定数正解するとテストが出現します。</p>
+                </div>
+            </div>
+
+            <div class="faq">
+                <div class="acc-top-block">
+                    <p class="question">テストで間違えるとどうなりますか？</p>
+                    <div class="acc-open-block">
+                        <span class="open-icon"></span>
+                    </div>
+                </div>
+                <div class="acc-bottom-block">
+                    <p class="answer">その単語を覚えていないと判断され、達成率が下がり、クイズに出題されるようになります。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

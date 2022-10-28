@@ -1,79 +1,138 @@
-// 英単語全検索APIを叩く
-fetch('https://project-research.azurewebsites.net/api/word-all-search')
-    .then(response => {
-        return response.json();
-    })
-    .then(datas => main(datas))
-    .catch(error => console.error('APIの取得に失敗しました。', error))
+async function main() {
+    // 英単語全検索APIを叩く
+    const words = await getAPI('https://project-research.azurewebsites.net/api/word-all-search');
+    console.log(words)
 
-const search = document.querySelector('.search-bar > input'),
-      clearIcon = document.querySelector('.clear-icon'),
-      flashcards = document.querySelector('.flashcards');
+    const search = document.querySelector('#search'),
+          clearIcon = document.querySelector('.clear-icon'),
+          library = document.querySelector('.library');
 
-function main(datas) {
-    library(datas);
+    createLibrary(words);
+
     // 検索
     search.addEventListener('input', () => {
         clearIcon.style.display = 'flex';
         search.className = 'contain';
 
-        while (flashcards.firstChild) {
-            flashcards.removeChild(flashcards.firstChild);
+        while (library.firstChild) {
+            library.removeChild(library.firstChild);
         }
-        const results = datas.filter(data => data.word.includes(search.value));
-        library(results);
+
+        const results = words.filter(word => word.word.includes(search.value));
+
+        if (results.length) {
+            createLibrary(results);
+        }
+        else {
+            const empty = document.createElement('p');
+            empty.className = 'empty';
+            empty.innerText = '一致する英単語が存在しません。';
+            library.appendChild(empty);
+        }
     });
+
     // 検索ワードリセット
     clearIcon.addEventListener('click', () => {
         search.value = '';
         search.classList.remove('contain');
         clearIcon.style.display = 'none';
 
-        while (flashcards.firstChild) {
-            flashcards.removeChild(flashcards.firstChild);
+        while (library.firstChild) {
+            library.removeChild(library.firstChild);
         }
-        library(datas);
+
+        createLibrary(words);
+    });
+    
+};
+main();
+
+function createLibrary(words) {
+    const library = document.querySelector('.library');
+    
+    words.forEach(word => {
+        const flashcard = document.createElement('div');
+        flashcard.className = 'flashcard';
+        
+        const cardTopBlock = document.createElement('div');
+        cardTopBlock.className = 'card-top-block';
+        flashcard.appendChild(cardTopBlock);
+
+        const english = document.createElement('p');
+        english.className = 'english';
+        cardTopBlock.appendChild(english);
+        english.innerText = word.word;
+
+        const speakIcon = document.createElement('span');
+        speakIcon.classList.add('material-symbols-outlined', 'speak-icon');
+        cardTopBlock.appendChild(speakIcon);
+        speakIcon.innerText = 'volume_up';
+        speakIcon.addEventListener('click', () => {
+            if ('speechSynthesis' in window) {
+                const uttr = new SpeechSynthesisUtterance();
+                uttr.text = word[index];
+                uttr.lang = 'en-US';
+                uttr.rate = 0.8;
+                const voices = speechSynthesis.getVoices();
+                voices.forEach(voice => {
+                    if (voice.lang === 'en-US') {
+                        uttr.voice = voice;
+                    }
+                });
+                window.speechSynthesis.speak(uttr);
+            }
+            else {
+                alert('このブラウザは音声合成に対応していません。');
+            }
+        });
+
+        const cardBottomBlock = document.createElement('div');
+        cardBottomBlock.className = 'card-bottom-block';
+        flashcard.appendChild(cardBottomBlock);
+
+        const translation = document.createElement('span');
+        translation.className = 'translation';
+        cardBottomBlock.appendChild(translation);
+        translation.innerText = `日本語訳：${word.translation}`;
+
+        const part = document.createElement('span');
+        part.className = 'part';
+        cardBottomBlock.appendChild(part); 
+        part.innerText = `品詞：${word.part_jp}`;
+        
+        const rank = document.createElement('span');
+        rank.className = 'rank';
+        cardBottomBlock.appendChild(rank);
+        rank.innerText = `CEFRランク：${word.rank}`;
+
+        const freqRank = document.createElement('span');
+        freqRank.className = 'freq-rank';
+        cardBottomBlock.appendChild(freqRank);
+        freqRank.innerText = `頻度：${word.freq_rank}`;
+
+        const correctAnswerRate = document.createElement('span');
+        correctAnswerRate.className = 'correct-answer-rate';
+        cardBottomBlock.appendChild(correctAnswerRate);
+        let rate = Math.floor(word.correct / word.response * 100);
+        if (isNaN(rate)) {
+            rate = 0.0;
+        }
+        correctAnswerRate.innerText = `ユーザー正解率：${rate}%`;
+        
+        library.appendChild(flashcard);
     });
 };
 
-function library(words) {
-    words.forEach(word => {
-        const flashcard = document.createElement('div');
-        flashcard.classList.add('flashcard');
-
-        const cardTop = document.createElement('article');
-        cardTop.classList.add('card-top');
-
-        const englishWord = document.createElement('span');
-        englishWord.classList.add('english-word');
-        cardTop.appendChild(englishWord);
-        
-        englishWord.innerText = word.word;
-
-        const openIcon = document.createElement('i');
-        openIcon.classList.add('bx', 'bx-chevron-down', 'open-icon');
-        cardTop.appendChild(openIcon);
-
-        const translationWord = document.createElement('span');
-        translationWord.classList.add('translation-word');
-        cardTop.appendChild(translationWord);
-        
-        translationWord.innerText = `和訳：${word.translation}`;
-        
-        const partWord = document.createElement('span');
-        partWord.classList.add('part-word');
-        cardTop.appendChild(partWord);
-        
-        partWord.innerText = `品詞：${word.part_jp}`;
-        
-        openIcon.addEventListener('click', () => {
-            openIcon.classList.toggle('bx-chevron-down');
-            openIcon.classList.toggle('bx-chevron-up');
-            cardTop.classList.toggle('active');
+// APIからデータを受け取る関数
+async function getAPI(url) {
+    return await fetch(url)
+        .then(response => {
+            return response.json();
+        })
+        .then(datas => {
+            return datas;
+        })
+        .catch(error => {
+            console.error('APIの取得に失敗しました。', error);
         });
-        
-        flashcard.appendChild(cardTop);
-
-        flashcards.appendChild(flashcard);
-    });
 };

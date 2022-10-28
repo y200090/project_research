@@ -60,12 +60,7 @@ cfmShowHide.forEach(eyeIcon => {
     });
 });
 
-const postFields = [...document.querySelectorAll('.post-field')],
-      validate = document.querySelector('.validate');
+const validate = document.querySelector('.validate-field');
 if (validate) {
-    postFields.forEach(postField => {
-        postField.addEventListener('input', () => {
-            validate.style.display = 'none';
-        });
-    });
+    validate.parentElement.classList.add('invalidate');
 }

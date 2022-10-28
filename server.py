@@ -446,15 +446,55 @@ def test_result(rank):
     
     return render_template('test_result.html', rank=rank ,score=score, count=count)
 
+# FAQページ
+@app.route('/mypage/faq')
+@login_required
+def faq():
+    return render_template('faq.html')
+
 # 設定ページ
 @app.route('/mypage/settings')
 @login_required
 def settings():
+    ranks = ['A1', 'A2', 'B1', 'B2']
+    remembereds = 0
+    Record = record(current_user.id)
+
+    for rank in ranks:
+        if not current_user.role == 'Student':
+            # rankと合致するy2000*テーブルのデータを全取得
+            records = Record.query.filter_by(rank=rank).all()
+        else:
+            # 現在ログイン中のユーザーIDかつrankと合致するstudentsテーブルのデータを全取得
+            records = Record.query.filter_by(user_id=current_user.id, rank=rank).all()
+
+        # 重複しないy2000*テーブルの英単語IDを取得
+        word_id_list = list(map(lambda x: x.word_id, records))
+        dedupe_keys = list(collections.Counter(word_id_list).keys())
+
+        remembered = []
+        for id in dedupe_keys:
+            if not current_user.role == 'Student':
+                # idと合致するy2000*テーブルの最新のorderを取得
+                max_order = db.session.query(func.max(Record.order)).filter(Record.word_id==id).scalar()
+            else:
+                # 現在ログイン中のユーザーIDかつidと合致するstudentsテーブルの最新のorderを取得
+                max_order = db.session.query(func.max(Record.order)).filter(Record.user_id==current_user.id, Record.word_id==id).scalar()
+            
+            remembering_data = Record.query.filter_by(order=max_order, word_state='review_state').first()
+            if remembering_data is None:
+                continue
+
+            remembered.append(remembering_data)
+
+        remembereds += len(remembered)
+    
     return render_template(
         'settings.html', 
         user_id=current_user.id, 
         username=current_user.username, 
-        user_role=current_user.role
+        user_role=current_user.role,
+        remembered=remembereds
     )
 
 # プロフィールページ
@@ -472,16 +512,16 @@ def profile():
             username = form.username.data
 
         # formに入力されたメールアドレスを取得
-        if form.email.data == '':
-            same_email = User.query.get(current_user.id).email
-            email = same_email
-        else :
-            email = form.email.data
+        # if form.email.data == '':
+        #     same_email = User.query.get(current_user.id).email
+        #     email = same_email
+        # else :
+        #     email = form.email.data
 
         update_user = User.query.get(current_user.id)
         # 新しいユーザー名・メールアドレスに変更
         update_user.username = username
-        update_user.email = email
+        # update_user.email = email
         # データベースを更新
         db.session.commit()
         return redirect(url_for('profile'))
@@ -491,7 +531,6 @@ def profile():
         form=form, 
         ID=current_user.id,
         username=current_user.username,
-        email=current_user.email,
         role=current_user.role,
         signup_date=current_user.signup_date
     )

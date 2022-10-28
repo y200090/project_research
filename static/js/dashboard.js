@@ -81,6 +81,16 @@ if (localStorage.getItem('color-theme') === 'dark-mode') {
 else if (localStorage.getItem('color-theme') === 'light-mode') {
     color = '#000';
 }
+const mediaQueryTablet = window.matchMedia('(min-width: 768px)');
+let size, border;
+if (mediaQueryTablet.matches) {
+    size = 24;
+    border = 4;
+}
+else {
+    size = 14;
+    border = 2;
+}
 const quizAnswerChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -91,7 +101,7 @@ const quizAnswerChart = new Chart(ctx, {
                 data: answereds[0],
                 borderColor: '#FFCA03',
                 fill: false,
-                borderWidth: 2,
+                borderWidth: border,
                 tension: 0.5,
                 pointRadius: 3,
                 pointBackgroundColor: '#FFCA03'
@@ -101,7 +111,7 @@ const quizAnswerChart = new Chart(ctx, {
                 data: answereds[1],
                 borderColor: '#01daa3',
                 fill: false,
-                borderWidth: 2,
+                borderWidth: border,
                 tension: 0.5,
                 pointRadius: 3,
                 pointBackgroundColor: '#01daa3'
@@ -111,7 +121,7 @@ const quizAnswerChart = new Chart(ctx, {
                 data: answereds[2],
                 borderColor: '#f94144',
                 fill: false,
-                borderWidth: 2,
+                borderWidth: border,
                 tension: 0.5,
                 pointRadius: 3,
                 pointBackgroundColor: '#f94144'
@@ -121,7 +131,7 @@ const quizAnswerChart = new Chart(ctx, {
                 data: answereds[3],
                 borderColor: '#033FFF',
                 fill: false,
-                borderWidth: 2,
+                borderWidth: border,
                 tension: 0.5,
                 pointRadius: 3,
                 pointBackgroundColor: '#033FFF'
@@ -133,7 +143,7 @@ const quizAnswerChart = new Chart(ctx, {
         title: {
             display: true,
             text: '直近10回のクイズの正答数',
-            fontSize: 14,
+            fontSize: size,
             fontColor: `${color}`
         },
         scales: {
@@ -143,7 +153,7 @@ const quizAnswerChart = new Chart(ctx, {
                     suggestedMin: 0,
                     stepSize: 1,
                     fontColor: `${color}`,
-                    fontSize: 14,
+                    fontSize: size,
                     callback: function(value, index, values) {
                         return value;
                     }
@@ -158,14 +168,14 @@ const quizAnswerChart = new Chart(ctx, {
                 },
                 ticks: {
                     fontColor: `${color}`,
-                    fontSize: 14
+                    fontSize: size
                 }
             }]
         },
         legend: {
             labels: {
                 usePointStyle: true,
-                fontSize: 14,
+                fontSize: size,
                 fontColor: `${color}`
             }
         }
