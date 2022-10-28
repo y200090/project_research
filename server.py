@@ -529,7 +529,7 @@ def logout():
     # データベースを更新
     db.session.commit()
     logout_user()
-    session.clear()
+    session.pop('remember_token', None)
     return redirect(url_for('homepage'))
 
 # 管理者ページ
