@@ -74,7 +74,11 @@ async function main() {
         }
         maxNumber.innerText = '/' + questions.length;
         lines[index].classList.add('current');
-        statementSpan.innerText = `ユーザー正解率 : ${Math.floor(allCorrect[index] / allResponse[index] * 100)}%`;
+        let rate = Math.floor(allCorrect[index] / allResponse[index] * 100);
+        if (isNaN(rate)) {
+            rate = 0.0;
+        }
+        statementSpan.innerText = `ユーザー正解率 ：${rate}%`;
         englishWord.innerText = word[index];
 
         // 解答開始時刻取得
