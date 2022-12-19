@@ -10,6 +10,6 @@ This repository is copied from https://github.com/project-research24/project_res
 
 ## 実装言語・使用ツール Stack
 
-Flask 2.2.2
-SQLite 3
-Azure App Service
+Flask 2.2.2  
+SQLite 3  
+Azure App Service  
