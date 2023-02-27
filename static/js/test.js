@@ -182,7 +182,7 @@ async function main() {
             'response_span': responseSpan[index]
         };
         // テスト更新APIを叩く
-        await postAPI(`http://localhost:8000/api/test-update/${rank}`, updateData);
+        await postAPI(`localhost:8000/api/test-update/${rank}`, updateData);
 
         // テストの最後の問題を解答した時の処理
         if ((index + 1) == questions.length) {

@@ -16,7 +16,7 @@ function browserBack() {
 // メイン関数
 async function main() {
     // クイズ作成APIを叩く
-    const questions = await getAPI(`http://localhost:8000/api/create-questions/quiz/${rank}`);
+    const questions = await getAPI(`localhost:8000/api/create-questions/quiz/${rank}`);
 
     const quizProgress = document.querySelector('.quiz-progress');
     for (let i = 0; i < questions.length; i++) {
@@ -189,7 +189,7 @@ async function main() {
             'response_span': responseSpan[index]
         };
         // クイズ更新APIを叩く
-        await postAPI(`http://localhost:8000/api/quiz-update/${rank}`, updateData);
+        await postAPI(`localhost:8000/api/quiz-update/${rank}`, updateData);
 
         // 前問のボタンを削除
         while (nextContent.firstChild) {

@@ -1,6 +1,6 @@
 async function main() {
     // 英単語全検索APIを叩く
-    const words = await getAPI('http://localhost:8000/api/word-all-search');
+    const words = await getAPI('localhost:8000/api/word-all-search');
     console.log(words)
 
     const search = document.querySelector('#search'),
